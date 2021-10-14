@@ -1,9 +1,8 @@
+import { ReactElement } from "react";
 import Link from "next/link";
-
 import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
 import SocialIcon from "@/components/social-icons";
-import { ReactElement } from "react";
 
 const Home = (): ReactElement => {
   return (
