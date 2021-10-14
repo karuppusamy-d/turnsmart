@@ -3,15 +3,11 @@ import Logo from "@/data/logo.svg";
 import Link from "./Link";
 import MobileNav from "./MobileNav";
 import ThemeSwitch from "./ThemeSwitch";
-
-export const headerNavLinks = [
-  { href: "/", title: "Home" },
-  { href: "/login", title: "Login" },
-  { href: "https://karuppusamy.me/blog", title: "Blog" },
-  { href: "https://karuppusamy.me/about", title: "About" },
-];
+import { useAuthContext } from "@/components/contexts/useAuthContext";
+import { GoogleAuthProvider } from "@firebase/auth";
 
 const Navbar = (): ReactElement => {
+  const { currentUser, loginWithPopup, logout } = useAuthContext();
   return (
     <header>
       <div className="fixed top-0 inset-x-0 bg-white dark:bg-gray-900 z-50 shadow-light dark:shadow-dark">
@@ -22,15 +18,44 @@ const Navbar = (): ReactElement => {
 
           <div className="flex items-center text-base leading-5">
             <div className="hidden sm:block">
-              {headerNavLinks.map((link) => (
-                <Link
-                  key={link.title}
-                  href={link.href}
-                  className="p-1 sm:p-4 font-semibold"
+              <Link href="/" className="px-1 sm:px-4 font-semibold">
+                Home
+              </Link>
+
+              <Link
+                href="https://karuppusamy.me/about"
+                className="px-1 sm:px-4 font-semibold"
+              >
+                About
+              </Link>
+
+              {currentUser ? (
+                <>
+                  <Link
+                    href="/dashboard"
+                    className="px-1 sm:px-4 font-semibold"
+                  >
+                    Dashboard
+                  </Link>
+
+                  <button
+                    onClick={logout}
+                    className="px-1 sm:px-4 font-semibold"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                // <Link href="/login" className="px-1 sm:px-4 font-semibold">
+                //   Login
+                // </Link>
+                <button
+                  className="px-1 sm:px-4 font-semibold"
+                  onClick={() => loginWithPopup(new GoogleAuthProvider())}
                 >
-                  {link.title}
-                </Link>
-              ))}
+                  Login
+                </button>
+              )}
             </div>
             <ThemeSwitch />
             <MobileNav />

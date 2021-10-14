@@ -1,9 +1,10 @@
 import { ReactElement, useState } from "react";
+import { useAuthContext } from "@/components/contexts/useAuthContext";
 import Link from "./Link";
-import { headerNavLinks } from "./Navbar";
 
 const MobileNav = (): ReactElement => {
   const [navShow, setNavShow] = useState(false);
+  const { currentUser, logout } = useAuthContext();
 
   const onToggleNav = (): void => {
     setNavShow((status) => {
@@ -53,17 +54,57 @@ const MobileNav = (): ReactElement => {
         }`}
       >
         <div className="fixed h-full mt-4">
-          {headerNavLinks.map((link) => (
-            <div key={link.title} className="px-8 py-4">
+          <div className="px-8 py-4">
+            <Link
+              href="/"
+              className="text-base font-semibold tracking-wider"
+              onClick={onToggleNav}
+            >
+              Home
+            </Link>
+          </div>
+
+          <div className="px-8 py-4">
+            <Link
+              href="https://karuppusamy.me/about"
+              className="text-base font-semibold tracking-wider"
+              onClick={onToggleNav}
+            >
+              About
+            </Link>
+          </div>
+
+          {currentUser ? (
+            <>
+              <div className="px-8 py-4">
+                <Link
+                  href="/dashboard"
+                  className="text-base font-semibold tracking-wider"
+                  onClick={onToggleNav}
+                >
+                  Dashboard
+                </Link>
+              </div>
+              <div className="px-8 py-4">
+                <button
+                  onClick={logout}
+                  className="text-base font-semibold tracking-wider"
+                >
+                  Logout
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="px-8 py-4">
               <Link
-                href={link.href}
+                href="/login"
                 className="text-base font-semibold tracking-wider"
                 onClick={onToggleNav}
               >
-                {link.title}
+                Login
               </Link>
             </div>
-          ))}
+          )}
         </div>
       </div>
 
