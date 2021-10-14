@@ -7,6 +7,7 @@ import Router from "next/router";
 import ProgressBar from "@badrap/bar-of-progress";
 import { SEO } from "@/components/SEO";
 import LayoutWrapper from "@/components/LayoutWrapper";
+import { AuthProvider } from "@/components/contexts/useAuthContext";
 
 import "@/styles/globals.css";
 
@@ -32,9 +33,11 @@ const App = ({ Component, pageProps }: AppProps): ReactElement => {
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
       <DefaultSeo {...SEO} />
-      <LayoutWrapper>
-        <Component {...pageProps} />
-      </LayoutWrapper>
+      <AuthProvider>
+        <LayoutWrapper>
+          <Component {...pageProps} />
+        </LayoutWrapper>
+      </AuthProvider>
     </ThemeProvider>
   );
 };
