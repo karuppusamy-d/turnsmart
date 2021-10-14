@@ -3,8 +3,10 @@ import Link from "next/link";
 import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
 import SocialIcon from "@/components/social-icons";
+import { useAuthContext } from "@/components/contexts/useAuthContext";
 
 const Home = (): ReactElement => {
+  const { currentUser } = useAuthContext();
   return (
     <>
       <PageSeo
@@ -24,11 +26,25 @@ const Home = (): ReactElement => {
               <br />
               Project<span className="text-blue-400">.io</span>
             </h1>
-            <Link href="/login">
-              <a className="btn text-[0.85rem] sm:text-base" aria-label="Login">
-                Login
-              </a>
-            </Link>
+            {currentUser ? (
+              <Link href="/dashboard">
+                <a
+                  className="btn text-[0.85rem] sm:text-base"
+                  aria-label="Dashboard"
+                >
+                  Dashboard
+                </a>
+              </Link>
+            ) : (
+              <Link href="/login">
+                <a
+                  className="btn text-[0.85rem] sm:text-base"
+                  aria-label="Login"
+                >
+                  Login
+                </a>
+              </Link>
+            )}
           </div>
         </div>
         <div className="flex my-12 text-2xl space-x-5">
