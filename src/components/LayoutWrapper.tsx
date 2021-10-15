@@ -11,7 +11,7 @@ const LayoutWrapper = ({ children }: Props): ReactElement => {
   return (
     <>
       <Navbar />
-      <main className="mt-[4.5rem] mb-10">
+      <main className="mt-[4.5rem]">
         <SectionContainer>{children}</SectionContainer>
       </main>
       <Footer />

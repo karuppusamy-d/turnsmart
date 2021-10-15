@@ -15,7 +15,7 @@ const Home = (): ReactElement => {
         url={siteMetadata.siteUrl}
       />
       <div
-        className="flex flex-col "
+        className="flex flex-col mb-10"
         style={{ height: "calc( 100vh - 78px )" }}
       >
         <div className="flex-grow flex flex-col justify-center">
