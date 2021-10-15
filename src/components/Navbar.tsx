@@ -4,10 +4,9 @@ import Link from "./Link";
 import MobileNav from "./MobileNav";
 import ThemeSwitch from "./ThemeSwitch";
 import { useAuthContext } from "@/components/contexts/useAuthContext";
-import { GoogleAuthProvider } from "@firebase/auth";
 
 const Navbar = (): ReactElement => {
-  const { currentUser, loginWithPopup, logout } = useAuthContext();
+  const { currentUser, logout } = useAuthContext();
   return (
     <header>
       <div className="fixed top-0 inset-x-0 bg-white dark:bg-gray-900 z-50 shadow-light dark:shadow-dark">
@@ -46,17 +45,27 @@ const Navbar = (): ReactElement => {
                   </button>
                 </>
               ) : (
-                // <Link href="/login" className="px-1 sm:px-4 font-semibold">
-                //   Login
-                // </Link>
-                <button
-                  className="px-1 sm:px-4 font-semibold"
-                  onClick={() => loginWithPopup(new GoogleAuthProvider())}
-                >
+                <Link href="/login" className="px-1 sm:px-4 font-semibold">
                   Login
-                </button>
+                </Link>
               )}
             </div>
+
+            {currentUser && (
+              <Link
+                href="/profile"
+                className="w-8 h-8 p-1 ml-1 rounded focus:outline-none focus-visible:ring-2 focus:ring-gray-800 dark:focus:ring-gray-200"
+              >
+                <img
+                  alt="profile"
+                  src={currentUser.photoURL || "/images/profile.svg"}
+                  className={`object-cover rounded-full ${
+                    !currentUser.photoURL && "dark:invert"
+                  }`}
+                />
+              </Link>
+            )}
+
             <ThemeSwitch />
             <MobileNav />
           </div>

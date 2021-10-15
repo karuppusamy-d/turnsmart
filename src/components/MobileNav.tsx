@@ -87,7 +87,10 @@ const MobileNav = (): ReactElement => {
               </div>
               <div className="px-8 py-4">
                 <button
-                  onClick={logout}
+                  onClick={() => {
+                    logout();
+                    onToggleNav();
+                  }}
                   className="text-base font-semibold tracking-wider"
                 >
                   Logout
