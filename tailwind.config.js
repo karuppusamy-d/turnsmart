@@ -145,5 +145,5 @@ module.exports = {
   variants: {
     typography: ["dark"],
   },
-  plugins: [require("@tailwindcss/forms")],
+  plugins: [],
 };
