@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const colors = require("tailwindcss/colors");
 
 module.exports = {
@@ -14,7 +15,7 @@ module.exports = {
         mono: ["Consolas", "Monaco", "Andale Mono", "Ubuntu Mono", "monospace"],
       },
       colors: {
-        blue: colors.sky,
+        primary: colors.sky,
       },
       typography: (theme) => ({
         DEFAULT: {

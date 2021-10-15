@@ -24,7 +24,7 @@ const Home = (): ReactElement => {
               Hi,
               <br /> Welcome To
               <br />
-              Project<span className="text-blue-400">.io</span>
+              Project<span className="text-primary-400">.io</span>
             </h1>
             {currentUser ? (
               <Link href="/dashboard">
