@@ -11,7 +11,7 @@ import {
 } from "@firebase/auth";
 import { FirebaseError } from "@firebase/util";
 
-const Login = (): ReactElement => {
+const Signup = (): ReactElement => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordConfirmRef = useRef<HTMLInputElement>(null);
@@ -90,16 +90,16 @@ const Login = (): ReactElement => {
   return (
     <>
       <PageSeo
-        title={`${siteMetadata.title} | Login`}
-        url={`${siteMetadata.siteUrl}/Login`}
-        description="Login"
+        title={`${siteMetadata.title} | Sign up`}
+        url={`${siteMetadata.siteUrl}/signup`}
+        description="Sign up"
       />
 
       <div className="py-20 min-h-[80vh]">
         <div className="p-8 sm:p-12 sm:max-w-lg m-auto rounded shadow-light dark:bg-gray-800">
           <form className="flex flex-col" onSubmit={handleSignup}>
             <h2 className="text-primary-400 dark:text-gray-100 text-center text-3xl font-bold mb-8">
-              Sign Up
+              Sign up
             </h2>
 
             <label className="font-semibold text-xs" htmlFor="email">
@@ -165,12 +165,12 @@ const Login = (): ReactElement => {
 
           <div className="flex mt-6 justify-center text-xs">
             <Link
-              href="/reset_password"
+              href="/forgot_password"
               className="text-primary-400 hover:text-primary-500"
             >
               Forgot Password
             </Link>
-            <span className="mx-2 text-gray-300">/</span>
+            <span className="mx-2 text-gray-300 dark:text-gray-400">/</span>
             <Link
               href="/login"
               className="text-primary-400 hover:text-primary-500"
@@ -256,4 +256,4 @@ const Login = (): ReactElement => {
   );
 };
 
-export default Login;
+export default Signup;

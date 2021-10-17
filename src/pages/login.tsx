@@ -82,7 +82,7 @@ const Login = (): ReactElement => {
     <>
       <PageSeo
         title={`${siteMetadata.title} | Login`}
-        url={`${siteMetadata.siteUrl}/Login`}
+        url={`${siteMetadata.siteUrl}/login`}
         description="Login"
       />
 
@@ -135,12 +135,12 @@ const Login = (): ReactElement => {
 
           <div className="flex mt-6 justify-center text-xs">
             <Link
-              href="/reset_password"
+              href="/forgot_password"
               className="text-primary-400 hover:text-primary-500"
             >
               Forgot Password
             </Link>
-            <span className="mx-2 text-gray-300">/</span>
+            <span className="mx-2 text-gray-300 dark:text-gray-400">/</span>
             <Link
               href="/signup"
               className="text-primary-400 hover:text-primary-500"
