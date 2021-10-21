@@ -46,6 +46,7 @@ const useAuthContext = (): ContextValue => {
 const AuthProvider: AuthProviderType = ({ children }) => {
   const auth = getAuth(app);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const login: Login = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
@@ -78,6 +79,7 @@ const AuthProvider: AuthProviderType = ({ children }) => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
+      setLoading(false);
     });
 
     return unsubscribe;
@@ -95,7 +97,17 @@ const AuthProvider: AuthProviderType = ({ children }) => {
     updatePassword,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {loading ? (
+        <div className="flex items-center justify-center h-[100vh]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black dark:border-white" />
+        </div>
+      ) : (
+        children
+      )}
+    </AuthContext.Provider>
+  );
 };
 
 export { AuthProvider, useAuthContext };
