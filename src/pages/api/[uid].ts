@@ -1,20 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import { firestore } from "@/utils/firebase/admin";
+import { ProjectData } from "@/utils/firebase";
 
 type handlerType = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
 
 type IncomingData = {
   secret: string;
   data: { [key: string]: number | boolean };
-};
-
-type QueryData = {
-  userid: string;
-  secret: string;
-  data: {
-    [key: string]: number | boolean;
-  };
 };
 
 const handler: handlerType = async (req, res) => {
@@ -28,14 +21,14 @@ const handler: handlerType = async (req, res) => {
 
   if (!data) return res.status(400).json({ message: "Please send data" });
 
-  const docRef = firestore.collection("data").doc(uid);
+  const docRef = firestore.collection("projects").doc(uid);
 
   docRef
     .get()
     .then(async (doc) => {
       if (doc.exists) {
         // If Document exists
-        const document = doc.data() as QueryData;
+        const document = doc.data() as ProjectData;
 
         if (secret === document.secret) {
           // Save data into database
