@@ -22,7 +22,7 @@ const Dashboard = (): ReactElement => {
         if (!data.empty) {
           setProjects(
             data.docs.map((snap) => {
-              return { uid: snap.id, ...snap.data() };
+              return { ...snap.data(), uid: snap.id };
             })
           );
         }
@@ -84,8 +84,11 @@ const Dashboard = (): ReactElement => {
 
           {/* Loading skeleton */}
           {loading &&
-            [...Array(12)].map(() => (
-              <div className="p-10 rounded-xl shadow-light dark:bg-gray-800">
+            [...Array(12)].map((_, i) => (
+              <div
+                key={i}
+                className="p-10 rounded-xl shadow-light dark:bg-gray-800"
+              >
                 <div className="animate-pulse h-4 w-auto mt-1 bg-gray-100 dark:bg-gray-700 rounded-lg"></div>
                 <div className="animate-pulse h-4 w-auto mt-4 bg-gray-100 dark:bg-gray-700 rounded-lg"></div>
               </div>

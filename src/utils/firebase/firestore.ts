@@ -10,6 +10,8 @@ import {
   doc,
   getDoc,
   DocumentSnapshot,
+  addDoc,
+  DocumentReference,
 } from "@firebase/firestore";
 
 export type ProjectData = {
@@ -30,6 +32,10 @@ const projectCollection = collection(
   "projects"
 ) as CollectionReference<ProjectData>;
 
+const addProject = (
+  data: ProjectData
+): Promise<DocumentReference<ProjectData>> => addDoc(projectCollection, data);
+
 const getProjectByUID = (uid: string): Promise<DocumentSnapshot<ProjectData>> =>
   getDoc(doc(projectCollection, uid));
 
@@ -38,4 +44,4 @@ const getProjectsByUserId = (
 ): Promise<QuerySnapshot<ProjectData>> =>
   getDocs(query(projectCollection, where("userid", "==", userid)));
 
-export { db, getProjectByUID, getProjectsByUserId };
+export { db, getProjectByUID, getProjectsByUserId, addProject };
