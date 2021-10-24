@@ -34,6 +34,7 @@ const Login = (): ReactElement => {
         secret: secret,
         userid: currentUser?.uid,
         data: {},
+        fields: {},
       };
       addProject(project)
         .then(() => router.push("/dashboard"))

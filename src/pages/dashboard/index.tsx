@@ -18,11 +18,11 @@ const Dashboard = (): ReactElement => {
     if (!currentUser) router.push("/");
 
     if (currentUser?.uid)
-      getProjectsByUserId(currentUser.uid).then((data) => {
-        if (!data.empty) {
+      getProjectsByUserId(currentUser.uid).then((docs) => {
+        if (!docs.empty) {
           setProjects(
-            data.docs.map((snap) => {
-              return { ...snap.data(), uid: snap.id };
+            docs.docs.map((doc) => {
+              return { ...doc.data(), uid: doc.id };
             })
           );
         }

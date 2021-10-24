@@ -23,6 +23,9 @@ export type ProjectData = {
   data: {
     [key: string]: number | boolean;
   };
+  fields: {
+    [key: string]: "number" | "boolean";
+  };
 };
 
 const db = getFirestore(app);
