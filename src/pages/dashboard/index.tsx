@@ -5,13 +5,18 @@ import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
 import { useAuthContext } from "@/components/contexts/useAuthContext";
 import { getProjectsByUserId, ProjectData } from "@/utils/firebase";
+import Popup from "@/components/Popup";
+import NewProject from "@/components/Popup/NewProject";
 
 const Dashboard = (): ReactElement => {
   const router = useRouter();
   const { currentUser } = useAuthContext();
   const [loading, setLoading] = useState(true);
+  const [showPopup, setshowPopup] = useState(false);
 
   const [projects, setProjects] = useState<ProjectData[]>([]);
+
+  const togglePopup = () => setshowPopup((curr) => !curr);
 
   useEffect(() => {
     // When not logged in
@@ -57,9 +62,9 @@ const Dashboard = (): ReactElement => {
 
           {/* New Project */}
           {!loading && (
-            <Link
-              href="/dashboard/new"
+            <button
               className="p-10 rounded-xl shadow-light dark:bg-gray-800 hover:shadow-light-lg dark:hover:ring-1 dark:hover:ring-gray-700 duration-500"
+              onClick={togglePopup}
             >
               <div className="flex justify-center items-center h-full">
                 <svg
@@ -79,7 +84,7 @@ const Dashboard = (): ReactElement => {
                 </svg>
                 <div className="ml-3">New Project</div>
               </div>
-            </Link>
+            </button>
           )}
 
           {/* Loading skeleton */}
@@ -94,6 +99,10 @@ const Dashboard = (): ReactElement => {
               </div>
             ))}
         </div>
+
+        <Popup showPopup={showPopup} togglePopup={togglePopup}>
+          <NewProject togglePopup={togglePopup} setProjects={setProjects} />
+        </Popup>
       </div>
     </>
   );
