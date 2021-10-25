@@ -67,6 +67,7 @@ const Login = (): ReactElement => {
               id="name"
               ref={nameRef}
               type="text"
+              maxLength={50}
               required
             />
 
@@ -77,6 +78,7 @@ const Login = (): ReactElement => {
               className="input"
               id="discription"
               rows={4}
+              maxLength={100}
               ref={descriptionRef}
               required
             />
