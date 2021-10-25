@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import Logo from "@/data/logo.svg";
-import Link from "./Link";
+import Link from "@/components/Link";
 import MobileNav from "./MobileNav";
 import ThemeSwitch from "./ThemeSwitch";
 import { useAuthContext } from "@/components/contexts/useAuthContext";

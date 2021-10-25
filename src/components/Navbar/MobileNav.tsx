@@ -1,6 +1,6 @@
 import { ReactElement, useState } from "react";
 import { useAuthContext } from "@/components/contexts/useAuthContext";
-import Link from "./Link";
+import Link from "@/components/Link";
 
 const MobileNav = (): ReactElement => {
   const [navShow, setNavShow] = useState(false);
