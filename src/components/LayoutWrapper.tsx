@@ -1,5 +1,4 @@
 import { ReactNode, ReactElement } from "react";
-import SectionContainer from "./SectionContainer";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
@@ -12,7 +11,9 @@ const LayoutWrapper = ({ children }: Props): ReactElement => {
     <>
       <Navbar />
       <main className="mt-[4.5rem]">
-        <SectionContainer>{children}</SectionContainer>
+        <div className="mx-auto px-6 xl:px-0 max-w-3xl xl:max-w-5xl">
+          {children}
+        </div>
       </main>
       <Footer />
     </>
