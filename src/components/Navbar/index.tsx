@@ -10,7 +10,7 @@ const Navbar = (): ReactElement => {
   return (
     <header>
       <div className="fixed top-0 inset-x-0 bg-white dark:bg-gray-900 z-50 shadow-light dark:shadow-dark">
-        <nav className="flex items-center justify-between text-gray-800 dark:text-gray-100 mx-auto px-6 py-5 xl:px-0 max-w-3xl xl:max-w-5xl">
+        <nav className="flex items-center justify-between text-gray-800 dark:text-gray-100 mx-auto px-6 py-4 sm:py-5 xl:px-0 max-w-5xl">
           <Link href="/" className="flex items-center justify-between text-xl">
             <Logo aria-label="project.io" />
           </Link>

@@ -7,9 +7,6 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
-      inset: {
-        18: "4.5rem", // NavBar Height
-      },
       fontFamily: {
         sans: ["'Poppins'", "sans-serif"],
         mono: ["Consolas", "Monaco", "Andale Mono", "Ubuntu Mono", "monospace"],
