@@ -112,7 +112,10 @@ const ProjectDashboard = (): ReactElement => {
                       <tr key={key}>
                         <td className="p-4">{key}</td>
                         <td>
-                          <select className="input mt-0 w-full" value={value}>
+                          <select
+                            className="input mt-0 w-full"
+                            defaultValue={value}
+                          >
                             <option value="boolean">boolean</option>
                             <option value="number">number</option>
                           </select>
@@ -141,10 +144,13 @@ const ProjectDashboard = (): ReactElement => {
                             <input
                               className="input mt-0 w-full"
                               type="number"
-                              value={value}
+                              defaultValue={+value}
                             />
                           ) : (
-                            <select className="input mt-0 w-full" value={value}>
+                            <select
+                              className="input mt-0 w-full"
+                              defaultValue={value.toString()}
+                            >
                               <option value="true">true</option>
                               <option value="false">false</option>
                             </select>
