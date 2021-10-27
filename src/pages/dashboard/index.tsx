@@ -55,8 +55,12 @@ const Dashboard = (): ReactElement => {
               key={key}
               className="py-10 px-11 rounded-xl shadow-light dark:bg-gray-800 hover:shadow-light-lg dark:hover:ring-1 dark:hover:ring-gray-700 duration-500"
             >
-              <div className="font-bold mb-1">{project.name}</div>
-              <div className="text-sm">{project.description}</div>
+              <div className="font-bold mb-2">{project.name}</div>
+              <div className="text-sm">
+                {project.description.length > 50
+                  ? project.description.substr(0, 50) + "..."
+                  : project.description}
+              </div>
             </Link>
           ))}
 
