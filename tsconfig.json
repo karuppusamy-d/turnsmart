@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "importHelpers": true,
+    "removeComments": true,
+    "incremental": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
