@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
 import { useAuthContext } from "@/components/contexts/useAuthContext";
-import { getProjectByUID, ProjectData } from "@/utils/firebase";
+import { getProjectByUID, ProjectData, updateProject } from "@/utils/firebase";
 import ProjectDatas from "@/components/dashboard/ProjectDatas";
 import Endpoints from "@/components/dashboard/Endpoints";
 
@@ -36,7 +36,19 @@ const ProjectDashboard = (): ReactElement => {
   }, [currentUser]);
 
   const handleSecretChange = () => {
-    console.log("TODO: Change Secret Key: ", secret.value);
+    project?.uid &&
+      updateProject(project.uid, { secret: secret.value })
+        .then(() => {
+          setProject((curr) => {
+            return curr
+              ? { ...curr, secret: secret.value }
+              : { ...project, secret: secret.value };
+          });
+          alert("Success");
+        })
+        .catch(() => {
+          alert("Something went wrong");
+        });
   };
 
   return (

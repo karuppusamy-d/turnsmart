@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-onchange */
-import React, { ReactElement, SetStateAction, useRef } from "react";
+import React, { FormEvent, ReactElement, SetStateAction, useRef } from "react";
 import { ProjectData, updateProject } from "@/utils/firebase";
 
 import AddIcon from "@/components/icons/add.svg";
@@ -14,8 +14,9 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
   const inputRef = useRef<HTMLInputElement>(null);
   const selectRef = useRef<HTMLSelectElement>(null);
 
-  const handleAddEndpoint = (): void => {
-    if (!inputRef.current || !selectRef.current)
+  const handleAddEndpoint = (e: FormEvent): void => {
+    e.preventDefault();
+    if (!inputRef.current?.value || !selectRef.current?.value)
       return alert("Someting went wrong");
 
     const updatedData = {
@@ -31,7 +32,6 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
           selectRef.current.value === "boolean" ? false : 0,
       },
     };
-
     project.uid &&
       updateProject(project.uid, updatedData)
         .then(() => {
@@ -40,6 +40,8 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
               ? { ...curr, ...updatedData }
               : { ...project, ...updatedData };
           });
+          // Reset form on success
+          inputRef.current?.form?.reset();
         })
         .catch(() => {
           alert("Something went wrong");
@@ -135,13 +137,15 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
           {/* Create New Endpoint */}
           <tr>
             <td className="px-4 py-2">
-              <input
-                title="new endpoint name"
-                placeholder="New endpoint name"
-                className="input mt-0 w-full"
-                type="text"
-                ref={inputRef}
-              />
+              <form onSubmit={handleAddEndpoint}>
+                <input
+                  title="new endpoint name"
+                  placeholder="New endpoint name"
+                  className="input mt-0 w-full"
+                  type="text"
+                  ref={inputRef}
+                />
+              </form>
             </td>
             <td className="py-2 flex items-center">
               <select
