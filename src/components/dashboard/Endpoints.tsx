@@ -19,8 +19,8 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
       return alert("Someting went wrong");
 
     const updatedData = {
-      fields: {
-        ...project.fields,
+      endpoints: {
+        ...project.endpoints,
         [inputRef.current.value]: selectRef.current.value as
           | "boolean"
           | "number",
@@ -48,12 +48,12 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
 
   const deleteEndpoint = (key: string): void => {
     const updatedData = {
-      fields: project.fields,
+      endpoints: project.endpoints,
       data: project.data,
     };
 
     // Delete endpoints and data
-    delete updatedData.fields[key];
+    delete updatedData.endpoints[key];
     delete updatedData.data[key];
 
     project.uid &&
@@ -72,7 +72,7 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
 
   const updateEndpoint = (key: string, value: "number" | "boolean"): void => {
     const updatedData = {
-      fields: { ...project.fields, [key]: value },
+      endpoints: { ...project.endpoints, [key]: value },
       data: {
         ...project.data,
         [key]: value === "boolean" ? false : 0,
@@ -98,7 +98,7 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
       <table className="table table-fixed w-full">
         <tbody>
           {/* Display Endpoints */}
-          {Object.entries(project?.fields || {}).map(([key, value]) => {
+          {Object.entries(project?.endpoints || {}).map(([key, value]) => {
             return (
               <tr key={key}>
                 <td className="px-4 py-2 font-medium">{key}</td>

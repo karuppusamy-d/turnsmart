@@ -46,7 +46,7 @@ const handler: handlerType = async (req, res) => {
           const errors = [];
 
           // Filter the data
-          for (const [key, type] of Object.entries(document.fields)) {
+          for (const [key, type] of Object.entries(document.endpoints)) {
             // Check for Data Type
             if (typeof receivedData[key] === type) {
               newData[key] = receivedData[key];

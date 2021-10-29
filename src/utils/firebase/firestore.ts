@@ -26,7 +26,7 @@ export type ProjectData = {
   data: {
     [key: string]: number | boolean;
   };
-  fields: {
+  endpoints: {
     [key: string]: "number" | "boolean";
   };
 };

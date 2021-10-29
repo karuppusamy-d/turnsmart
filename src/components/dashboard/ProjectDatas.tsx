@@ -33,7 +33,7 @@ const ProjectDatas = ({ project, setProject }: Props): ReactElement => {
               <tr key={key}>
                 <td className="p-4 font-medium">{key}</td>
                 <td>
-                  {project?.fields[key] === "number" ? (
+                  {project?.endpoints[key] === "number" ? (
                     <input
                       title={key}
                       className="input mt-0 w-full"

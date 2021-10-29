@@ -40,7 +40,7 @@ const NewProject = ({ togglePopup, setProjects }: Props): ReactElement => {
         secret: secret,
         userid: currentUser?.uid,
         data: {},
-        fields: {},
+        endpoints: {},
       };
       addProject(project)
         .then((doc) => {
