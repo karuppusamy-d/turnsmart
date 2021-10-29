@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { app } from ".";
 import { getFirestore } from "firebase/firestore";
 import {
@@ -12,6 +13,8 @@ import {
   DocumentSnapshot,
   addDoc,
   DocumentReference,
+  deleteDoc,
+  updateDoc,
 } from "@firebase/firestore";
 
 export type ProjectData = {
@@ -39,6 +42,14 @@ const addProject = (
   data: ProjectData
 ): Promise<DocumentReference<ProjectData>> => addDoc(projectCollection, data);
 
+const updateProject = (
+  uid: string,
+  data: { [key: string]: any }
+): Promise<void> => updateDoc(doc(projectCollection, uid), data);
+
+const deleteProject = (uid: string): Promise<void> =>
+  deleteDoc(doc(projectCollection, uid));
+
 const getProjectByUID = (uid: string): Promise<DocumentSnapshot<ProjectData>> =>
   getDoc(doc(projectCollection, uid));
 
@@ -47,4 +58,11 @@ const getProjectsByUserId = (
 ): Promise<QuerySnapshot<ProjectData>> =>
   getDocs(query(projectCollection, where("userid", "==", userid)));
 
-export { db, getProjectByUID, getProjectsByUserId, addProject };
+export {
+  db,
+  getProjectByUID,
+  getProjectsByUserId,
+  addProject,
+  updateProject,
+  deleteProject,
+};
