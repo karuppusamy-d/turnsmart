@@ -4,6 +4,8 @@ import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
 import { useAuthContext } from "@/components/contexts/useAuthContext";
 import { getProjectByUID, ProjectData } from "@/utils/firebase";
+import ProjectDatas from "@/components/dashboard/ProjectDatas";
+import Endpoints from "@/components/dashboard/Endpoints";
 
 // Icons
 import ShowIcon from "@/components/icons/show.svg";
@@ -100,68 +102,18 @@ const ProjectDashboard = (): ReactElement => {
             </div>
           </div>
 
-          {/* Data Endpoints */}
-          <div className="pt-6 pb-8">
-            <h2 className="font-medium pb-4">Data Endpoints:</h2>
-
-            <div className="p-3 rounded ring-1 ring-gray-200 dark:ring-gray-700">
-              <table className="table table-fixed w-full">
-                <tbody>
-                  {Object.entries(project?.fields || {}).map(([key, value]) => {
-                    return (
-                      <tr key={key}>
-                        <td className="p-4">{key}</td>
-                        <td>
-                          <select
-                            className="input mt-0 w-full"
-                            defaultValue={value}
-                          >
-                            <option value="boolean">boolean</option>
-                            <option value="number">number</option>
-                          </select>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
           {/* Datas */}
           <div className="pt-6 pb-8">
             <h2 className="font-medium pb-4">Data:</h2>
+            {project && (
+              <ProjectDatas project={project} setProject={setProject} />
+            )}
+          </div>
 
-            <div className="p-3 rounded ring-1 ring-gray-200 dark:ring-gray-700">
-              <table className="table table-fixed w-full">
-                <tbody>
-                  {Object.entries(project?.data || {}).map(([key, value]) => {
-                    return (
-                      <tr key={key}>
-                        <td className="p-4">{key}</td>
-                        <td>
-                          {project?.fields[key] === "number" ? (
-                            <input
-                              className="input mt-0 w-full"
-                              type="number"
-                              defaultValue={+value}
-                            />
-                          ) : (
-                            <select
-                              className="input mt-0 w-full"
-                              defaultValue={value.toString()}
-                            >
-                              <option value="true">true</option>
-                              <option value="false">false</option>
-                            </select>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+          {/* Data Endpoints */}
+          <div className="pt-6 pb-8">
+            <h2 className="font-medium pb-4">Endpoints:</h2>
+            {project && <Endpoints project={project} setProject={setProject} />}
           </div>
         </div>
       </div>
