@@ -96,7 +96,7 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
   };
 
   return (
-    <div className="p-3 rounded ring-1 ring-gray-200 dark:ring-gray-700">
+    <div className="p-8 pl-4 rounded-xl shadow-light dark:bg-gray-800">
       <table className="table table-fixed w-full">
         <tbody>
           {/* Display Endpoints */}

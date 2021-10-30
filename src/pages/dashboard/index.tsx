@@ -44,10 +44,7 @@ const Dashboard = (): ReactElement => {
       />
 
       <div className="py-20 min-h-[80vh]">
-        <div
-          className="grid gap-8 grid-cols-card"
-          style={{ gridAutoRows: "1fr" }}
-        >
+        <div className="grid gap-8 grid-cols-card auto-rows-[1fr]">
           {/* Projects */}
           {projects.map((project, key) => (
             <Link
