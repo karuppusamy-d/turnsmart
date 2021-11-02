@@ -1,4 +1,4 @@
-import { FormEvent, ReactElement, useRef, useState } from "react";
+import { FormEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
@@ -18,7 +18,37 @@ const Login = (): ReactElement => {
   const { currentUser, login, loginWithPopup } = useAuthContext();
 
   const router = useRouter();
-  if (currentUser) router.push("/");
+  useEffect(() => {
+    if (currentUser) {
+      // Redirect to dashboard if user is already logged in
+      if (!router.query.redirect_uri) router.push("/dashboard");
+      else {
+        // For google actions account linking
+        currentUser
+          .getIdToken()
+          .then(async (token) => {
+            // Fetch the redirect data from auth server
+            const res = await fetch("/api/auth", {
+              method: "POST",
+              body: JSON.stringify(router.query),
+              headers: {
+                authorization: token,
+                "content-type": "application/json",
+              },
+            });
+
+            // Get redirect url from response
+            const { redirect_url } = await res.json();
+
+            // Redirect to the url
+            router.push(redirect_url);
+          })
+          .catch(() => {
+            alert("Something went wrong.");
+          });
+      }
+    }
+  }, [currentUser]);
 
   const handleError = (ele: HTMLInputElement, message: string): void => {
     ele.classList.add("error");
