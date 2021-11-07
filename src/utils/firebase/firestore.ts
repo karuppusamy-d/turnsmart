@@ -29,6 +29,10 @@ export type ProjectData = {
   endpoints: {
     [key: string]: "number" | "boolean";
   };
+  smarthome: {
+    type: string;
+    traits: string[];
+  };
 };
 
 const db = getFirestore(app);
