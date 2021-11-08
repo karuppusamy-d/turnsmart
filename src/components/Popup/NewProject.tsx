@@ -44,6 +44,7 @@ const NewProject = ({ togglePopup, setProjects }: Props): ReactElement => {
         smarthome: {
           type: "",
           traits: [],
+          target: "",
         },
       };
       addProject(project)

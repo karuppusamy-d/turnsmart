@@ -32,6 +32,7 @@ export type ProjectData = {
   smarthome: {
     type: string;
     traits: string[];
+    target: string;
   };
 };
 

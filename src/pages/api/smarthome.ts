@@ -1,5 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { smarthome, SmartHomeV1SyncDevices } from "@/lib/smarthome";
+import {
+  smarthome,
+  SmartHomeV1ExecuteResponseCommands,
+  SmartHomeV1SyncDevices,
+} from "@/lib/smarthome";
 import { ProjectData } from "@/utils/firebase";
 import { firestore } from "@/utils/firebase/admin";
 
@@ -35,7 +39,9 @@ app.onSync(async (body, uid) => {
         hwVersion: "1.0",
         swVersion: "1.0",
       },
-      customData: device.data,
+      customData: {
+        on: device.data[device.smarthome.target],
+      },
     };
   });
   // devices: [
@@ -79,30 +85,78 @@ app.onSync(async (body, uid) => {
 });
 
 app.onQuery(async (body, uid) => {
-  console.log({ body, uid });
+  const docsRef = firestore.collection("projects").where("userid", "==", uid);
+  const docsSnapsot = await docsRef.get();
+
+  const docs = docsSnapsot.docs.map((doc) => {
+    return { ...(doc.data() as ProjectData), uid: doc.id };
+  });
+
+  const devices = {} as { [key: string]: any };
+
+  body.inputs[0].payload.devices.forEach((device) => {
+    const doc = docs.find((doc) => doc.uid === device.id);
+    if (doc) {
+      devices[device.id] = {
+        online: true,
+        status: "SUCCESS",
+        on: doc.data[doc.smarthome.target],
+      };
+    }
+  });
+
   // TODO Get device state
   return {
     requestId: body.requestId,
     payload: {
-      devices: {
-        123: {
-          on: true,
-          online: true,
-        },
-        456: {
-          on: true,
-          online: true,
-          brightness: 80,
-          color: {
-            name: "cerulean",
-            spectrumRGB: 31655,
-          },
-        },
-      },
+      devices,
     },
   };
 });
 
+app.onExecute(async ({ requestId, inputs }, uid) => {
+  const commands: SmartHomeV1ExecuteResponseCommands[] = [];
+
+  await inputs[0].payload.commands.forEach(async (command) => {
+    const ids = command.devices.map((device) => device.id);
+
+    ids.forEach(async (id) => {
+      const docRef = firestore.collection("projects").doc(id);
+      const docSnapshot = await docRef.get();
+      const doc = docSnapshot.data() as ProjectData;
+
+      if (doc && doc.userid === uid) {
+        const target = doc.smarthome.target;
+        const value = command.execution[0].params?.on;
+
+        await docRef.update({ data: { ...doc.data, [target]: value } });
+      } else {
+        // TODO: Handle error
+        commands.push({
+          ids: ids,
+          status: "ERROR",
+          errorCode: "Unauthorized / Document not exist",
+        });
+      }
+    });
+    commands.push({
+      ids: ids,
+      status: "SUCCESS",
+      states: { on: command.execution[0].params?.on, online: true },
+    });
+  });
+  // TODO Get device state
+  return {
+    requestId: requestId,
+    payload: {
+      commands: commands,
+    },
+  };
+});
+
+app.onDisconnect(async () => {
+  return {};
+});
 // export default app.handler;
 
 export const handler: handlerType = (req, res) => {
