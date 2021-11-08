@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { smarthome } from "@/lib/smarthome";
+import { smarthome, SmartHomeV1SyncDevices } from "@/lib/smarthome";
 import { ProjectData } from "@/utils/firebase";
 import { firestore } from "@/utils/firebase/admin";
 
@@ -16,7 +16,8 @@ app.onSync(async (body, uid) => {
     return { ...(doc.data() as ProjectData), uid: doc.id };
   });
 
-  const devices = docs.map((device) => {
+  const devices = docs.map((device): SmartHomeV1SyncDevices => {
+    // TODO: SKIP DEVICES THAT DONT HAVE device.smarthome.type
     return {
       id: device.uid,
       type: device.smarthome.type,
@@ -30,6 +31,9 @@ app.onSync(async (body, uid) => {
       roomHint: "home",
       deviceInfo: {
         manufacturer: "io.karuppusamy.me",
+        model: device.name,
+        hwVersion: "1.0",
+        swVersion: "1.0",
       },
       customData: device.data,
     };

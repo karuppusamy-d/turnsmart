@@ -69,13 +69,13 @@ export const smarthome = (jwt_secret: string): SmartHomeApp => {
       return this._intent("action.devices.SYNC", handler);
     },
     onQuery(handler) {
-      return this._intent("action.devices.QUERY", handler);
+      return this._intent("action.devices.QUERY", handler as Handler);
     },
     onExecute(handler) {
-      return this._intent("action.devices.EXECUTE", handler);
+      return this._intent("action.devices.EXECUTE", handler as Handler);
     },
     onDisconnect(handler) {
-      return this._intent("action.devices.DISCONNECT", handler);
+      return this._intent("action.devices.DISCONNECT", handler as Handler);
     },
 
     async handler({ body, headers }, res) {

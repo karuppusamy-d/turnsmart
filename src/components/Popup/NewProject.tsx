@@ -41,6 +41,10 @@ const NewProject = ({ togglePopup, setProjects }: Props): ReactElement => {
         userid: currentUser?.uid,
         data: {},
         endpoints: {},
+        smarthome: {
+          type: "",
+          traits: [],
+        },
       };
       addProject(project)
         .then((doc) => {
