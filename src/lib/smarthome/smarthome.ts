@@ -89,11 +89,7 @@ export const smarthome = (jwt_secret: string): SmartHomeApp => {
 
         const handler = this._intents[intent];
 
-        return res.json({
-          status: 200,
-          headers: {},
-          body: await handler(body, uid),
-        });
+        return res.json(await handler(body, uid));
       } catch (err) {
         console.log(err);
         return res.status(401).send("Unauthorized");
