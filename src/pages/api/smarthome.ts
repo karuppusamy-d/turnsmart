@@ -6,6 +6,7 @@ import {
 } from "@/lib/smarthome";
 import { ProjectData } from "@/utils/firebase";
 import { firestore } from "@/utils/firebase/admin";
+import asyncPromiseMap from "@/lib/asyncPromiseMap";
 
 type handlerType = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
 
@@ -32,7 +33,7 @@ app.onSync(async (body, uid) => {
         nicknames: [device.name],
       },
       willReportState: true,
-      roomHint: "home",
+      roomHint: "Home",
       deviceInfo: {
         manufacturer: "io.karuppusamy.me",
         model: device.name,
@@ -115,41 +116,92 @@ app.onQuery(async (body, uid) => {
 });
 
 app.onExecute(async ({ requestId, inputs }, uid) => {
-  const commands: SmartHomeV1ExecuteResponseCommands[] = [];
+  const commands = inputs[0].payload.commands;
 
-  await inputs[0].payload.commands.forEach(async (command) => {
-    const ids = command.devices.map((device) => device.id);
+  // Using asyncPromiseMap to execute commands in parallel
+  const res = await asyncPromiseMap(commands, (command) => {
+    return asyncPromiseMap(command.devices, async ({ id }) => {
+      try {
+        const docRef = firestore.collection("projects").doc(id);
+        const docSnapshot = await docRef.get();
+        const doc = docSnapshot.data() as ProjectData;
 
-    ids.forEach(async (id) => {
-      const docRef = firestore.collection("projects").doc(id);
-      const docSnapshot = await docRef.get();
-      const doc = docSnapshot.data() as ProjectData;
+        // Save data to firestore
+        if (!doc || doc.userid !== uid)
+          throw new Error("Unauthorized / Document not exist");
 
-      if (doc && doc.userid === uid) {
         const target = doc.smarthome.target;
         const value = command.execution[0].params?.on;
 
-        await docRef.update({ data: { ...doc.data, [target]: value } });
-      } else {
-        // TODO: Handle error
-        commands.push({
-          ids: ids,
+        await docRef.update({
+          data: { ...doc.data, [target]: value },
+        });
+
+        return {
+          ids: [id],
+          status: "SUCCESS",
+          states: {
+            on: value,
+            online: true,
+          },
+        } as SmartHomeV1ExecuteResponseCommands;
+      } catch (e) {
+        return {
+          ids: [id],
           status: "ERROR",
           errorCode: "Unauthorized / Document not exist",
-        });
+        } as SmartHomeV1ExecuteResponseCommands;
       }
     });
-    commands.push({
-      ids: ids,
-      status: "SUCCESS",
-      states: { on: command.execution[0].params?.on, online: true },
-    });
   });
-  // TODO Get device state
+
+  // Same Using Promise.then
+  // const res = await asyncPromiseMap(commands, (command) => {
+  //   return asyncPromiseMap(command.devices, ({ id }) => {
+  //     const docRef = firestore.collection("projects").doc(id);
+
+  //     // Save data to firestore
+  //     const res = docRef
+  //       .get()
+  //       .then((docSnapshot) => docSnapshot.data() as ProjectData | undefined)
+  //       .then((doc) => {
+  //         if (!doc || doc.userid !== uid)
+  //           throw new Error("Unauthorized / Document not exist");
+
+  //         const target = doc.smarthome.target;
+  //         const value = command.execution[0].params?.on;
+
+  //         return docRef
+  //           .update({ data: { ...doc.data, [target]: value } })
+  //           .then(() => {
+  //             return {
+  //               ids: [id],
+  //               status: "SUCCESS",
+  //               states: {
+  //                 on: command.execution[0].params?.on,
+  //                 online: true,
+  //               },
+  //             };
+  //           });
+  //       })
+  //       .catch(() => {
+  //         return {
+  //           ids: [id],
+  //           status: "ERROR",
+  //           errorCode: "Unauthorized / Document not exist",
+  //         };
+  //       });
+
+  //     // Return the result
+  //     return res as Promise<SmartHomeV1ExecuteResponseCommands>;
+  //   });
+  // });
+
   return {
     requestId: requestId,
     payload: {
-      commands: commands,
+      // TODO: Comibine common commands using id
+      commands: res.reduce((acc, cur) => acc.concat(cur), []),
     },
   };
 });
@@ -157,10 +209,9 @@ app.onExecute(async ({ requestId, inputs }, uid) => {
 app.onDisconnect(async () => {
   return {};
 });
-// export default app.handler;
 
-export const handler: handlerType = (req, res) => {
+// Exports
+const handler: handlerType = (req, res) => {
   return app.handler(req, res);
 };
-
 export default handler;
