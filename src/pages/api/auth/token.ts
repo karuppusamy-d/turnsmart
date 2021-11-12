@@ -73,7 +73,7 @@ const handler: handlerType = async (req, res) => {
             access_token,
             refresh_token,
             token_type: "Bearer",
-            expary_in: 3600,
+            expires_in: 3600,
           });
         } else return res.status(400).json({ error: "invalid_grant" });
       })
@@ -98,7 +98,7 @@ const handler: handlerType = async (req, res) => {
         return res.status(200).json({
           access_token,
           token_type: "Bearer",
-          expary_in: 3600,
+          expires_in: 3600,
         });
       } else return res.status(400).json({ error: "invalid_grant" });
     } catch (err) {
