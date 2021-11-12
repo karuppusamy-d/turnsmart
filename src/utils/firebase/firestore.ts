@@ -30,6 +30,8 @@ export type ProjectData = {
     [key: string]: "number" | "boolean";
   };
   smarthome: {
+    enabled: boolean;
+    nicknames: string[];
     type: string;
     traits: string[];
     target: string;

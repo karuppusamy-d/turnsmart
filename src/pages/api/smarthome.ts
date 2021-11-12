@@ -21,60 +21,27 @@ app.onSync(async (body, uid) => {
     return { ...(doc.data() as ProjectData), uid: doc.id };
   });
 
-  const devices = docs.map((device): SmartHomeV1SyncDevices => {
-    // TODO: SKIP DEVICES THAT DONT HAVE device.smarthome.type
-    return {
-      id: device.uid,
-      type: device.smarthome.type,
-      traits: device.smarthome.traits,
-      name: {
-        defaultNames: [device.name],
-        name: device.name,
-        nicknames: [device.name],
-      },
-      willReportState: true,
-      roomHint: "Home",
-      deviceInfo: {
-        manufacturer: "io.karuppusamy.me",
-        model: device.name,
-        hwVersion: "1.0",
-        swVersion: "1.0",
-      },
-      customData: {
-        on: device.data[device.smarthome.target],
-      },
-    };
-  });
-  // devices: [
-  //   {
-  //     id: "123",
-  //     type: "action.devices.types.OUTLET",
-  //     traits: ["action.devices.traits.OnOff"],
-  //     name: {
-  //       defaultNames: ["My Outlet 1234"],
-  //       name: "Night light",
-  //       nicknames: ["wall plug"],
-  //     },
-  //     willReportState: false,
-  //     roomHint: "kitchen",
-  //     deviceInfo: {
-  //       manufacturer: "lights-out-inc",
-  //       model: "hs1234",
-  //       hwVersion: "3.2",
-  //       swVersion: "11.4",
-  //     },
-  //     otherDeviceIds: [
-  //       {
-  //         deviceId: "local-device-id",
-  //       },
-  //     ],
-  //     customData: {
-  //       fooValue: 74,
-  //       barValue: true,
-  //       bazValue: "foo",
-  //     },
-  //   },
-  // ],
+  const devices = docs
+    .filter((device) => device.smarthome.enabled)
+    .map((device): SmartHomeV1SyncDevices => {
+      return {
+        id: device.uid,
+        type: device.smarthome.type,
+        traits: device.smarthome.traits,
+        name: {
+          name: device.name, // Primary name of the device provided by the user for the device.
+          nicknames: device.smarthome.nicknames, // Additional names provided by the user for the device.
+          defaultNames: [device.name], // List of names provided by the developer for the device.
+        },
+        willReportState: false,
+        deviceInfo: {
+          manufacturer: "io.karuppusamy.me",
+          model: device.name,
+          hwVersion: "1.0",
+          swVersion: "1.0",
+        },
+      };
+    });
 
   return {
     requestId: body.requestId,

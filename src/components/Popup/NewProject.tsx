@@ -42,6 +42,8 @@ const NewProject = ({ togglePopup, setProjects }: Props): ReactElement => {
         data: {},
         endpoints: {},
         smarthome: {
+          enabled: false,
+          nicknames: [],
           type: "",
           traits: [],
           target: "",
