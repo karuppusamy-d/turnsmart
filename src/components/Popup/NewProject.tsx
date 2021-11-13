@@ -44,8 +44,8 @@ const NewProject = ({ togglePopup, setProjects }: Props): ReactElement => {
         smarthome: {
           enabled: false,
           nicknames: [],
-          type: "",
-          traits: [],
+          type: "action.devices.types.SWITCH",
+          traits: ["action.devices.traits.OnOff"],
           target: "",
         },
       };

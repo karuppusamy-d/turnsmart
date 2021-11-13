@@ -16,6 +16,8 @@ import {
   deleteDoc,
   updateDoc,
 } from "@firebase/firestore";
+import { DeviceTraits } from "@/lib/smarthome/deviceTraits";
+import { DeviceTypes } from "@/lib/smarthome/deviceTypes";
 
 export type ProjectData = {
   name: string;
@@ -32,8 +34,8 @@ export type ProjectData = {
   smarthome: {
     enabled: boolean;
     nicknames: string[];
-    type: string;
-    traits: string[];
+    type: DeviceTypes;
+    traits: DeviceTraits[];
     target: string;
   };
 };
