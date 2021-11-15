@@ -77,8 +77,26 @@ const ProjectDashboard = (): ReactElement => {
           </div>
 
           <div className="pt-6 divide-y divide-gray-200 dark:divide-gray-700">
-            {/* Secret Keys */}
+            {/* Project ID */}
             <div>
+              <label htmlFor="project_id" className="font-semibold">
+                Project id:
+              </label>
+
+              <div className="flex pt-2 pb-6 gap-4 items-center">
+                <div className="relative">
+                  <input
+                    className="input h-10 inline m-0"
+                    id="project_id"
+                    type="text"
+                    value={project?.uid}
+                    title="Project ID"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              {/* Secret Key */}
               <label htmlFor="secret" className="font-semibold">
                 Secret:
               </label>
