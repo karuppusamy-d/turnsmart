@@ -111,7 +111,7 @@ const Login = (): ReactElement => {
   return (
     <>
       <PageSeo
-        title={`${siteMetadata.title} | Login`}
+        title={`Login | ${siteMetadata.title}`}
         url={`${siteMetadata.siteUrl}/login`}
         description="Login"
       />

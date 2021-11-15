@@ -7,7 +7,7 @@ const ServerError = (): ReactElement => {
   return (
     <>
       <PageSeo
-        title={`${siteMetadata.title} | Server Error`}
+        title={`Server Error | ${siteMetadata.title}`}
         url={`${siteMetadata.siteUrl}/500`}
         description="Oops! Something went wrong with our server."
       />

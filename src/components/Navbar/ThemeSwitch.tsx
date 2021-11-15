@@ -11,7 +11,7 @@ const ThemeSwitch = (): ReactElement => {
   return (
     <button
       type="button"
-      className="w-8 h-8 p-1 ml-1 mr-1 rounded sm:ml-3 focus:outline-none focus-visible:ring-2 focus:ring-gray-800 dark:focus:ring-gray-200"
+      className="w-8 h-8 p-1 ml-1 mr-1 rounded md:ml-3 focus:outline-none focus-visible:ring-2 focus:ring-gray-800 dark:focus:ring-gray-200"
       onClick={() => setTheme(currTheme === "dark" ? "light" : "dark")}
     >
       <svg

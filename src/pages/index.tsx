@@ -10,7 +10,7 @@ const Home = (): ReactElement => {
   return (
     <>
       <PageSeo
-        title="Project.io"
+        title="Home"
         description={siteMetadata.description}
         url={siteMetadata.siteUrl}
       />
@@ -22,9 +22,10 @@ const Home = (): ReactElement => {
           <div>
             <h1 className="mb-4 text-3xl font-bold leading-snug sm:mb-8 sm:text-[2.75rem] sm:leading-snug md:text-[3.5rem] md:leading-snug">
               Hi,
-              <br /> Welcome To
+              <br /> Welcome
               <br />
-              Project<span className="text-primary-400">.io</span>
+              {/* Karuppusamy<span className="text-primary-400">.me</span> */}
+              {currentUser?.displayName || "To our website"}
             </h1>
             {currentUser ? (
               <Link href="/dashboard">

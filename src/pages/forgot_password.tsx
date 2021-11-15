@@ -75,7 +75,7 @@ const ForgotPassword = (): ReactElement => {
   return (
     <>
       <PageSeo
-        title={`${siteMetadata.title} | Forgot password`}
+        title={`Forgot password | ${siteMetadata.title}`}
         url={`${siteMetadata.siteUrl}/forgot_password`}
         description="Forgot password"
       />

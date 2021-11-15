@@ -7,7 +7,7 @@ const NotFound = (): ReactElement => {
   return (
     <>
       <PageSeo
-        title={`${siteMetadata.title} | Not Found`}
+        title={`Not Found | ${siteMetadata.title}`}
         url={`${siteMetadata.siteUrl}/404`}
         description="Sorry we couldn't find this page."
       />

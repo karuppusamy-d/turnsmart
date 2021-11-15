@@ -90,7 +90,7 @@ const Signup = (): ReactElement => {
   return (
     <>
       <PageSeo
-        title={`${siteMetadata.title} | Sign up`}
+        title={`Sign up | ${siteMetadata.title}`}
         url={`${siteMetadata.siteUrl}/signup`}
         description="Sign up"
       />

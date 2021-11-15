@@ -38,7 +38,7 @@ const Dashboard = (): ReactElement => {
   return (
     <>
       <PageSeo
-        title={`${siteMetadata.title} | Dashboard`}
+        title={`Dashboard | ${siteMetadata.title}`}
         url={`${siteMetadata.siteUrl}/dashboard`}
         description="Dashboard"
       />

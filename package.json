@@ -1,11 +1,11 @@
 {
-  "name": "project-io",
-  "version": "0.1.0",
+  "name": "io.karuppusamy.me",
+  "version": "0.2.0",
   "private": true,
   "author": "Karuppusamy",
   "repository": {
     "type": "git",
-    "url": "git@github.com:karuppusamy-d/techbuz-app.git"
+    "url": "git@github.com:karuppusamy-d/project.io.git"
   },
   "scripts": {
     "start": "next start",

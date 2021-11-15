@@ -19,7 +19,7 @@ const MobileNav = (): ReactElement => {
   };
 
   return (
-    <div className="sm:hidden">
+    <div className="md:hidden">
       <button
         type="button"
         className="w-8 h-8 ml-1 mr-1 rounded flex focus:outline-none focus-visible:ring-2 focus:ring-gray-800 dark:focus:ring-gray-200"
