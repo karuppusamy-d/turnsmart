@@ -7,7 +7,7 @@ const Footer = (): ReactElement => {
   return (
     <footer>
       <div className="flex flex-col items-center border-t-[1px] border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-200">
-        <div className="flex mt-[1.75rem] mb-3 text-xl space-x-3">
+        <div className="flex mt-[1.75rem] mb-3 text-xl space-x-4">
           <SocialIcon kind="facebook" href={siteMetadata.facebook} />
           <SocialIcon kind="twitter" href={siteMetadata.twitter} />
           {/* <SocialIcon kind="instagram" href={siteMetadata.instagram} /> */}
