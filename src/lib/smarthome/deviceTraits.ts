@@ -36,18 +36,6 @@ export const deviceTraits = [
       "This trait applies to devices, such as smart lights, that can change color or color temperature.",
   },
   {
-    name: "ColorSpectrum",
-    value: "action.devices.traits.ColorSpectrum",
-    description:
-      'This trait has been deprecated. Use ColorSetting instead.\nThis applies to "full" color bulbs that take RGB color ranges. Lights may have any combination of ColorSpectrum and ColorTemperature; accent lights and LED strips may just have Spectrum, whereas some reading bulbs just have Temperature. Basic bulbs, or dumb lights on smart plugs, have neither.',
-  },
-  {
-    name: "ColorTemperature",
-    value: "action.devices.traits.ColorTemperature",
-    description:
-      'This trait has been deprecated. Use ColorSetting instead.\nThis applies to "warmth" bulbs that take a color point in Kelvin. This is generally a separate modality from ColorSpectrum, and there may be white points available via Temperature that cannot be reached by Spectrum. Based on available traits, Google may pick the appropriate mode to use based on request and light type (for example, Make the living room lights white might send Temperature commands to some bulbs and Spectrum commands to LED strips).',
-  },
-  {
     name: "Cook",
     value: "action.devices.traits.Cook",
     description:
