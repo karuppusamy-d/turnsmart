@@ -7,8 +7,24 @@ import {
 import { ProjectData } from "@/utils/firebase";
 import { firestore } from "@/utils/firebase/admin";
 import asyncPromiseMap from "@/lib/asyncPromiseMap";
+import {
+  DeviceCommands,
+  deviceCommands,
+  DeviceTraits,
+  deviceTraitsObj,
+} from "@/lib/smarthome/deviceTraits";
 
 type handlerType = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
+
+type ObjectType = { [key: string]: number | string | boolean | any[] };
+
+type DeviceQueryType = {
+  [key: string]: {
+    online: boolean;
+    status: "SUCCESS" | "ERROR" | "OFFLINE" | "EXCEPTIONS";
+    [key: string]: number | string | boolean | any[];
+  };
+};
 
 const jwt_secret = process.env.JWT_SECRET as string;
 const app = smarthome(jwt_secret);
@@ -53,6 +69,8 @@ app.onSync(async (body, uid) => {
 });
 
 app.onQuery(async (body, uid) => {
+  const payload = body.inputs[0].payload;
+
   const docsRef = firestore.collection("projects").where("userid", "==", uid);
   const docsSnapsot = await docsRef.get();
 
@@ -60,20 +78,27 @@ app.onQuery(async (body, uid) => {
     return { ...(doc.data() as ProjectData), uid: doc.id };
   });
 
-  const devices = {} as { [key: string]: any };
+  const devices: DeviceQueryType = {};
 
-  body.inputs[0].payload.devices.forEach((device) => {
+  payload.devices.forEach((device) => {
     const doc = docs.find((doc) => doc.uid === device.id);
-    if (doc) {
+
+    if (doc?.smarthome.enabled) {
+      const data = getQueryData(doc);
+
       devices[device.id] = {
         online: true,
         status: "SUCCESS",
-        on: doc.data[doc.smarthome.target],
+        ...data,
+      };
+    } else {
+      devices[device.id] = {
+        online: false,
+        status: "ERROR",
       };
     }
   });
 
-  // TODO Get device state
   return {
     requestId: body.requestId,
     payload: {
@@ -89,30 +114,71 @@ app.onExecute(async ({ requestId, inputs }, uid) => {
   const res = await asyncPromiseMap(commands, (command) => {
     return asyncPromiseMap(command.devices, async ({ id }) => {
       try {
+        // Fetches the device data from firestore
         const docRef = firestore.collection("projects").doc(id);
         const docSnapshot = await docRef.get();
-        const doc = docSnapshot.data() as ProjectData;
+        const doc = docSnapshot.data() as ProjectData | undefined;
 
-        // Save data to firestore
+        // Throws an error if the device is not found or user is not authorized
         if (!doc || doc.userid !== uid)
           throw new Error("Unauthorized / Document not exist");
 
-        const target = doc.smarthome.target;
-        const value = command.execution[0].params?.on;
+        // Get Command Name from the request. ex: action.devices.commands.OnOff
+        const commandName = command.execution[0].command as DeviceCommands;
+
+        const trait = deviceCommands[commandName]["trait"] as DeviceTraits;
+        const targets = doc.smarthome.target[trait];
+
+        // Get the callback functions for the command.
+        const callbacks = deviceCommands[commandName];
+
+        let result: ObjectType = {};
+
+        if (command.execution[0].params instanceof Object) {
+          // Loop through all the params and call the callback functions
+          Object.entries(command.execution[0].params).forEach(
+            // [key = on | isRunning | isPaused | brightness, value = boolean | number | string ]
+            ([key, value]) => {
+              // @ts-expect-error: Let's ignore this type error for now
+              const callback = callbacks[key];
+              if (callback instanceof Function) {
+                // @ts-expect-error: Let's ignore this type error for now
+                const preValue = callbacks.target
+                  ? // @ts-expect-error: Let's ignore this type error for now
+                    doc.data[targets[callbacks.target] || ""]
+                  : "";
+
+                const res = callback(value, preValue || 0) as ObjectType;
+                result = { ...result, ...res };
+              }
+            }
+          );
+        }
+
+        // Store Data in Firestore
+        let newData = {};
+        Object.entries(result).forEach(([key, value]) => {
+          // @ts-expect-error: Let's ignore this type error for now
+          const newKey = targets[key];
+
+          if (newKey) newData = { ...newData, [newKey]: value };
+        });
 
         await docRef.update({
-          data: { ...doc.data, [target]: value },
+          data: { ...doc.data, ...newData },
         });
 
         return {
           ids: [id],
           status: "SUCCESS",
           states: {
-            on: value,
+            ...result,
             online: true,
           },
         } as SmartHomeV1ExecuteResponseCommands;
       } catch (e) {
+        console.log(e);
+
         return {
           ids: [id],
           status: "ERROR",
@@ -176,6 +242,28 @@ app.onExecute(async ({ requestId, inputs }, uid) => {
 app.onDisconnect(async () => {
   return {};
 });
+
+// Helper Functions
+const getQueryData = (doc: ProjectData): ObjectType => {
+  // Loop throught all the traits and get the data
+  const res: ObjectType = {};
+
+  doc.smarthome.traits.forEach((trait) => {
+    // Get the trait states
+    const states = deviceTraitsObj[trait].states;
+
+    states.forEach(([state]) => {
+      // @ts-expect-error: Let's ignore this type error for now
+      const target: string | undefined = doc.smarthome.target[trait][state];
+
+      if (target) {
+        res[state] = doc.data[target];
+      }
+    });
+  });
+
+  return res;
+};
 
 // Exports
 const handler: handlerType = (req, res) => {
