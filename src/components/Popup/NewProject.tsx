@@ -39,14 +39,16 @@ const NewProject = ({ togglePopup, setProjects }: Props): ReactElement => {
         description: description,
         secret: secret,
         userid: currentUser?.uid,
-        data: {},
-        endpoints: {},
+        data: { on: true },
+        endpoints: { on: "boolean" },
         smarthome: {
           enabled: false,
           nicknames: [],
           type: "action.devices.types.SWITCH",
           traits: ["action.devices.traits.OnOff"],
-          target: "",
+          target: {
+            "action.devices.traits.OnOff": { on: "on" },
+          },
         },
       };
       addProject(project)

@@ -16,7 +16,7 @@ import {
   deleteDoc,
   updateDoc,
 } from "@firebase/firestore";
-import { DeviceTraits } from "@/lib/smarthome/deviceTraits";
+import { DeviceTraits, DeviceTraitStates } from "@/lib/smarthome/deviceTraits";
 import { DeviceTypes } from "@/lib/smarthome/deviceTypes";
 
 export type ProjectData = {
@@ -36,7 +36,9 @@ export type ProjectData = {
     nicknames: string[];
     type: DeviceTypes;
     traits: DeviceTraits[];
-    target: string;
+    target: {
+      [Trait in DeviceTraits]?: { [key in DeviceTraitStates<Trait>]: string };
+    };
   };
 };
 
