@@ -35,8 +35,7 @@ export type ProjectData = {
     enabled: boolean;
     nicknames: string[];
     type: DeviceTypes;
-    traits: DeviceTraits[];
-    target: {
+    traits: {
       [Trait in DeviceTraits]?: { [key in DeviceTraitStates<Trait>]: string };
     };
   };

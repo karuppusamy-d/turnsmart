@@ -43,7 +43,7 @@ app.onSync(async (body, uid) => {
       return {
         id: device.uid,
         type: device.smarthome.type,
-        traits: device.smarthome.traits,
+        traits: Object.keys(device.smarthome.traits),
         name: {
           name: device.name, // Primary name of the device provided by the user for the device.
           nicknames: device.smarthome.nicknames, // Additional names provided by the user for the device.
@@ -127,7 +127,7 @@ app.onExecute(async ({ requestId, inputs }, uid) => {
         const commandName = command.execution[0].command as DeviceCommands;
 
         const trait = deviceCommands[commandName]["trait"] as DeviceTraits;
-        const targets = doc.smarthome.target[trait];
+        const targets = doc.smarthome.traits[trait];
 
         // Get the callback functions for the command.
         const callbacks = deviceCommands[commandName];
@@ -188,48 +188,6 @@ app.onExecute(async ({ requestId, inputs }, uid) => {
     });
   });
 
-  // Same Using Promise.then
-  // const res = await asyncPromiseMap(commands, (command) => {
-  //   return asyncPromiseMap(command.devices, ({ id }) => {
-  //     const docRef = firestore.collection("projects").doc(id);
-
-  //     // Save data to firestore
-  //     const res = docRef
-  //       .get()
-  //       .then((docSnapshot) => docSnapshot.data() as ProjectData | undefined)
-  //       .then((doc) => {
-  //         if (!doc || doc.userid !== uid)
-  //           throw new Error("Unauthorized / Document not exist");
-
-  //         const target = doc.smarthome.target;
-  //         const value = command.execution[0].params?.on;
-
-  //         return docRef
-  //           .update({ data: { ...doc.data, [target]: value } })
-  //           .then(() => {
-  //             return {
-  //               ids: [id],
-  //               status: "SUCCESS",
-  //               states: {
-  //                 on: command.execution[0].params?.on,
-  //                 online: true,
-  //               },
-  //             };
-  //           });
-  //       })
-  //       .catch(() => {
-  //         return {
-  //           ids: [id],
-  //           status: "ERROR",
-  //           errorCode: "Unauthorized / Document not exist",
-  //         };
-  //       });
-
-  //     // Return the result
-  //     return res as Promise<SmartHomeV1ExecuteResponseCommands>;
-  //   });
-  // });
-
   return {
     requestId: requestId,
     payload: {
@@ -248,13 +206,14 @@ const getQueryData = (doc: ProjectData): ObjectType => {
   // Loop throught all the traits and get the data
   const res: ObjectType = {};
 
-  doc.smarthome.traits.forEach((trait) => {
+  const traits = Object.keys(doc.smarthome.traits) as DeviceTraits[];
+  traits.forEach((trait) => {
     // Get the trait states
     const states = deviceTraitsObj[trait].states;
 
     states.forEach(([state]) => {
       // @ts-expect-error: Let's ignore this type error for now
-      const target: string | undefined = doc.smarthome.target[trait][state];
+      const target: string | undefined = doc.smarthome.traits[trait][state];
 
       if (target) {
         res[state] = doc.data[target];

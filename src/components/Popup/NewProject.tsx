@@ -45,8 +45,7 @@ const NewProject = ({ togglePopup, setProjects }: Props): ReactElement => {
           enabled: false,
           nicknames: [],
           type: "action.devices.types.SWITCH",
-          traits: ["action.devices.traits.OnOff"],
-          target: {
+          traits: {
             "action.devices.traits.OnOff": { on: "on" },
           },
         },
