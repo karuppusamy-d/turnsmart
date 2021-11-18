@@ -645,7 +645,7 @@ export const deviceTypes = [
     description:
       "Air fresheners can be turned on and off and may allow adjusting various modes.",
     required: ["OnOff"],
-    recomended: ["Modes", "Toggles"],
+    recommended: ["Modes", "Toggles"],
   },
   {
     name: "AIRPURIFIER",
@@ -653,7 +653,7 @@ export const deviceTypes = [
     description:
       "Air purifiers are devices that may be turned on and off, report air filter cleanliness and air filter lifetime, and be adjusted to various mode settings.",
     required: ["OnOff"],
-    recomended: ["FanSpeed", "SensorState"],
+    recommended: ["FanSpeed", "SensorState"],
   },
   {
     name: "BLENDER",
@@ -661,7 +661,7 @@ export const deviceTypes = [
     description:
       "Interactions with blenders may include starting and stopping, setting a timer, setting cooking modes or food presets, or adjusting other various settings.",
     required: ["OnOff"],
-    recomended: ["Cook", "StartStop", "Timer"],
+    recommended: ["Cook", "StartStop", "Timer"],
   },
   {
     name: "BOILER",
@@ -669,7 +669,7 @@ export const deviceTypes = [
     description:
       "Boilers can be turned on and off, and may support adjusting temperature.",
     required: ["OnOff"],
-    recomended: ["TemperatureControl"],
+    recommended: ["TemperatureControl"],
   },
   {
     name: "COFFEE_MAKER",
@@ -677,7 +677,7 @@ export const deviceTypes = [
     description:
       "Interactions with coffee makers may include turning them on and off, adjusting cooking modes and food presets, adjusting the target temperature, and adjusting various non-cooking mode settings.",
     required: ["OnOff"],
-    recomended: ["Cook", "TemperatureControl"],
+    recommended: ["Cook", "TemperatureControl"],
   },
   {
     name: "COOKTOP",
@@ -685,7 +685,7 @@ export const deviceTypes = [
     description:
       "Interactions with cooktops may include turning them on and off, starting and stopping, setting a timer, adjusting cooking modes and food presets, and adjusting various non-cooking mode settings.",
     required: ["OnOff"],
-    recomended: ["Cook", "Timer"],
+    recommended: ["Cook", "Timer"],
   },
   {
     name: "DEHUMIDIFIER",
@@ -693,7 +693,7 @@ export const deviceTypes = [
     description:
       "Dehumidifiers are devices that remove moisture from the air. They can be turned on and off, report and adjust target humidity, and may have various adjustables modes or fan speed settings.",
     required: ["OnOff"],
-    recomended: ["FanSpeed", "HumiditySetting", "StartStop"],
+    recommended: ["FanSpeed", "HumiditySetting", "StartStop"],
   },
   {
     name: "DEHYDRATOR",
@@ -701,7 +701,7 @@ export const deviceTypes = [
     description:
       "Interactions with dehydrators may include starting and stopping, setting a timer, adjusting cooking modes or food presets, or adjusting other various settings.",
     required: ["OnOff"],
-    recomended: ["Cook", "StartStop", "Timer"],
+    recommended: ["Cook", "StartStop", "Timer"],
   },
   {
     name: "DISHWASHER",
@@ -709,7 +709,7 @@ export const deviceTypes = [
     description:
       "Dishwashers can have start and stop functionality independent from being on or off (some washers have separate power buttons, and some do not). Some can be paused and resumed while washing. Dishwashers also have various modes and each mode has its own related settings. These are specific to the dishwasher and are interpreted in a generalized form.",
     required: ["StartStop"],
-    recomended: ["OnOff", "RunCycle"],
+    recommended: ["OnOff", "RunCycle"],
   },
   {
     name: "DRYER",
@@ -717,7 +717,7 @@ export const deviceTypes = [
     description:
       "Dryers have start and stop functionality independent from being on or off. Some can be paused and resumed while drying. Dryers also have various modes and each mode has its own related settings. These are specific to the dryer and are interpreted in a generalized form.",
     required: ["StartStop"],
-    recomended: ["Modes", "OnOff", "RunCycle", "Toggles"],
+    recommended: ["Modes", "OnOff", "RunCycle", "Toggles"],
   },
   {
     name: "FAUCET",
@@ -725,7 +725,7 @@ export const deviceTypes = [
     description:
       "Faucets can dispense liquids in various quantities and presets. Faucets may have various modes and each mode has its own related settings. These are specific to the faucet and are interpreted in a generalized form.",
     required: [],
-    recomended: ["Dispense", "StartStop", "TemperatureControl"],
+    recommended: ["Dispense", "StartStop", "TemperatureControl"],
   },
   {
     name: "FIREPLACE",
@@ -733,7 +733,7 @@ export const deviceTypes = [
     description:
       "Fireplaces can be turned on and off, and may have adjustable modes.",
     required: [],
-    recomended: ["Modes", "Toggles", "OnOff"],
+    recommended: ["Modes", "Toggles", "OnOff"],
   },
   {
     name: "FRYER",
@@ -741,7 +741,7 @@ export const deviceTypes = [
     description:
       "Interactions with fryers may include starting and stopping, setting a timer, adjusting cooking modes or food presets, or adjusting other various settings.",
     required: ["OnOff"],
-    recomended: ["Cook", "StartStop", "Timer"],
+    recommended: ["Cook", "StartStop", "Timer"],
   },
   {
     name: "LIGHT",
@@ -749,7 +749,7 @@ export const deviceTypes = [
     description:
       "Light devices can be turned on and off. They may have additional features, such as dimming and the ability to change color.",
     required: ["OnOff"],
-    recomended: ["ColorSetting", "Brightness"],
+    recommended: ["ColorSetting", "Brightness"],
   },
   {
     name: "SWITCH",
@@ -757,14 +757,14 @@ export const deviceTypes = [
     description:
       "Switch, a basic device in Smart Home, can be turned on and off.",
     required: ["Brightness", "OnOff"],
-    recomended: ["Brightness"],
+    recommended: ["Brightness"],
   },
   {
     name: "VALVE",
     value: "action.devices.types.VALVE",
     description: "Valves can be opened and closed.",
     required: ["OpenClose"],
-    recomended: [],
+    recommended: [],
   },
 ] as const;
 

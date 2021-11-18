@@ -6,11 +6,12 @@ import { useAuthContext } from "@/components/contexts/useAuthContext";
 import { getProjectByUID, ProjectData, updateProject } from "@/utils/firebase";
 import ProjectDatas from "@/components/dashboard/ProjectDatas";
 import Endpoints from "@/components/dashboard/Endpoints";
+import SmartHome from "@/components/dashboard/SmartHome";
+import Loading from "@/components/dashboard/Loading";
 
 // Icons
 import ShowIcon from "@/components/icons/show.svg";
 import HideIcon from "@/components/icons/hide.svg";
-import Loading from "@/components/dashboard/Loading";
 
 const ProjectDashboard = (): ReactElement => {
   const router = useRouter();
@@ -76,7 +77,7 @@ const ProjectDashboard = (): ReactElement => {
             </p>
           </div>
 
-          <div className="pt-6 divide-y divide-gray-200 dark:divide-gray-700">
+          <div className="py-6 divide-y divide-gray-200 dark:divide-gray-700">
             {/* Project ID */}
             <div>
               <label htmlFor="project_id" className="font-semibold">
@@ -148,10 +149,18 @@ const ProjectDashboard = (): ReactElement => {
             </div>
 
             {/* Data Endpoints */}
-            <div className="pt-6 pb-8 mb-6">
+            <div className="pt-6 pb-8">
               <h2 className="font-semibold pb-4">Endpoints:</h2>
               {project && (
                 <Endpoints project={project} setProject={setProject} />
+              )}
+            </div>
+
+            {/* Smart Home */}
+            <div className="pt-6 pb-8">
+              <h2 className="font-semibold pb-4">Smart Home:</h2>
+              {project && (
+                <SmartHome project={project} setProject={setProject} />
               )}
             </div>
           </div>
