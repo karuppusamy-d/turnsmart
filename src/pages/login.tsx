@@ -10,6 +10,7 @@ import {
   GithubAuthProvider,
 } from "@firebase/auth";
 import { FirebaseError } from "@firebase/util";
+import ProgressBar from "@badrap/bar-of-progress";
 
 const Login = (): ReactElement => {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -23,6 +24,23 @@ const Login = (): ReactElement => {
       // Redirect to dashboard if user is already logged in
       if (!router.query.redirect_uri) router.push("/dashboard");
       else {
+        // Show the progress bar
+        let progress: ProgressBar | void;
+        (async function () {
+          // Dynamically import the ProgressionBar and show it
+          progress = await import("@badrap/bar-of-progress")
+            .then((ProgressBar) => {
+              return new ProgressBar.default({
+                size: 2,
+                color: "#38bdf8",
+                className: "progress-bar",
+                delay: 100,
+              });
+            })
+            .catch((error) => console.log(error));
+          progress && progress.start();
+        })();
+
         // For google actions account linking
         currentUser
           .getIdToken()
@@ -44,6 +62,7 @@ const Login = (): ReactElement => {
             router.push(redirect_url);
           })
           .catch(() => {
+            progress && progress.start();
             alert("Something went wrong.");
           });
       }
