@@ -268,10 +268,7 @@ export const deviceTraitsObj = {
   },
 
   "action.devices.traits.StartStop": {
-    states: [
-      ["isRunning", "boolean"],
-      ["isPaused", "boolean"],
-    ],
+    states: [["isRunning", "boolean"]],
   },
 
   "action.devices.traits.Brightness": {
@@ -295,7 +292,7 @@ export const deviceCommands = {
   "action.devices.commands.StartStop": {
     trait: "action.devices.traits.StartStop",
     start: (value: boolean) => {
-      return { isRunning: value, isPaused: !value };
+      return { isRunning: value };
     },
   },
   // Not used by google home when "pausable": true' is not set
