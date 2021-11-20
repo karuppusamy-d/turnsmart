@@ -222,113 +222,30 @@
 //   },
 // ] as const;
 
-export const deviceTraits = [
-  {
-    name: "OnOff",
-    value: "action.devices.traits.OnOff",
-    states: [{ on: "boolean" }],
-    commends: [{ "action.devices.commands.OnOff": { on: "boolean" } }],
+export const deviceTraits = {
+  "action.devices.traits.OnOff": {
+    name: "On / Off",
+    states: [["on", "boolean"]],
     description:
       "The basic on and off functionality for any device that has binary on and off, including plugs and switches as well as many future devices.",
   },
-  {
-    name: "StartStop",
-    value: "action.devices.traits.StartStop",
-    states: [{ isRunning: "boolean" }, { isPaused: "boolean" }],
-    commends: [
-      { "action.devices.commands.StartStop": { start: "boolean" } },
-      // { "action.devices.commands.PauseUnpause": { pause: "boolean" } },
-    ],
+
+  "action.devices.traits.StartStop": {
+    name: "Start / Stop",
+    states: [["isRunning", "boolean"]],
     description:
       "Starting and stopping a device serves a similar function to turning it on and off. Devices that inherit this trait function differently when turned on and when started. Unlike devices that simply have an on and off state, some devices that can start and stop are also able to pause while performing operation.",
   },
-  {
+
+  "action.devices.traits.Brightness": {
     name: "Brightness",
-    value: "action.devices.traits.Brightness",
-    states: [{ brightness: "integer", on: "boolean" }],
-    commends: [
-      {
-        "action.devices.commands.BrightnessAbsolute": { brightness: "integer" },
-      },
-      // {
-      //   "action.devices.commands.BrightnessRelative": {
-      //     brightnessRelativePercent: "integer",
-      //     brightnessRelativeWeight: "integer",
-      //   },
-      // },
-    ],
+    states: [["brightness", "integer"]],
     description:
       "Absolute brightness setting is in a normalized range from 0 to 100 (individual lights may not support every point in the range based on their LED configuration).",
   },
-] as const;
-
-export const deviceTraitsObj = {
-  "action.devices.traits.OnOff": {
-    states: [["on", "boolean"]],
-  },
-
-  "action.devices.traits.StartStop": {
-    states: [["isRunning", "boolean"]],
-  },
-
-  "action.devices.traits.Brightness": {
-    states: [
-      ["brightness", "integer"],
-      ["on", "boolean"], // Need to decide if this is needed
-    ],
-  },
 } as const;
 
-export const deviceCommands = {
-  // action.devices.traits.OnOff
-  "action.devices.commands.OnOff": {
-    trait: "action.devices.traits.OnOff",
-    on: (value: boolean) => {
-      return { on: value };
-    },
-  },
-
-  // action.devices.traits.StartStop
-  "action.devices.commands.StartStop": {
-    trait: "action.devices.traits.StartStop",
-    start: (value: boolean) => {
-      return { isRunning: value };
-    },
-  },
-  // Not used by google home when "pausable": true' is not set
-  // "action.devices.commands.PauseUnpause": {
-  //   trait: "action.devices.traits.StartStop",
-  //   pause: (value: boolean) => {
-  //     return { isRunning: !value, isPaused: value };
-  //   },
-  // },
-
-  // action.devices.traits.Brightness
-  "action.devices.commands.BrightnessAbsolute": {
-    trait: "action.devices.traits.Brightness",
-    brightness: (value: number) => {
-      return { on: true, brightness: value };
-    },
-  },
-  // Not used by google home when "commandOnlyBrightness": true' is not set
-  // "action.devices.commands.BrightnessRelative": {
-  //   trait: "action.devices.traits.Brightness",
-  //   target: "brightness",
-  //   brightnessRelativePercent: (value: number, previousValue = 0) => {
-  //     return {
-  //       on: true,
-  //       brightness: previousValue + (previousValue * value) / 100,
-  //     };
-  //   },
-  //   brightnessRelativeWeight: (value: number, previousValue = 0) => {
-  //     return { on: true, brightness: previousValue + value };
-  //   },
-  // },
-} as const;
-
-export type DeviceTraits = typeof deviceTraits[number]["value"];
-
-export type DeviceCommands = keyof typeof deviceCommands;
+export type DeviceTraits = keyof typeof deviceTraits;
 
 export type DeviceTraitStates<Trait extends DeviceTraits> =
-  typeof deviceTraitsObj[Trait]["states"][number][0];
+  typeof deviceTraits[Trait]["states"][number][0];

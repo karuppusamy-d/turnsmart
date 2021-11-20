@@ -9,12 +9,8 @@ import {
 import { ProjectData } from "@/utils/firebase";
 import { firestore } from "@/utils/firebase/admin";
 import asyncPromiseMap from "@/lib/asyncPromiseMap";
-import {
-  DeviceCommands,
-  deviceCommands,
-  DeviceTraits,
-  deviceTraitsObj,
-} from "@/lib/smarthome/deviceTraits";
+import { deviceTraits, DeviceTraits } from "@/lib/smarthome/deviceTraits";
+import { DeviceCommands, deviceCommands } from "@/lib/smarthome/deviceCommands";
 
 type handlerType = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
 
@@ -201,7 +197,7 @@ const getQueryData = (doc: ProjectData): ObjectMap => {
   const traits = Object.keys(doc.smarthome.traits) as DeviceTraits[];
   traits.forEach((trait) => {
     // Get the trait states
-    const states = deviceTraitsObj[trait].states;
+    const states = deviceTraits[trait].states;
 
     states.forEach(([state]) => {
       // @ts-expect-error: Let's ignore this type error for now
