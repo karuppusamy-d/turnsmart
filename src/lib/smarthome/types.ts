@@ -1,207 +1,199 @@
-/**
- * Copyright 2018 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+import { NextApiRequest, NextApiResponse } from "next";
 
-/* tslint:disable:no-any written like auto generated types from protobufs */
-
-/** @hidden */
-export interface ApiClientObjectMap<TValue> {
+export type ObjectMap<TValue = number | string | boolean | any[]> = {
   [key: string]: TValue;
-}
+};
 
 // See https://developers.google.com/actions/smarthome/
 
-export type SmartHomeV1Intents =
+export type SmartHomeIntents =
   | "action.devices.SYNC"
   | "action.devices.QUERY"
   | "action.devices.EXECUTE"
   | "action.devices.DISCONNECT";
 
-export type SmartHomeV1ExecuteStatus =
-  | "SUCCESS"
-  | "PENDING"
-  | "OFFLINE"
-  | "ERROR";
-
 // See an extensive list of error codes at
 // https://developers.google.com/actions/reference/smarthome/errors-exceptions
-export type SmartHomeV1ExecuteErrors = string;
+export type SmartHomeExecuteErrors = string;
 
-export interface SmartHomeV1SyncRequestInputs {
-  intent: SmartHomeV1Intents;
+export interface SmartHomeSyncRequestInputs {
+  intent: SmartHomeIntents;
 }
 
-export interface SmartHomeV1SyncRequest {
+export interface SmartHomeSyncRequest {
   requestId: string;
-  inputs: SmartHomeV1SyncRequestInputs[];
+  inputs: SmartHomeSyncRequestInputs[];
 }
 
-export interface SmartHomeV1QueryRequestDevices {
+export interface SmartHomeQueryRequestDevices {
   id: string;
-  customData?: ApiClientObjectMap<any>;
+  customData?: ObjectMap<any>;
 }
 
-export interface SmartHomeV1QueryRequestPayload {
-  devices: SmartHomeV1QueryRequestDevices[];
+export interface SmartHomeQueryRequestInputs {
+  intent: SmartHomeIntents;
+  payload: {
+    devices: SmartHomeQueryRequestDevices[];
+  };
 }
 
-export interface SmartHomeV1QueryRequestInputs {
-  intent: SmartHomeV1Intents;
-  payload: SmartHomeV1QueryRequestPayload;
-}
-
-export interface SmartHomeV1QueryRequest {
+export interface SmartHomeQueryRequest {
   requestId: string;
-  inputs: SmartHomeV1QueryRequestInputs[];
+  inputs: SmartHomeQueryRequestInputs[];
 }
 
-export interface SmartHomeV1ExecuteRequestExecution {
+export interface SmartHomeExecuteRequestExecution {
   command: string;
-  params?: ApiClientObjectMap<any>;
+  params?: ObjectMap<any>;
   challenge?: {
     pin?: string;
     ack?: boolean;
   };
 }
 
-export interface SmartHomeV1ExecuteRequestCommands {
-  devices: SmartHomeV1QueryRequestDevices[];
-  execution: SmartHomeV1ExecuteRequestExecution[];
+export interface SmartHomeExecuteRequestCommands {
+  devices: SmartHomeQueryRequestDevices[];
+  execution: SmartHomeExecuteRequestExecution[];
 }
 
-export interface SmartHomeV1ExecuteRequestPayload {
-  commands: SmartHomeV1ExecuteRequestCommands[];
+export interface SmartHomeExecuteRequestInputs {
+  intent: SmartHomeIntents;
+  payload: {
+    commands: SmartHomeExecuteRequestCommands[];
+  };
 }
 
-export interface SmartHomeV1ExecuteRequestInputs {
-  intent: SmartHomeV1Intents;
-  payload: SmartHomeV1ExecuteRequestPayload;
-}
-
-export interface SmartHomeV1ExecuteRequest {
+export interface SmartHomeExecuteRequest {
   requestId: string;
-  inputs: SmartHomeV1ExecuteRequestInputs[];
+  inputs: SmartHomeExecuteRequestInputs[];
 }
 
-export interface SmartHomeV1DisconnectRequest {
+export interface SmartHomeDisconnectRequest {
   requestId: string;
   inputs: {
     intent: "action.devices.DISCONNECT";
   }[];
 }
 
-export type SmartHomeV1Request =
-  | SmartHomeV1SyncRequest
-  | SmartHomeV1QueryRequest
-  | SmartHomeV1ExecuteRequest
-  | SmartHomeV1DisconnectRequest;
-
-export interface SmartHomeV1SyncName {
-  defaultNames: string[];
-  name: string;
-  nicknames: string[];
-}
-
-export interface SmartHomeV1SyncDeviceInfo {
-  manufacturer: string;
-  model: string;
-  hwVersion: string;
-  swVersion: string;
-}
-
-export interface SmartHomeV1SyncOtherDeviceIds {
-  agentId?: string;
-  deviceId: string;
-}
-
-export interface SmartHomeV1SyncDevices {
+export interface SmartHomeSyncDevices {
   id: string;
   type: string;
   traits: string[];
-  name: SmartHomeV1SyncName;
+  name: {
+    defaultNames: string[];
+    name: string;
+    nicknames: string[];
+  };
   willReportState: boolean;
-  deviceInfo?: SmartHomeV1SyncDeviceInfo;
-  attributes?: ApiClientObjectMap<any>;
-  customData?: ApiClientObjectMap<any>;
+  deviceInfo?: {
+    manufacturer: string;
+    model: string;
+    hwVersion: string;
+    swVersion: string;
+  };
+  attributes?: ObjectMap<any>;
+  customData?: ObjectMap<any>;
   roomHint?: string;
-  otherDeviceIds?: SmartHomeV1SyncOtherDeviceIds[];
+  otherDeviceIds?: {
+    agentId?: string;
+    deviceId: string;
+  }[];
 }
 
-export interface SmartHomeV1SyncPayload {
-  agentUserId?: string;
-  errorCode?: string;
-  debugString?: string;
-  devices: SmartHomeV1SyncDevices[];
-}
-
-export interface SmartHomeV1SyncResponse {
+export interface SmartHomeSyncResponse {
   requestId: string;
-  payload: SmartHomeV1SyncPayload;
-}
-
-export interface SmartHomeV1QueryPayload {
-  devices: ApiClientObjectMap<any>;
-}
-
-export interface SmartHomeV1QueryResponse {
-  requestId: string;
-  payload: SmartHomeV1QueryPayload;
-}
-
-export interface SmartHomeV1ExecuteResponseCommands {
-  ids: string[];
-  status: SmartHomeV1ExecuteStatus;
-  errorCode?: SmartHomeV1ExecuteErrors;
-  debugString?: string;
-  states?: ApiClientObjectMap<any>;
-  challengeNeeded?: {
-    type: challengeType;
+  payload: {
+    agentUserId?: string;
+    errorCode?: string;
+    debugString?: string;
+    devices: SmartHomeSyncDevices[];
   };
 }
 
-export type challengeType =
-  | "ackNeeded"
-  | "pinNeeded"
-  | "challengeFailedPinNeeded";
+export type SmartHomeQueryDevices = {
+  [key: string]: {
+    online: boolean;
+    status: "SUCCESS" | "ERROR" | "OFFLINE" | "EXCEPTIONS";
+    [key: string]: number | string | boolean | any[];
+  };
+};
 
-export interface SmartHomeV1ExecutePayload {
-  commands: SmartHomeV1ExecuteResponseCommands[];
-  errorCode?: SmartHomeV1ExecuteErrors;
-  debugString?: string;
+export interface SmartHomeQueryResponse {
+  requestId: string;
+  payload: {
+    devices: SmartHomeQueryDevices;
+  };
 }
 
-export interface SmartHomeV1ExecuteResponse {
+export interface SmartHomeExecuteResponseCommands {
+  ids: string[];
+  status: "SUCCESS" | "PENDING" | "OFFLINE" | "ERROR";
+  errorCode?: SmartHomeExecuteErrors;
+  debugString?: string;
+  states?: ObjectMap<any>;
+  challengeNeeded?: {
+    type: "ackNeeded" | "pinNeeded" | "challengeFailedPinNeeded";
+  };
+}
+
+export interface SmartHomeExecuteResponse {
   requestId: string;
-  payload: SmartHomeV1ExecutePayload;
+  payload: {
+    commands: SmartHomeExecuteResponseCommands[];
+    errorCode?: SmartHomeExecuteErrors;
+    debugString?: string;
+  };
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface SmartHomeV1DisconnectResponse {}
+export interface SmartHomeDisconnectResponse {}
 
-export type SmartHomeV1Response =
-  | SmartHomeV1SyncResponse
-  | SmartHomeV1QueryResponse
-  | SmartHomeV1ExecuteResponse
-  | SmartHomeV1DisconnectResponse;
+export type SmartHomeRequest =
+  | SmartHomeSyncRequest
+  | SmartHomeQueryRequest
+  | SmartHomeExecuteRequest
+  | SmartHomeDisconnectRequest;
 
-export interface SmartHomeV1ReportStateRequest {
-  requestId: string;
-  agentUserId: string;
-  payload: {
-    devices: {
-      states: ApiClientObjectMap<any>;
-    };
-  };
+export type SmartHomeResponse =
+  | SmartHomeSyncResponse
+  | SmartHomeQueryResponse
+  | SmartHomeExecuteResponse
+  | SmartHomeDisconnectResponse;
+
+export type Handler<
+  Request = SmartHomeRequest,
+  Response = SmartHomeResponse
+> = (req: Request, uid: string) => Promise<Response>;
+
+export interface SmartHomeApp {
+  /** @hidden */
+  _intents: { [intent: string]: Handler };
+  /** @hidden */
+  _intent(intent: SmartHomeIntents, handler: Handler): this;
+
+  onSync(
+    this: SmartHomeApp,
+    handler: Handler<SmartHomeSyncRequest, SmartHomeSyncResponse>
+  ): this;
+
+  onQuery(
+    this: SmartHomeApp,
+    handler: Handler<SmartHomeQueryRequest, SmartHomeQueryResponse>
+  ): this;
+
+  onExecute(
+    this: SmartHomeApp,
+    handler: Handler<SmartHomeExecuteRequest, SmartHomeExecuteResponse>
+  ): this;
+
+  onDisconnect(
+    this: SmartHomeApp,
+    handler: Handler<SmartHomeDisconnectRequest, SmartHomeDisconnectResponse>
+  ): this;
+
+  handler(
+    this: SmartHomeApp,
+    body: NextApiRequest,
+    res: NextApiResponse
+  ): Promise<void>;
 }

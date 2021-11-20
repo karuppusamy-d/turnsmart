@@ -1,8 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import {
+  ObjectMap,
   smarthome,
-  SmartHomeV1ExecuteResponseCommands,
-  SmartHomeV1SyncDevices,
+  SmartHomeExecuteResponseCommands,
+  SmartHomeQueryDevices,
+  SmartHomeSyncDevices,
 } from "@/lib/smarthome";
 import { ProjectData } from "@/utils/firebase";
 import { firestore } from "@/utils/firebase/admin";
@@ -15,16 +17,6 @@ import {
 } from "@/lib/smarthome/deviceTraits";
 
 type handlerType = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
-
-type ObjectType = { [key: string]: number | string | boolean | any[] };
-
-type DeviceQueryType = {
-  [key: string]: {
-    online: boolean;
-    status: "SUCCESS" | "ERROR" | "OFFLINE" | "EXCEPTIONS";
-    [key: string]: number | string | boolean | any[];
-  };
-};
 
 const jwt_secret = process.env.JWT_SECRET as string;
 const app = smarthome(jwt_secret);
@@ -39,7 +31,7 @@ app.onSync(async (body, uid) => {
 
   const devices = docs
     .filter((device) => device.smarthome.enabled)
-    .map((device): SmartHomeV1SyncDevices => {
+    .map((device): SmartHomeSyncDevices => {
       return {
         id: device.uid,
         type: device.smarthome.type,
@@ -78,7 +70,7 @@ app.onQuery(async (body, uid) => {
     return { ...(doc.data() as ProjectData), uid: doc.id };
   });
 
-  const devices: DeviceQueryType = {};
+  const devices: SmartHomeQueryDevices = {};
 
   payload.devices.forEach((device) => {
     const doc = docs.find((doc) => doc.uid === device.id);
@@ -132,7 +124,7 @@ app.onExecute(async ({ requestId, inputs }, uid) => {
         // Get the callback functions for the command.
         const callbacks = deviceCommands[commandName];
 
-        let result: ObjectType = {};
+        let result: ObjectMap = {};
 
         if (command.execution[0].params instanceof Object) {
           // Loop through all the params and call the callback functions
@@ -148,7 +140,7 @@ app.onExecute(async ({ requestId, inputs }, uid) => {
                     doc.data[targets[callbacks.target] || ""]
                   : "";
 
-                const res = callback(value, preValue || 0) as ObjectType;
+                const res = callback(value, preValue || 0) as ObjectMap;
                 result = { ...result, ...res };
               }
             }
@@ -175,7 +167,7 @@ app.onExecute(async ({ requestId, inputs }, uid) => {
             ...result,
             online: true,
           },
-        } as SmartHomeV1ExecuteResponseCommands;
+        } as SmartHomeExecuteResponseCommands;
       } catch (e) {
         console.log(e);
 
@@ -183,7 +175,7 @@ app.onExecute(async ({ requestId, inputs }, uid) => {
           ids: [id],
           status: "ERROR",
           errorCode: "Unauthorized / Document not exist",
-        } as SmartHomeV1ExecuteResponseCommands;
+        } as SmartHomeExecuteResponseCommands;
       }
     });
   });
@@ -202,9 +194,9 @@ app.onDisconnect(async () => {
 });
 
 // Helper Functions
-const getQueryData = (doc: ProjectData): ObjectType => {
+const getQueryData = (doc: ProjectData): ObjectMap => {
   // Loop throught all the traits and get the data
-  const res: ObjectType = {};
+  const res: ObjectMap = {};
 
   const traits = Object.keys(doc.smarthome.traits) as DeviceTraits[];
   traits.forEach((trait) => {
