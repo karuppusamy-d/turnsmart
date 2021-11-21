@@ -42,8 +42,22 @@ const ProjectDatas = ({ project, setProject }: Props): ReactElement => {
                       defaultValue={+value}
                       onChange={(e) => updateData(key, +e.target.value)}
                     />
+                  ) : project?.endpoints[key] === "color" ? (
+                    <input
+                      title={key}
+                      className="input py-1.5 mt-0 w-full h-[42px]"
+                      type="color"
+                      defaultValue={
+                        "#" + (+value).toString(16).padStart(6, "0")
+                      }
+                      onChange={(e) => {
+                        const colorHex = e.target.value.slice(1);
+                        console.log(parseInt(colorHex, 16));
+                        // TODO: update color only after user selects a color
+                        // updateData(key, parseInt(colorHex, 16));
+                      }}
+                    />
                   ) : (
-                    // eslint-disable-next-line jsx-a11y/no-onchange
                     <select
                       title={key}
                       className="input mt-0 w-full"

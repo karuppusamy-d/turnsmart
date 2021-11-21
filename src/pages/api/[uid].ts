@@ -47,8 +47,11 @@ const handler: handlerType = async (req, res) => {
 
           // Filter the data
           for (const [key, type] of Object.entries(document.endpoints)) {
+            // For color endpoint, we need to check if the data type is number
+            const newType = type === "color" ? "number" : type;
+
             // Check for Data Type
-            if (typeof receivedData[key] === type) {
+            if (typeof receivedData[key] === newType) {
               newData[key] = receivedData[key];
             } else {
               if (typeof receivedData[key] != "undefined")

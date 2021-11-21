@@ -16,20 +16,19 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
 
   const handleAddEndpoint = (e: FormEvent): void => {
     e.preventDefault();
-    if (!inputRef.current?.value || !selectRef.current?.value)
-      return alert("Someting went wrong");
+    const key = inputRef.current?.value;
+    const value = selectRef.current?.value;
+
+    if (!key || !value) return alert("Someting went wrong");
 
     const updatedData = {
       endpoints: {
         ...project.endpoints,
-        [inputRef.current.value]: selectRef.current.value as
-          | "boolean"
-          | "number",
+        [key]: selectRef.current.value as "boolean" | "number",
       },
       data: {
         ...project.data,
-        [inputRef.current.value]:
-          selectRef.current.value === "boolean" ? false : 0,
+        [key]: value === "number" ? 0 : value === "color" ? 255 : 0,
       },
     };
     project.uid &&
@@ -72,12 +71,15 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
         });
   };
 
-  const updateEndpoint = (key: string, value: "number" | "boolean"): void => {
+  const updateEndpoint = (
+    key: string,
+    value: "number" | "boolean" | "color"
+  ): void => {
     const updatedData = {
       endpoints: { ...project.endpoints, [key]: value },
       data: {
         ...project.data,
-        [key]: value === "boolean" ? false : 0,
+        [key]: value === "number" ? 0 : value === "color" ? 255 : 0,
       },
     };
 
@@ -118,6 +120,7 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
                   >
                     <option value="boolean">boolean</option>
                     <option value="number">number</option>
+                    <option value="color">color</option>
                   </select>
                   <button
                     title="Remove endpoint"
@@ -156,6 +159,7 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
               >
                 <option value="boolean">boolean</option>
                 <option value="number">number</option>
+                <option value="color">color</option>
               </select>
 
               <button

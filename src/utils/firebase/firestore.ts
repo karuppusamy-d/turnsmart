@@ -29,7 +29,7 @@ export type ProjectData = {
     [key: string]: number | boolean;
   };
   endpoints: {
-    [key: string]: "number" | "boolean";
+    [key: string]: "number" | "boolean" | "color";
   };
   smarthome: {
     enabled: boolean;
