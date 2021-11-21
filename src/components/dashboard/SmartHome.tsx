@@ -1,17 +1,34 @@
 /* eslint-disable jsx-a11y/no-onchange */
 import React, { ReactElement, SetStateAction } from "react";
-import { ProjectData } from "@/utils/firebase";
+import { ProjectData, updateProject } from "@/utils/firebase";
 
 // import AddIcon from "@/components/icons/add.svg";
 // import DeleteIcon from "@/components/icons/delete.svg";
 import { deviceTypes } from "@/lib/smarthome/deviceTypes";
+import { ObjectMap } from "@/lib/smarthome";
 
 interface Props {
   project: ProjectData;
   setProject: (value: SetStateAction<ProjectData | null>) => void;
 }
 
-const SmartHome = ({ project }: Props): ReactElement => {
+const SmartHome = ({ project, setProject }: Props): ReactElement => {
+  const updateData = (newData: ObjectMap): void => {
+    const updatedData = { ...project.smarthome, ...newData };
+    project.uid &&
+      updateProject(project.uid, { smarthome: updatedData })
+        .then(() => {
+          setProject((curr) => {
+            return curr
+              ? { ...curr, smarthome: updatedData }
+              : { ...project, smarthome: updatedData };
+          });
+        })
+        .catch(() => {
+          alert("Something went wrong");
+        });
+  };
+
   return (
     <div className="p-8 pl-4 rounded-xl shadow-light dark:bg-gray-800">
       <table className="table table-fixed w-full">
@@ -25,6 +42,9 @@ const SmartHome = ({ project }: Props): ReactElement => {
                 type="checkbox"
                 className="input-checkbox"
                 checked={project.smarthome.enabled}
+                onChange={(e) => {
+                  updateData({ enabled: e.target.checked });
+                }}
               />
             </td>
           </tr>

@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useRef, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
@@ -119,6 +119,8 @@ const ProjectDashboard = (): ReactElement => {
 
                   <div
                     className="absolute w-6 h-6 text-gray-400 right-3 top-2 dark:text-gray-300"
+                    role="button"
+                    tabIndex={0}
                     onClick={() =>
                       setSecret((curr) => {
                         return { ...curr, show: !curr.show };

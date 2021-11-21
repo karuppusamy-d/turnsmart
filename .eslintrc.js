@@ -52,6 +52,9 @@ module.exports = {
         // This rule is not compatible with Next.js's <Link /> components
         "jsx-a11y/anchor-is-valid": "off",
 
+        // Anoying rule that doesn't allow us to have a onClick event handler without a keyboard event handler
+        "jsx-a11y/click-events-have-key-events": "off",
+
         // Why would you want unused vars?
         "@typescript-eslint/no-unused-vars": ["error"],
 
