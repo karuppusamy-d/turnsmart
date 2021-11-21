@@ -1,3 +1,5 @@
+import { ObjectMap } from ".";
+
 /*
   deviceCommands is a map of device commands.
   It is used in onExecute event to process the data and return response.
@@ -58,6 +60,14 @@ export const deviceCommands = {
   //     return { on: true, brightness: previousValue + value };
   //   },
   // },
+
+  /* action.devices.traits.ColorSetting */
+  "action.devices.commands.ColorAbsolute": {
+    trait: "action.devices.traits.ColorSetting",
+    color: (value: ObjectMap) => {
+      return { spectrumRgb: value.spectrumRgb, color: value };
+    },
+  },
 } as const;
 
 export type DeviceCommands = keyof typeof deviceCommands;

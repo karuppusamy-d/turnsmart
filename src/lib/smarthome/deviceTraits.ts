@@ -36,6 +36,14 @@ export const deviceTraits = {
     description:
       "Absolute brightness setting is in a normalized range from 0 to 100 (individual lights may not support every point in the range based on their LED configuration).",
   },
+
+  "action.devices.traits.ColorSetting": {
+    name: "Color",
+    states: [["spectrumRgb", "color", "color"]],
+    attributes: { colorModel: "rgb" },
+    description:
+      "This trait applies to devices, such as smart lights, that can change color or color temperature.",
+  },
 } as const;
 
 export type DeviceTraits = keyof typeof deviceTraits;
