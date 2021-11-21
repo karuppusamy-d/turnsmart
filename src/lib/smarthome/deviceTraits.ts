@@ -39,10 +39,10 @@ export const deviceTraits = {
 
   "action.devices.traits.ColorSetting": {
     name: "Color",
-    states: [["spectrumRgb", "color", "color"]],
+    states: [["spectrumRGB", "color", "color"]],
     attributes: { colorModel: "rgb" },
     description:
-      "This trait applies to devices, such as smart lights, that can change color or color temperature.",
+      "This trait applies to devices, such as smart lights, that can change color.",
   },
 } as const;
 
