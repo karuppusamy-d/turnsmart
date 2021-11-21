@@ -28,10 +28,12 @@ app.onSync(async (body, uid) => {
   const devices = docs
     .filter((device) => device.smarthome.enabled)
     .map((device): SmartHomeSyncDevices => {
+      const traits = Object.keys(device.smarthome.traits) as DeviceTraits[];
+
       return {
         id: device.uid,
         type: device.smarthome.type,
-        traits: Object.keys(device.smarthome.traits),
+        traits: traits,
         name: {
           name: device.name, // Primary name of the device provided by the user for the device.
           nicknames: device.smarthome.nicknames, // Additional names provided by the user for the device.
@@ -44,6 +46,7 @@ app.onSync(async (body, uid) => {
           hwVersion: "1.0",
           swVersion: "1.0",
         },
+        attributes: getAttributes(traits),
       };
     });
 
@@ -199,17 +202,30 @@ const getQueryData = (doc: ProjectData): ObjectMap => {
     // Get the trait states
     const states = deviceTraits[trait].states;
 
-    states.forEach(([state]) => {
+    states.forEach(([state, , wrapper]) => {
       // @ts-expect-error: Let's ignore this type error for now
       const target: string | undefined = doc.smarthome.traits[trait][state];
 
       if (target) {
-        res[state] = doc.data[target];
+        if (wrapper) res[target] = { [state]: doc.data[target] };
+        else res[state] = doc.data[target];
       }
     });
   });
 
   return res;
+};
+
+const getAttributes = (traits: DeviceTraits[]): ObjectMap => {
+  let attributes = {};
+
+  traits.forEach((trait) => {
+    const traitAttributes = deviceTraits[trait as DeviceTraits].attributes;
+    if (attributes) {
+      attributes = { ...attributes, ...traitAttributes };
+    }
+  });
+  return attributes;
 };
 
 // Exports

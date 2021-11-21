@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-export type ObjectMap<TValue = number | string | boolean | any[]> = {
+export type ObjectMap<TValue = number | string | boolean | any> = {
   [key: string]: TValue;
 };
 

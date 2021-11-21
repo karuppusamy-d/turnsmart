@@ -1,5 +1,20 @@
+/*
+  deviceCommands is a map of device commands.
+  It is used in onExecute event to process the data and return response.
+
+  {
+    "command_name": {
+      trait: "target_trait",
+      callbacks: (value) => {
+        // Callback function for the command.
+        return { state: value }
+      }
+    }
+  }
+*/
+
 export const deviceCommands = {
-  // action.devices.traits.OnOff
+  /* action.devices.traits.OnOff */
   "action.devices.commands.OnOff": {
     trait: "action.devices.traits.OnOff",
     on: (value: boolean) => {
@@ -7,7 +22,7 @@ export const deviceCommands = {
     },
   },
 
-  // action.devices.traits.StartStop
+  /* action.devices.traits.StartStop */
   "action.devices.commands.StartStop": {
     trait: "action.devices.traits.StartStop",
     start: (value: boolean) => {
@@ -22,7 +37,7 @@ export const deviceCommands = {
   //   },
   // },
 
-  // action.devices.traits.Brightness
+  /* action.devices.traits.Brightness */
   "action.devices.commands.BrightnessAbsolute": {
     trait: "action.devices.traits.Brightness",
     brightness: (value: number) => {
