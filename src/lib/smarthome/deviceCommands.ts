@@ -65,7 +65,10 @@ export const deviceCommands = {
   "action.devices.commands.ColorAbsolute": {
     trait: "action.devices.traits.ColorSetting",
     color: (value: ObjectMap) => {
-      return { spectrumRGB: value.spectrumRGB, color: value };
+      return {
+        spectrumRgb: value.spectrumRGB,
+        color: { spectrumRgb: value.spectrumRGB },
+      };
     },
   },
 } as const;
