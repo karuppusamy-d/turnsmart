@@ -93,14 +93,18 @@ export const deviceCommands = {
     //   return { fanSpeed: value };
     // },
     fanSpeedPercent: (value: number) => {
-      return { currentFanSpeedPercent: value, fanSpeedPercent: value };
+      return {
+        on: true,
+        currentFanSpeedPercent: value,
+        fanSpeedPercent: value,
+      };
     },
   },
   "action.devices.commands.Reverse": {
     trait: "action.devices.traits.FanSpeed",
     target: "reverse",
     defalut: (_value: boolean, previousValue: boolean) => {
-      return { reverse: !previousValue };
+      return { on: true, reverse: !previousValue };
     },
   },
 } as const;

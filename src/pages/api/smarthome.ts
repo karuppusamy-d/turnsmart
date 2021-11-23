@@ -144,21 +144,21 @@ app.onExecute(async ({ requestId, inputs }, uid) => {
               }
             }
           );
+        }
 
+        // @ts-expect-error: Let's ignore this type error for now
+        const defaultCallback = callbacks["defalut"];
+
+        // If defalut callback function exists, execute it
+        if (defaultCallback instanceof Function) {
           // @ts-expect-error: Let's ignore this type error for now
-          const defaultCallback = callbacks["defalut"];
+          const preValue = callbacks.target
+            ? // @ts-expect-error: Let's ignore this type error for now
+              doc.data[targets[callbacks.target] || ""]
+            : "";
 
-          // If defalut callback function exists, execute it
-          if (defaultCallback instanceof Function) {
-            // @ts-expect-error: Let's ignore this type error for now
-            const preValue = callbacks.target
-              ? // @ts-expect-error: Let's ignore this type error for now
-                doc.data[targets[callbacks.target] || ""]
-              : "";
-
-            const res = defaultCallback(false, preValue || 0) as ObjectMap;
-            result = { ...result, ...res };
-          }
+          const res = defaultCallback(false, preValue || 0) as ObjectMap;
+          result = { ...result, ...res };
         }
 
         // Store Data in Firestore

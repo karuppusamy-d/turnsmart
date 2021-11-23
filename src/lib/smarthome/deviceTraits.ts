@@ -58,6 +58,7 @@ export const deviceTraits = {
     states: [
       ["currentFanSpeedPercent", "number"],
       ["reverse", "boolean"],
+      ["on", "boolean"],
     ],
     attributes: { supportsFanSpeedPercent: true, reversible: true },
     description:
