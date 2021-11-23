@@ -33,7 +33,11 @@ export const smarthome = (jwt_secret: string): SmartHomeApp => {
 
         const handler = this._intents[intent];
 
-        return res.json(await handler(body, uid));
+        const result = await handler(body, uid);
+        // TODO: Remove console log
+        console.log(JSON.stringify({ body, result }));
+
+        return res.json(result);
       } catch (err: any) {
         console.log(err.name);
         if (err.name == "TokenExpiredError") {
