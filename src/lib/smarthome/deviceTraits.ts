@@ -64,6 +64,17 @@ export const deviceTraits = {
     description:
       "This trait belongs to devices that support setting the speed of a fan. Fan speeds (that is, blowing air from the device at various levels, which may be part of an air conditioning or heating unit, or in a car).",
   },
+
+  "action.devices.traits.Volume": {
+    name: "Volume",
+    states: [
+      ["currentVolume", "number"],
+      ["isMuted", "boolean"],
+    ],
+    attributes: { volumeMaxLevel: 100, volumeCanMuteAndUnmute: true },
+    description:
+      "This trait belongs to devices which are able to change volume (for example, setting the volume to a certain level, mute, or unmute).",
+  },
 } as const;
 
 export type DeviceTraits = keyof typeof deviceTraits;

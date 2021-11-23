@@ -107,6 +107,27 @@ export const deviceCommands = {
       return { on: true, reverse: !previousValue };
     },
   },
+
+  /* action.devices.traits.Volume */
+  "action.devices.commands.setVolume": {
+    trait: "action.devices.traits.Volume",
+    volumeLevel: (value: number) => {
+      return { currentVolume: value, volumeLevel: value };
+    },
+  },
+  "action.devices.commands.volumeRelative": {
+    trait: "action.devices.traits.Volume",
+    target: "currentVolume",
+    relativeSteps: (value: number, curr: number) => {
+      return { currentVolume: value + curr };
+    },
+  },
+  "action.devices.commands.mute": {
+    trait: "action.devices.traits.Volume",
+    mute: (value: boolean) => {
+      return { isMuted: value, mute: value };
+    },
+  },
 } as const;
 
 export type DeviceCommands = keyof typeof deviceCommands;

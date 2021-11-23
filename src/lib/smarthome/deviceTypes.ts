@@ -720,6 +720,14 @@ export const deviceTypes = [
     recommended: ["Modes", "OnOff", "RunCycle", "Toggles"],
   },
   {
+    name: "FAN",
+    value: "action.devices.types.FAN",
+    description:
+      "Fans can typically be turned on and off and have speed settings. Some fans may also have additional supported modes, such as fan direction/orientation (for example, a wall unit may have settings to adjust whether it blows up or down).",
+    required: ["FanSpeed", "OnOff"],
+    recommended: [],
+  },
+  {
     name: "FAUCET",
     value: "action.devices.types.FAUCET",
     description:
@@ -742,6 +750,22 @@ export const deviceTypes = [
       "Interactions with fryers may include starting and stopping, setting a timer, adjusting cooking modes or food presets, or adjusting other various settings.",
     required: ["OnOff"],
     recommended: ["Cook", "StartStop", "Timer"],
+  },
+  {
+    name: "HOOD",
+    value: "action.devices.types.HOOD",
+    description:
+      "Oven and range hoods can be turned on and off, may have adjustable modes, and may have adjustable fan speeds.",
+    required: ["OnOff"],
+    recommended: ["Brightness", "FanSpeed"],
+  },
+  {
+    name: "OUTLET",
+    value: "action.devices.types.OUTLET",
+    description:
+      "Outlet, a basic device in Smart Home, has binary modes on/off only.",
+    required: ["OnOff"],
+    recommended: [],
   },
   {
     name: "LIGHT",
