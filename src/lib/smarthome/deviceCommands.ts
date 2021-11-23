@@ -85,6 +85,24 @@ export const deviceCommands = {
       return { isDocked: !previousValue };
     },
   },
+
+  /* action.devices.traits.FanSpeed */
+  "action.devices.commands.SetFanSpeed": {
+    trait: "action.devices.traits.FanSpeed",
+    // fanSpeed: (value: string) => {
+    //   return { fanSpeed: value };
+    // },
+    fanSpeedPercent: (value: number) => {
+      return { currentFanSpeedPercent: value, fanSpeedPercent: value };
+    },
+  },
+  "action.devices.commands.Reverse": {
+    trait: "action.devices.traits.FanSpeed",
+    target: "reverse",
+    defalut: (_value: boolean, previousValue: boolean) => {
+      return { reverse: !previousValue };
+    },
+  },
 } as const;
 
 export type DeviceCommands = keyof typeof deviceCommands;

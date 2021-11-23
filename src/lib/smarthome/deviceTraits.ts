@@ -52,6 +52,17 @@ export const deviceTraits = {
     description:
       "This trait is designed for self-mobile devices that can be commanded to return for charging. By and large, these are currently robotic vacuum cleaners, but this would also apply to some drones, delivery robots, and other future devices.",
   },
+
+  "action.devices.traits.FanSpeed": {
+    name: "Fan Speed",
+    states: [
+      ["currentFanSpeedPercent", "number"],
+      ["reverse", "boolean"],
+    ],
+    attributes: { supportsFanSpeedPercent: true, reversible: true },
+    description:
+      "This trait belongs to devices that support setting the speed of a fan. Fan speeds (that is, blowing air from the device at various levels, which may be part of an air conditioning or heating unit, or in a car).",
+  },
 } as const;
 
 export type DeviceTraits = keyof typeof deviceTraits;
