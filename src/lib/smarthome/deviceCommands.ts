@@ -7,6 +7,11 @@ import { ObjectMap } from ".";
   {
     "command_name": {
       trait: "target_trait",
+      target?: "target state used to get previous value",
+      default?: () => {
+        // default callback function ( executed always )
+        return { state: value } 
+      },
       callbacks: (value) => {
         // Callback function for the command.
         return { state: value }
@@ -69,6 +74,15 @@ export const deviceCommands = {
         spectrumRgb: value.spectrumRGB,
         color: { spectrumRgb: value.spectrumRGB },
       };
+    },
+  },
+
+  /* action.devices.traits.Dock */
+  "action.devices.commands.Dock": {
+    trait: "action.devices.traits.Dock",
+    target: "isDocked",
+    defalut: (_value: boolean, previousValue: boolean) => {
+      return { isDocked: !previousValue };
     },
   },
 } as const;

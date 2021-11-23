@@ -28,7 +28,7 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
       },
       data: {
         ...project.data,
-        [key]: value === "number" ? 0 : value === "color" ? 255 : 0,
+        [key]: value === "number" ? 0 : value === "color" ? 255 : false,
       },
     };
     project.uid &&
@@ -79,7 +79,7 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
       endpoints: { ...project.endpoints, [key]: value },
       data: {
         ...project.data,
-        [key]: value === "number" ? 0 : value === "color" ? 255 : 0,
+        [key]: value === "number" ? 0 : value === "color" ? 255 : false,
       },
     };
 

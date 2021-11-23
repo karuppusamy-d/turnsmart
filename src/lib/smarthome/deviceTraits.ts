@@ -44,6 +44,14 @@ export const deviceTraits = {
     description:
       "This trait applies to devices, such as smart lights, that can change color.",
   },
+
+  "action.devices.traits.Dock": {
+    name: "Dock",
+    states: [["isDocked", "boolean"]],
+    attributes: {},
+    description:
+      "This trait is designed for self-mobile devices that can be commanded to return for charging. By and large, these are currently robotic vacuum cleaners, but this would also apply to some drones, delivery robots, and other future devices.",
+  },
 } as const;
 
 export type DeviceTraits = keyof typeof deviceTraits;
