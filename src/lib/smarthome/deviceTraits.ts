@@ -31,7 +31,10 @@ export const deviceTraits = {
 
   "action.devices.traits.Brightness": {
     name: "Brightness",
-    states: [["brightness", "number"]],
+    states: [
+      ["brightness", "number"],
+      ["on", "boolean"],
+    ],
     attributes: {},
     description:
       "Absolute brightness setting is in a normalized range from 0 to 100 (individual lights may not support every point in the range based on their LED configuration).",

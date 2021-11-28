@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-onchange */
-import React, { FormEvent, ReactElement, SetStateAction, useRef } from "react";
+import { FormEvent, ReactElement, SetStateAction, useRef } from "react";
 import { ProjectData, updateProject } from "@/utils/firebase";
 
 import AddIcon from "@/components/icons/add.svg";
@@ -98,7 +98,7 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
   };
 
   return (
-    <div className="p-8 pl-4 rounded-xl shadow-light dark:bg-gray-800">
+    <div className="p-6 pl-4 sm:p-12 sm:pl-6 rounded-xl shadow-light dark:bg-gray-800">
       <table className="table table-fixed w-full">
         <tbody>
           {/* Display Endpoints */}
