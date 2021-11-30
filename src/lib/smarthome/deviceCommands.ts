@@ -1,4 +1,4 @@
-import { ObjectMap } from ".";
+import { ObjectMap } from "./types";
 
 /*
   deviceCommands is a map of device commands.

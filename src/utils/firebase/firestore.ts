@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { app } from ".";
+import { app } from "./app";
 import { getFirestore } from "firebase/firestore";
 import {
   collection,
