@@ -17,5 +17,7 @@ module.exports = withPWA({
   pwa: {
     dest: "public",
     disable: !isProd,
+    // TODO:Temporary Fix for PWA
+    buildExcludes: [/middleware-manifest\.json$/],
   },
 });
