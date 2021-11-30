@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { app } from "./app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore } from "@firebase/firestore/lite";
 import {
   collection,
   query,
@@ -15,7 +15,7 @@ import {
   DocumentReference,
   deleteDoc,
   updateDoc,
-} from "@firebase/firestore";
+} from "@firebase/firestore/lite";
 import { DeviceTraits, DeviceTraitStates } from "@/lib/smarthome/deviceTraits";
 import { DeviceTypes } from "@/lib/smarthome/deviceTypes";
 
