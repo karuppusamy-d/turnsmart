@@ -36,7 +36,7 @@
       "name": "Open Home",
       "short_name": "Home",
       "url": "/",
-      "description": "Home page",
+      "description": "Go to home page",
       "icons": [
         {
           "src": "/favicons/android-chrome-192x192.png",
@@ -45,10 +45,10 @@
       ]
     },
     {
-      "name": "Open About",
-      "short_name": "About",
-      "url": "/about",
-      "description": "Know more about me",
+      "name": "Open Dashboard",
+      "short_name": "Dashboard",
+      "url": "/dashboard",
+      "description": "Go to project dashboard",
       "icons": [
         {
           "src": "/favicons/android-chrome-192x192.png",

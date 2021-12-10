@@ -5,7 +5,7 @@
   "author": "Karuppusamy",
   "repository": {
     "type": "git",
-    "url": "git@github.com:karuppusamy-d/project.io.git"
+    "url": "git@github.com:karuppusamy-d/turnsmart.git"
   },
   "scripts": {
     "start": "next start",
@@ -19,7 +19,7 @@
     "firebase": "^9.5.0",
     "firebase-admin": "^10.0.0",
     "jsonwebtoken": "^8.5.1",
-    "next": "^12.0.4",
+    "next": "^12.0.7",
     "next-pwa": "^5.4.1",
     "next-seo": "4.28.1",
     "next-themes": "^0.0.15",
