@@ -32,7 +32,7 @@ const NewProject = ({ togglePopup, setProjects }: Props): ReactElement => {
     if (currentUser?.uid) {
       const name = nameRef.current.value;
       const description = descriptionRef.current.value;
-      const secret = randomPassword(10);
+      const secret = randomPassword(25);
 
       const project: ProjectData = {
         name: name,

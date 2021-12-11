@@ -3,12 +3,12 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBKOXn8FZIToxTgwReMBeXOn_7rMfFtoZU",
-  authDomain: "project-io-10.firebaseapp.com",
-  projectId: "project-io-10",
-  storageBucket: "project-io-10.appspot.com",
-  messagingSenderId: "564248312112",
-  appId: "1:564248312112:web:a0d942da3dbf537516f0f5",
+  apiKey: "AIzaSyBkY3FI9KNdzrBbcP52P_82sR5Tt9p5_t4",
+  authDomain: "turnsmart-io.firebaseapp.com",
+  projectId: "turnsmart-io",
+  storageBucket: "turnsmart-io.appspot.com",
+  messagingSenderId: "247144565486",
+  appId: "1:247144565486:web:bd9eb0d56cc104a41401ff",
 };
 
 // Initialize Firebase
