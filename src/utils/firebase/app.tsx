@@ -2,13 +2,15 @@ import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
+const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBkY3FI9KNdzrBbcP52P_82sR5Tt9p5_t4",
-  authDomain: "turnsmart-io.firebaseapp.com",
-  projectId: "turnsmart-io",
-  storageBucket: "turnsmart-io.appspot.com",
-  messagingSenderId: "247144565486",
-  appId: "1:247144565486:web:bd9eb0d56cc104a41401ff",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: `${projectId}.firebaseapp.com`,
+  projectId: projectId,
+  storageBucket: `${projectId}.appspot.com`,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase
