@@ -1,8 +1,8 @@
 {
-  "name": "io.karuppusamy.me",
-  "short_name": "io.karuppusamy.me",
+  "name": "turnsmart.io",
+  "short_name": "turnsmart.io",
   "start_url": "/",
-  "description": "I am Karuppusamy, a self-learned programmer. I currently live in India with my family. A hard-working and ambitious person who isn’t afraid to face a challenge.",
+  "description": "Create IoT Projects easily with turnsmart.io",
   "display": "standalone",
   "lang": "en",
   "icons": [

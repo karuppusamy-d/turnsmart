@@ -29,8 +29,8 @@ class MyDocument extends Document {
             color="#2d89ef"
           />
           <link rel="shortcut icon" href="/favicons/favicon.ico" />
-          <meta name="apple-mobile-web-app-title" content="io.karuppusamy.me" />
-          <meta name="application-name" content="io.karuppusamy.me" />
+          <meta name="apple-mobile-web-app-title" content="turnsmart.io" />
+          <meta name="application-name" content="turnsmart.io" />
           <meta name="msapplication-TileColor" content="#2d89ef" />
           <meta
             name="msapplication-config"

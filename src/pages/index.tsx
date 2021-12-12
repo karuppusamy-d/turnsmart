@@ -24,7 +24,6 @@ const Home = (): ReactElement => {
               Hi,
               <br /> Welcome
               <br />
-              {/* Karuppusamy<span className="text-primary-400">.me</span> */}
               {currentUser?.displayName || "To our website"}
             </h1>
             {currentUser ? (

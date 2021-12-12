@@ -41,7 +41,7 @@ app.onSync(async (body, uid) => {
         },
         willReportState: false,
         deviceInfo: {
-          manufacturer: "io.karuppusamy.me",
+          manufacturer: "turnsmart.io",
           model: device.name,
           hwVersion: "1.0",
           swVersion: "1.0",
