@@ -49,7 +49,7 @@ const MobileNav = (): ReactElement => {
       </button>
 
       <div
-        className={`fixed w-9/12 h-full top-16 right-0 bg-gray-200 dark:bg-gray-800 z-10 transform ease-in-out duration-500 ${
+        className={`fixed w-9/12 h-full top-16 right-0 bg-gray-200 dark:bg-gray-800 z-10 ease-in-out duration-500 ${
           navShow ? "translate-x-0" : "translate-x-full"
         }`}
       >

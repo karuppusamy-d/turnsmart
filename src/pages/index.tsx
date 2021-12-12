@@ -18,7 +18,7 @@ const Home = (): ReactElement => {
         className="flex flex-col mb-10"
         style={{ height: "calc( 100vh - 78px )" }}
       >
-        <div className="flex-grow flex flex-col justify-center">
+        <div className="flex grow flex-col justify-center">
           <div>
             <h1 className="mb-4 text-3xl font-bold leading-snug sm:mb-8 sm:text-[2.75rem] sm:leading-snug md:text-[3.5rem] md:leading-snug">
               Hi,
