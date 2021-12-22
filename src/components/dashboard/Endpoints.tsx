@@ -1,16 +1,20 @@
 /* eslint-disable jsx-a11y/no-onchange */
-import { FormEvent, ReactElement, SetStateAction, useRef } from "react";
-import { ProjectData, updateProject } from "@/utils/firebase";
+import { FormEvent, ReactElement, useRef } from "react";
+import { ProjectData } from "@/utils/firebase";
 
 import AddIcon from "@/components/icons/add.svg";
 import DeleteIcon from "@/components/icons/delete.svg";
+import { ObjectMap } from "@/lib/smarthome";
 
 interface Props {
   project: ProjectData;
-  setProject: (value: SetStateAction<ProjectData | null>) => void;
+  updateProjectData: (
+    value: ObjectMap,
+    message?: string
+  ) => Promise<void> | void;
 }
 
-const Endpoints = ({ project, setProject }: Props): ReactElement => {
+const Endpoints = ({ project, updateProjectData }: Props): ReactElement => {
   const inputRef = useRef<HTMLInputElement>(null);
   const selectRef = useRef<HTMLSelectElement>(null);
 
@@ -31,20 +35,8 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
         [key]: value === "number" ? 0 : value === "color" ? 255 : false,
       },
     };
-    project.uid &&
-      updateProject(project.uid, updatedData)
-        .then(() => {
-          setProject((curr) => {
-            return curr
-              ? { ...curr, ...updatedData }
-              : { ...project, ...updatedData };
-          });
-          // Reset form on success
-          inputRef.current?.form?.reset();
-        })
-        .catch(() => {
-          alert("Something went wrong");
-        });
+
+    updateProjectData(updatedData, "Endpoint added!");
   };
 
   const deleteEndpoint = (key: string): void => {
@@ -57,18 +49,7 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
     delete updatedData.endpoints[key];
     delete updatedData.data[key];
 
-    project.uid &&
-      updateProject(project.uid, updatedData)
-        .then(() => {
-          setProject((curr) => {
-            return curr
-              ? { ...curr, ...updatedData }
-              : { ...project, ...updatedData };
-          });
-        })
-        .catch(() => {
-          alert("Something went wrong");
-        });
+    updateProjectData(updatedData, "Endpoint deleted!");
   };
 
   const updateEndpoint = (
@@ -83,18 +64,7 @@ const Endpoints = ({ project, setProject }: Props): ReactElement => {
       },
     };
 
-    project.uid &&
-      updateProject(project.uid, updatedData)
-        .then(() => {
-          setProject((curr) => {
-            return curr
-              ? { ...curr, ...updatedData }
-              : { ...project, ...updatedData };
-          });
-        })
-        .catch(() => {
-          alert("Something went wrong");
-        });
+    updateProjectData(updatedData, "Endpoint updated!");
   };
 
   return (

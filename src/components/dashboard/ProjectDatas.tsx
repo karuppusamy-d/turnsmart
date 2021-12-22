@@ -1,27 +1,21 @@
-import React, { ReactElement, SetStateAction } from "react";
-import { ProjectData, updateProject } from "@/utils/firebase";
+import React, { ReactElement } from "react";
+import { ProjectData } from "@/utils/firebase";
+import { ObjectMap } from "@/lib/smarthome";
 
 interface Props {
   project: ProjectData;
-  setProject: (value: SetStateAction<ProjectData | null>) => void;
+  updateProjectData: (
+    value: ObjectMap,
+    message?: string
+  ) => Promise<void> | void;
 }
 
-const ProjectDatas = ({ project, setProject }: Props): ReactElement => {
+const ProjectDatas = ({ project, updateProjectData }: Props): ReactElement => {
   const updateData = (key: string, value: number | boolean): void => {
-    const updatedData = { ...project.data, [key]: value };
-
-    project.uid &&
-      updateProject(project.uid, { data: updatedData })
-        .then(() => {
-          setProject((curr) => {
-            return curr
-              ? { ...curr, data: updatedData }
-              : { ...project, data: updatedData };
-          });
-        })
-        .catch(() => {
-          alert("Something went wrong");
-        });
+    updateProjectData(
+      { data: { ...project.data, [key]: value } },
+      "Data updated!"
+    );
   };
 
   return (

@@ -40,9 +40,12 @@ const ProjectDashboard = (): ReactElement => {
         })
         .catch(() => alert("Something went wrong"))
         .finally(() => setLoading(false));
-  }, [currentUser]);
+  }, [currentUser, uid, router]);
 
-  const updateProjectData = (value: ObjectMap): Promise<void> | void => {
+  const updateProjectData = (
+    value: ObjectMap,
+    message = "Success!"
+  ): Promise<void> | void => {
     if (!project?.uid) {
       alert("Something went wrong");
       return;
@@ -53,7 +56,7 @@ const ProjectDashboard = (): ReactElement => {
         setProject((curr) => {
           return curr ? { ...curr, ...value } : { ...project, ...value };
         });
-        alert("Saved successfully!");
+        alert(message);
       })
       .catch(() => {
         alert("Something went wrong!");
@@ -135,7 +138,12 @@ const ProjectDashboard = (): ReactElement => {
                 {secret.value != project?.secret && (
                   <button
                     className="btn btn-gray h-10 rounded-md"
-                    onClick={() => updateProjectData({ secret: secret.value })}
+                    onClick={() =>
+                      updateProjectData(
+                        { secret: secret.value },
+                        "Secret updated!"
+                      )
+                    }
                   >
                     change
                   </button>
@@ -147,7 +155,10 @@ const ProjectDashboard = (): ReactElement => {
             <div className="pt-6 pb-8">
               <h2 className="font-semibold pb-4">Data:</h2>
               {project && (
-                <ProjectDatas project={project} setProject={setProject} />
+                <ProjectDatas
+                  project={project}
+                  updateProjectData={updateProjectData}
+                />
               )}
             </div>
 
@@ -155,7 +166,10 @@ const ProjectDashboard = (): ReactElement => {
             <div className="pt-6 pb-8">
               <h2 className="font-semibold pb-4">Endpoints:</h2>
               {project && (
-                <Endpoints project={project} setProject={setProject} />
+                <Endpoints
+                  project={project}
+                  updateProjectData={updateProjectData}
+                />
               )}
             </div>
 

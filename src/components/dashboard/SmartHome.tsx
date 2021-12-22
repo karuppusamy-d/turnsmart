@@ -8,7 +8,10 @@ import DeleteIcon from "@/components/icons/delete.svg";
 
 interface Props {
   project: ProjectData;
-  updateProjectData: (value: ObjectMap) => Promise<void> | void;
+  updateProjectData: (
+    value: ObjectMap,
+    message?: string
+  ) => Promise<void> | void;
 }
 
 const SmartHome = ({ project, updateProjectData }: Props): ReactElement => {
@@ -22,7 +25,7 @@ const SmartHome = ({ project, updateProjectData }: Props): ReactElement => {
   };
 
   const handleSave = (): Promise<void> | void => {
-    return updateProjectData({ smarthome: data });
+    return updateProjectData({ smarthome: data }, "Saved successfully!");
   };
 
   const handleReset = (): void => {
