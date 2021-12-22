@@ -3,14 +3,12 @@ import Link from "next/link";
 import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
 import SocialIcon from "@/components/social-icons";
-import { useAuthContext } from "@/components/contexts/useAuthContext";
 
 const Home = (): ReactElement => {
-  const { currentUser } = useAuthContext();
   return (
     <>
       <PageSeo
-        title="Home"
+        title={`Home | ${siteMetadata.title}`}
         description={siteMetadata.description}
         url={siteMetadata.siteUrl}
       />
@@ -24,27 +22,20 @@ const Home = (): ReactElement => {
               Hi,
               <br /> Welcome
               <br />
-              {currentUser?.displayName || "To our website"}
+              to turnsmart
+              <span className="text-primary-400 dark:text-primary-500">
+                .io
+              </span>
             </h1>
-            {currentUser ? (
-              <Link href="/dashboard">
-                <a
-                  className="btn text-[0.85rem] sm:text-base"
-                  aria-label="Dashboard"
-                >
-                  Dashboard
-                </a>
-              </Link>
-            ) : (
-              <Link href="/login">
-                <a
-                  className="btn text-[0.85rem] sm:text-base"
-                  aria-label="Login"
-                >
-                  Login
-                </a>
-              </Link>
-            )}
+            <Link href="https://github.com/karuppusamy-d/turnsmart-examples.git">
+              <a
+                className="btn text-[0.85rem] sm:text-base"
+                aria-label="Example projects"
+                target="_blank"
+              >
+                Go to examples
+              </a>
+            </Link>
           </div>
         </div>
         <div className="flex my-12 text-2xl space-x-5">

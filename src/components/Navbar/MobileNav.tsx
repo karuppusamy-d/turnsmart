@@ -66,7 +66,7 @@ const MobileNav = (): ReactElement => {
 
           <div className="px-8 py-4">
             <Link
-              href="https://karuppusamy.me/about"
+              href="/about"
               className="text-base font-semibold tracking-wider"
               onClick={onToggleNav}
             >

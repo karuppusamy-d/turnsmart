@@ -1,9 +1,9 @@
 import { ReactElement } from "react";
-import Logo from "@/data/logo.svg";
 import Link from "@/components/Link";
 import MobileNav from "./MobileNav";
 import ThemeSwitch from "./ThemeSwitch";
 import { useAuthContext } from "@/components/contexts/useAuthContext";
+// import Logo from "@/data/logo.svg";
 
 const Navbar = (): ReactElement => {
   const { currentUser, logout } = useAuthContext();
@@ -12,10 +12,10 @@ const Navbar = (): ReactElement => {
       <div className="fixed top-0 inset-x-0 bg-white dark:bg-gray-900 z-50 shadow-light dark:shadow-dark">
         <nav className="flex items-center justify-between text-gray-800 dark:text-gray-100 mx-auto px-6 py-4 md:py-5 xl:px-0 max-w-5xl">
           <Link href="/" className="flex items-center justify-between text-xl">
-            <Logo aria-label="turnsmart.io" className="fill-primary-400" />
-            {/* <div className="text-xl font-bold ">
+            {/* <Logo aria-label="turnsmart.io" className="fill-primary-400" /> */}
+            <div className="text-xl font-bold ">
               turnsmart<span className="text-primary-400">.io</span>
-            </div> */}
+            </div>
           </Link>
 
           <div className="flex items-center text-base leading-5">
@@ -24,10 +24,7 @@ const Navbar = (): ReactElement => {
                 Home
               </Link>
 
-              <Link
-                href="https://karuppusamy.me/about"
-                className="px-1 md:px-4 font-semibold"
-              >
+              <Link href="/about" className="px-1 md:px-4 font-semibold">
                 About
               </Link>
 
