@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-onchange */
-import { Fragment, ReactElement, useState } from "react";
+import { FormEventHandler, Fragment, ReactElement, useState } from "react";
 import { ProjectData } from "@/utils/firebase";
 import { deviceTypes } from "@/lib/smarthome/deviceTypes";
 import { ObjectMap } from "@/lib/smarthome";
@@ -17,6 +17,7 @@ interface Props {
 const SmartHome = ({ project, updateProjectData }: Props): ReactElement => {
   const [data, setData] = useState(project.smarthome);
 
+  // TODO: Fix this loading default value
   const [newTrait, setNewTrait] = useState("action.devices.traits.OnOff");
   const newTraitData = deviceTraits[newTrait as DeviceTraits]?.states || [];
 
@@ -30,6 +31,24 @@ const SmartHome = ({ project, updateProjectData }: Props): ReactElement => {
 
   const handleReset = (): void => {
     setData(project.smarthome);
+  };
+
+  const handleAddTrait: FormEventHandler<HTMLFormElement> = (e): void => {
+    // Prevent default form submit
+    e.preventDefault();
+
+    // Get Form data
+    const formData = new FormData(e.currentTarget);
+    const object: ObjectMap = {};
+    formData.forEach((value, key) => (object[key] = value));
+    const { traitName, ...traitData } = object;
+
+    const newData = {
+      traits: { ...data.traits, [traitName]: traitData },
+    };
+    // console.log(newData);
+    setData((curr) => ({ ...curr, ...newData }));
+    // updateProjectData({ smarthome: newData }, "Added successfully!");
   };
 
   return (
@@ -71,9 +90,9 @@ const SmartHome = ({ project, updateProjectData }: Props): ReactElement => {
 
           {/* Display Traits */}
           <tr>
-            <td colSpan={2} className="pt-6 pl-4">
-              <div className="text- font-bold pb-4">Traits</div>
-              <div className="p-3 border-t-[1px] border-gray-200 dark:border-gray-600"></div>
+            <td colSpan={2} className="pt-6">
+              <div className="font-bold pb-4 ml-4">Traits</div>
+              <div className="p-3 ml-4 border-t-[1px] border-gray-200 dark:border-gray-600"></div>
             </td>
           </tr>
 
@@ -160,60 +179,69 @@ const SmartHome = ({ project, updateProjectData }: Props): ReactElement => {
 
           {/* Add new trait */}
           <tr>
-            <td colSpan={2} className="pt-6 pl-4">
-              <div className="text- font-bold pb-4">New Trait</div>
-              <div className="p-3 border-t-[1px] border-gray-200 dark:border-gray-600"></div>
-            </td>
-          </tr>
+            <td colSpan={2} className="pt-6 col-span-2">
+              <form onSubmit={handleAddTrait}>
+                <div className="font-bold pb-4 ml-4">New Trait</div>
+                <div className="p-3 ml-4 border-t-[1px] border-gray-200 dark:border-gray-600"></div>
 
-          <tr>
-            <td className="px-4 py-2 font-medium">Trait type</td>
-            <td>
-              <select
-                name="type"
-                className="input mt-0 w-full"
-                value={newTrait}
-                onChange={(e) => setNewTrait(e.target.value)}
-              >
-                {Object.entries(deviceTraits).map(([name, data], index) => {
-                  if (Object.keys(project.smarthome.traits).includes(name))
-                    return null;
-                  return (
-                    <option key={index} value={name} title={data.description}>
-                      {data.name}
-                    </option>
-                  );
-                })}
-              </select>
-            </td>
-          </tr>
-          {newTraitData.map(([name, type], index) => (
-            <tr key={index}>
-              <td className="p-4 font-light break-words">{name}</td>
-              <td>
-                <select name={name} className="input mt-0 w-full">
-                  {Object.entries(project.endpoints || {}).map(
-                    ([name, endpointType], index) => {
-                      if (type != endpointType) return null;
-                      return (
-                        <option key={index} value={name}>
-                          {name}
-                        </option>
-                      );
-                    }
-                  )}
-                </select>
-              </td>
-            </tr>
-          ))}
+                {/* Trait Type */}
+                <div className="grid grid-cols-2 grid-flow-col pb-4">
+                  <div className="px-4 py-2 font-medium">Trait name</div>
+                  <select
+                    name="traitName"
+                    className="input mt-0 w-full"
+                    value={newTrait}
+                    onChange={(e) => setNewTrait(e.target.value)}
+                  >
+                    {Object.entries(deviceTraits).map(
+                      ([typeName, typeData], index) => {
+                        if (Object.keys(data.traits).includes(typeName))
+                          return null;
+                        return (
+                          <option
+                            key={index}
+                            value={typeName}
+                            title={typeData.description}
+                          >
+                            {typeData.name}
+                          </option>
+                        );
+                      }
+                    )}
+                  </select>
+                </div>
 
-          <tr>
-            <td colSpan={2}>
-              <div className="flex justify-end mt-2">
-                <button title="Add new trait" className="btn btn-gray text-sm">
-                  Add
-                </button>
-              </div>
+                {/* Trait Endpoints */}
+                {newTraitData.map(([name, type], index) => (
+                  <div key={index} className="grid grid-cols-2 grid-flow-col">
+                    <div className="p-4 font-light break-words">{name}</div>
+                    <div>
+                      <select name={name} className="input mt-0 w-full">
+                        {Object.entries(project.endpoints || {}).map(
+                          ([name, endpointType], index) => {
+                            if (type != endpointType) return null;
+                            return (
+                              <option key={index} value={name}>
+                                {name}
+                              </option>
+                            );
+                          }
+                        )}
+                      </select>
+                    </div>
+                  </div>
+                ))}
+                {/* Submit Button */}
+                <div className="flex justify-end mt-2">
+                  <button
+                    title="Add new trait"
+                    className="btn btn-gray text-sm"
+                    type="submit"
+                  >
+                    Add
+                  </button>
+                </div>
+              </form>
             </td>
           </tr>
           {/* End add new trait */}
