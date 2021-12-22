@@ -38,9 +38,12 @@ const ProjectDashboard = (): ReactElement => {
             });
           }
         })
-        .catch(() => alert("Something went wrong"))
+        .catch((e) => {
+          alert("Something went wrong");
+          console.log(e);
+        })
         .finally(() => setLoading(false));
-  }, [currentUser, uid, router]);
+  }, [currentUser]);
 
   const updateProjectData = (
     value: ObjectMap,

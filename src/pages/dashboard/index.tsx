@@ -33,7 +33,7 @@ const Dashboard = (): ReactElement => {
         }
         setLoading(false);
       });
-  }, [currentUser, router]);
+  }, [currentUser]);
 
   return (
     <>
