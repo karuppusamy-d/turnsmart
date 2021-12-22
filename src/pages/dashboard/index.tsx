@@ -16,7 +16,7 @@ const Dashboard = (): ReactElement => {
 
   const [projects, setProjects] = useState<ProjectData[]>([]);
 
-  const togglePopup = () => setshowPopup((curr) => !curr);
+  const togglePopup = (): void => setshowPopup((curr) => !curr);
 
   useEffect(() => {
     // When not logged in
@@ -33,7 +33,7 @@ const Dashboard = (): ReactElement => {
         }
         setLoading(false);
       });
-  }, [currentUser]);
+  }, [currentUser, router]);
 
   return (
     <>
@@ -55,7 +55,7 @@ const Dashboard = (): ReactElement => {
               <div className="font-bold mb-2">{project.name}</div>
               <div className="text-sm">
                 {project.description.length > 50
-                  ? project.description.substr(0, 50) + "..."
+                  ? project.description.substring(0, 50) + "..."
                   : project.description}
               </div>
             </Link>

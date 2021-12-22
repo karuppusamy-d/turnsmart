@@ -12,6 +12,7 @@ import Loading from "@/components/dashboard/Loading";
 // Icons
 import ShowIcon from "@/components/icons/show.svg";
 import HideIcon from "@/components/icons/hide.svg";
+import { ObjectMap } from "@/lib/smarthome";
 
 const ProjectDashboard = (): ReactElement => {
   const router = useRouter();
@@ -41,20 +42,22 @@ const ProjectDashboard = (): ReactElement => {
         .finally(() => setLoading(false));
   }, [currentUser]);
 
-  const handleSecretChange = () => {
-    project?.uid &&
-      updateProject(project.uid, { secret: secret.value })
-        .then(() => {
-          setProject((curr) => {
-            return curr
-              ? { ...curr, secret: secret.value }
-              : { ...project, secret: secret.value };
-          });
-          alert("Success");
-        })
-        .catch(() => {
-          alert("Something went wrong");
+  const updateProjectData = (value: ObjectMap): Promise<void> | void => {
+    if (!project?.uid) {
+      alert("Something went wrong");
+      return;
+    }
+
+    return updateProject(project.uid, value)
+      .then(() => {
+        setProject((curr) => {
+          return curr ? { ...curr, ...value } : { ...project, ...value };
         });
+        alert("Saved successfully!");
+      })
+      .catch(() => {
+        alert("Something went wrong!");
+      });
   };
 
   return (
@@ -85,16 +88,14 @@ const ProjectDashboard = (): ReactElement => {
               </label>
 
               <div className="flex pt-2 pb-6 gap-4 items-center">
-                <div className="relative">
-                  <input
-                    className="input h-10 inline m-0"
-                    id="project_id"
-                    type="text"
-                    value={project?.uid}
-                    title="Project ID"
-                    disabled
-                  />
-                </div>
+                <input
+                  className="input h-10 w-full inline m-0"
+                  id="project_id"
+                  type="text"
+                  value={project?.uid}
+                  title="Project ID"
+                  disabled
+                />
               </div>
 
               {/* Secret Key */}
@@ -103,9 +104,9 @@ const ProjectDashboard = (): ReactElement => {
               </label>
 
               <div className="flex pt-2 pb-8 gap-4 items-center">
-                <div className="relative">
+                <div className="relative w-full">
                   <input
-                    className="input h-10 inline m-0"
+                    className="input h-10 w-full inline m-0"
                     id="secret"
                     type={secret.show ? "text" : "password"}
                     value={secret.value}
@@ -134,7 +135,7 @@ const ProjectDashboard = (): ReactElement => {
                 {secret.value != project?.secret && (
                   <button
                     className="btn btn-gray h-10 rounded-md"
-                    onClick={handleSecretChange}
+                    onClick={() => updateProjectData({ secret: secret.value })}
                   >
                     change
                   </button>
@@ -162,7 +163,10 @@ const ProjectDashboard = (): ReactElement => {
             <div className="pt-6 pb-8">
               <h2 className="font-semibold pb-4">Smart Home:</h2>
               {project && (
-                <SmartHome project={project} setProject={setProject} />
+                <SmartHome
+                  project={project}
+                  updateProjectData={updateProjectData}
+                />
               )}
             </div>
           </div>
