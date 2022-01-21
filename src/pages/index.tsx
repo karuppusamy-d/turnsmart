@@ -7,11 +7,13 @@ import SocialIcon from "@/components/social-icons";
 const Home = (): ReactElement => {
   return (
     <>
+      {/* SEO */}
       <PageSeo
         title={`Home | ${siteMetadata.title}`}
         description={siteMetadata.description}
         url={siteMetadata.siteUrl}
       />
+
       <div
         className="flex flex-col mb-10"
         style={{ height: "calc( 100vh - 78px )" }}
@@ -38,6 +40,8 @@ const Home = (): ReactElement => {
             </Link>
           </div>
         </div>
+
+        {/* Social Icons */}
         <div className="flex my-12 text-2xl space-x-5">
           <SocialIcon kind="gmail" href={`mailto:${siteMetadata.email}`} />
           <SocialIcon kind="facebook" href={siteMetadata.facebook} />

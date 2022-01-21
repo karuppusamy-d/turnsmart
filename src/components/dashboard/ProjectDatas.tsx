@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { ProjectData } from "@/utils/firebase";
 import { ObjectMap } from "@/lib/smarthome";
 
@@ -10,7 +10,9 @@ interface Props {
   ) => Promise<void> | void;
 }
 
+// Component to display the project data
 const ProjectDatas = ({ project, updateProjectData }: Props): ReactElement => {
+  // Function to update the project data
   const updateData = (key: string, value: number | boolean): void => {
     updateProjectData(
       { data: { ...project.data, [key]: value } },
@@ -28,6 +30,7 @@ const ProjectDatas = ({ project, updateProjectData }: Props): ReactElement => {
                 <td className="p-4 font-medium">{key}</td>
                 <td>
                   {project?.endpoints[key] === "number" ? (
+                    // Input for number
                     <input
                       title={key}
                       className="input mt-0 w-full"
@@ -37,6 +40,7 @@ const ProjectDatas = ({ project, updateProjectData }: Props): ReactElement => {
                       onChange={(e) => updateData(key, +e.target.value)}
                     />
                   ) : project?.endpoints[key] === "color" ? (
+                    // Input for color
                     <input
                       title={key}
                       className="input py-1.5 mt-0 w-full h-[42px]"
@@ -52,6 +56,7 @@ const ProjectDatas = ({ project, updateProjectData }: Props): ReactElement => {
                       }}
                     />
                   ) : (
+                    // Input for boolean
                     <select
                       title={key}
                       className="input mt-0 w-full"

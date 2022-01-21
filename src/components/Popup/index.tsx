@@ -17,6 +17,7 @@ const Popup = ({ children, showPopup, togglePopup }: Props): ReactElement => {
         {children}
       </div>
 
+      {/* Overlay to blur background */}
       <button
         type="button"
         aria-label="toggle popup"

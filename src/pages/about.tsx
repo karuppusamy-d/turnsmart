@@ -6,6 +6,7 @@ import siteMetadata from "@/data/siteMetadata.json";
 const Home = (): ReactElement => {
   return (
     <>
+      {/* SEO */}
       <PageSeo
         title={`About | ${siteMetadata.title}`}
         description={siteMetadata.description}
@@ -31,7 +32,7 @@ const Home = (): ReactElement => {
 
           <Link href="https://github.com/karuppusamy-d/turnsmart-examples.git">
             <a
-              className="btn text-[0.85rem] sm:text-base"
+              className="btn text-[0.75rem] sm:text-sm"
               aria-label="Example projects"
               target="_blank"
             >

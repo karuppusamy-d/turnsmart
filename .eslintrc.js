@@ -43,6 +43,9 @@ module.exports = {
           { usePrettierrc: true },
         ],
 
+        // Disable wrong eslint warning: useEffect has missing dependencies 'router'
+        "react-hooks/exhaustive-deps": "off",
+
         // We will use TypeScript's types for component props instead
         "react/prop-types": "off",
 

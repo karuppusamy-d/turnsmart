@@ -24,6 +24,7 @@ Router.events.on("routeChangeError", progress.finish);
 
 const App = ({ Component, pageProps }: AppProps): ReactElement => {
   return (
+    // Theme Provider is used to provide the theme to the entire application
     <ThemeProvider
       defaultTheme="system"
       disableTransitionOnChange
@@ -32,8 +33,13 @@ const App = ({ Component, pageProps }: AppProps): ReactElement => {
       <Head>
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
+
+      {/* Default SEO  */}
       <DefaultSeo {...SEO} />
+
+      {/* Provider for authentication */}
       <AuthProvider>
+        {/* Navbar and Footer */}
         <LayoutWrapper>
           <Component {...pageProps} />
         </LayoutWrapper>

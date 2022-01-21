@@ -6,6 +6,7 @@ const MobileNav = (): ReactElement => {
   const [navShow, setNavShow] = useState(false);
   const { currentUser, logout } = useAuthContext();
 
+  // Function to toggle navbar
   const onToggleNav = (): void => {
     setNavShow((status) => {
       if (status) {
@@ -20,6 +21,7 @@ const MobileNav = (): ReactElement => {
 
   return (
     <div className="md:hidden">
+      {/* Hamburger menu button */}
       <button
         type="button"
         className="w-8 h-8 ml-1 mr-1 rounded flex focus:outline-none focus-visible:ring-2 focus:ring-gray-800 dark:focus:ring-gray-200"
@@ -48,11 +50,13 @@ const MobileNav = (): ReactElement => {
         </svg>
       </button>
 
+      {/* Mobile navigation menu */}
       <div
         className={`fixed w-9/12 h-full top-16 right-0 bg-gray-200 dark:bg-gray-800 z-10 ease-in-out duration-500 ${
           navShow ? "translate-x-0" : "translate-x-full"
         }`}
       >
+        {/* Navbar links */}
         <div className="fixed h-full mt-4">
           <div className="px-8 py-4">
             <Link
@@ -74,6 +78,7 @@ const MobileNav = (): ReactElement => {
             </Link>
           </div>
 
+          {/* Show Dashboard and Logout only if user is logged in */}
           {currentUser ? (
             <>
               <div className="px-8 py-4">
@@ -98,6 +103,7 @@ const MobileNav = (): ReactElement => {
               </div>
             </>
           ) : (
+            // Show Login if user is not logged in
             <div className="px-8 py-4">
               <Link
                 href="/login"
@@ -111,6 +117,7 @@ const MobileNav = (): ReactElement => {
         </div>
       </div>
 
+      {/* Navbar overlay to blur the background */}
       <button
         type="button"
         aria-label="toggle navmenu"

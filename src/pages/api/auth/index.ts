@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import { auth, firestore } from "@/utils/firebase/admin";
-import randomPassword from "@/lib/randomPassword";
+import randomString from "@/lib/randomString";
 import { createHash } from "crypto";
 
 type handlerType = (
@@ -43,7 +43,7 @@ const handler: handlerType = async (req, res) => {
       const docRef = firestore.collection("authorization_codes").doc(uid);
 
       // Create new authorization code
-      const authorization_code = randomPassword(10);
+      const authorization_code = randomString(10);
 
       const hashedCode = createHash("sha256")
         .update(authorization_code)

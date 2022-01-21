@@ -18,6 +18,7 @@ const Navbar = (): ReactElement => {
             </div>
           </Link>
 
+          {/* Navbar links */}
           <div className="flex items-center text-base leading-5">
             <div className="hidden md:block">
               <Link href="/" className="px-1 md:px-4 font-semibold">
@@ -28,6 +29,7 @@ const Navbar = (): ReactElement => {
                 About
               </Link>
 
+              {/* Show Dashboard and Logout only if user is logged in */}
               {currentUser ? (
                 <>
                   <Link
@@ -51,6 +53,7 @@ const Navbar = (): ReactElement => {
               )}
             </div>
 
+            {/* Show profile photo if user is logged in */}
             {currentUser && (
               <Link
                 href="/profile"
@@ -66,7 +69,10 @@ const Navbar = (): ReactElement => {
               </Link>
             )}
 
+            {/* Theme switcher */}
             <ThemeSwitch />
+
+            {/* Mobile navigation */}
             <MobileNav />
           </div>
         </nav>

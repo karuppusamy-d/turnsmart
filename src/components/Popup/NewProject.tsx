@@ -9,7 +9,7 @@ import {
 import { useAuthContext } from "@/components/contexts/useAuthContext";
 
 import { addProject, ProjectData } from "@/utils/firebase";
-import randomPassword from "@/lib/randomPassword";
+import randomString from "@/lib/randomString";
 
 interface Props {
   togglePopup: () => void;
@@ -22,6 +22,7 @@ const NewProject = ({ togglePopup, setProjects }: Props): ReactElement => {
   const nameRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
 
+  // Function to handle form submission
   async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
     if (!nameRef.current || !descriptionRef.current)
@@ -32,7 +33,7 @@ const NewProject = ({ togglePopup, setProjects }: Props): ReactElement => {
     if (currentUser?.uid) {
       const name = nameRef.current.value;
       const description = descriptionRef.current.value;
-      const secret = randomPassword(25);
+      const secret = randomString(25);
 
       const project: ProjectData = {
         name: name,
@@ -71,6 +72,7 @@ const NewProject = ({ togglePopup, setProjects }: Props): ReactElement => {
         New project
       </h2>
 
+      {/* Input for name */}
       <label className="font-semibold text-xs" htmlFor="name">
         Name
       </label>
@@ -83,18 +85,20 @@ const NewProject = ({ togglePopup, setProjects }: Props): ReactElement => {
         required
       />
 
-      <label className="font-semibold text-xs mt-6" htmlFor="discription">
+      {/* Input for description */}
+      <label className="font-semibold text-xs mt-6" htmlFor="description">
         Description
       </label>
       <textarea
         className="input"
-        id="discription"
+        id="description"
         rows={4}
         maxLength={100}
         ref={descriptionRef}
         required
       />
 
+      {/* Error messages */}
       {error && (
         <div className="mt-3 text-xs font-medium text-red-500 dark:text-red-400">
           {error}
@@ -102,6 +106,7 @@ const NewProject = ({ togglePopup, setProjects }: Props): ReactElement => {
       )}
 
       <div className="flex gap-2 mt-8">
+        {/* Cancel button */}
         <button
           className="btn btn-red h-10 rounded w-full"
           onClick={togglePopup}
@@ -109,6 +114,7 @@ const NewProject = ({ togglePopup, setProjects }: Props): ReactElement => {
           Cancel
         </button>
 
+        {/* Submit button */}
         <button className="btn h-10 rounded w-full" type="submit">
           Create
         </button>

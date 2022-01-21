@@ -1,4 +1,4 @@
-import { FormEvent, ReactElement, useRef, useState } from "react";
+import { FormEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
@@ -17,11 +17,16 @@ const Signup = (): ReactElement => {
   const passwordConfirmRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState({ type: "", message: "" });
   const { currentUser, signup, loginWithPopup } = useAuthContext();
-
   const router = useRouter();
-  if (currentUser) router.push("/");
 
+  useEffect(() => {
+    // Redirect to dashboard if user is already logged in
+    if (currentUser) router.push("/dashboard");
+  }, [currentUser]);
+
+  // Function to handle error
   const handleError = (ele: HTMLInputElement, message: string): void => {
+    // Add error class to the element
     ele.classList.add("error");
 
     // To Remove error class on value change
@@ -34,12 +39,17 @@ const Signup = (): ReactElement => {
       { once: true }
     );
 
+    // Focus on the element
     ele.focus();
+    // Set error message
     setError({ type: ele.id, message });
   };
 
+  // Function to handle signup form submit
   async function handleSignup(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
+
+    // Check if email and password are not empty
     if (
       !emailRef.current ||
       !passwordRef.current ||
@@ -50,21 +60,26 @@ const Signup = (): ReactElement => {
         message: "Someting went wrong",
       });
 
+    // Reset error
     setError({ type: "", message: "" });
 
     try {
+      // Get email, password and passwordConfirm
       const email = emailRef.current.value;
       const password = passwordRef.current.value;
       const passwordConfirm = passwordConfirmRef.current.value;
 
+      // Check if password and passwordConfirm are equal
       if (password !== passwordConfirm)
         return handleError(
           passwordConfirmRef.current,
           "Passwords didn’t match"
         );
 
+      // Signup with email and password
       await signup(email, password);
     } catch (err) {
+      // Handle error
       switch ((err as FirebaseError).code) {
         case "auth/email-already-in-use":
           handleError(emailRef.current, "Email already in use");
@@ -89,6 +104,7 @@ const Signup = (): ReactElement => {
 
   return (
     <>
+      {/* SEO */}
       <PageSeo
         title={`Sign up | ${siteMetadata.title}`}
         url={`${siteMetadata.siteUrl}/signup`}
@@ -97,11 +113,13 @@ const Signup = (): ReactElement => {
 
       <div className="py-20 min-h-[80vh]">
         <div className="p-8 sm:p-12 sm:max-w-lg m-auto rounded shadow-light dark:bg-gray-800">
+          {/* Signup form */}
           <form className="flex flex-col" onSubmit={handleSignup}>
             <h2 className="text-primary-400 dark:text-gray-100 text-center text-3xl font-bold mb-8">
               Sign up
             </h2>
 
+            {/* Email Input */}
             <label className="font-semibold text-xs" htmlFor="email">
               Email
             </label>
@@ -113,12 +131,14 @@ const Signup = (): ReactElement => {
               required
             />
 
+            {/* Email error message */}
             {error.type == "email" && (
               <div className="mt-3 text-xs font-medium text-red-500 dark:text-red-400">
                 {error.message}
               </div>
             )}
 
+            {/* Password Input */}
             <label className="font-semibold text-xs mt-6" htmlFor="password">
               Password
             </label>
@@ -131,12 +151,14 @@ const Signup = (): ReactElement => {
               minLength={6}
             />
 
+            {/* Password error message */}
             {error.type == "password" && (
               <div className="mt-3 text-xs font-medium text-red-500 dark:text-red-400">
                 {error.message}
               </div>
             )}
 
+            {/* Password Confirm Input */}
             <label
               className="font-semibold text-xs mt-6"
               htmlFor="passwordConfirm"
@@ -152,18 +174,21 @@ const Signup = (): ReactElement => {
               minLength={6}
             />
 
+            {/* Password confirm error message */}
             {error.type == "passwordConfirm" && (
               <div className="mt-3 text-xs font-medium text-red-500 dark:text-red-400">
                 {error.message}
               </div>
             )}
 
+            {/* Signup Button */}
             <button className="btn h-10 mt-8 rounded" type="submit">
               Sign Up
             </button>
           </form>
 
           <div className="flex mt-6 justify-center text-xs">
+            {/* Link to forgot password page */}
             <Link
               href="/forgot_password"
               className="text-primary-400 hover:text-primary-500"
@@ -171,6 +196,7 @@ const Signup = (): ReactElement => {
               Forgot Password
             </Link>
             <span className="mx-2 text-gray-300 dark:text-gray-400">/</span>
+            {/* Link to login page */}
             <Link
               href="/login"
               className="text-primary-400 hover:text-primary-500"
@@ -186,6 +212,7 @@ const Signup = (): ReactElement => {
           </div>
 
           <div className="flex justify-center space-x-3">
+            {/* Log in with Google */}
             <button
               onClick={() => loginWithPopup(new GoogleAuthProvider())}
               aria-label="Log in with Google"
@@ -217,6 +244,7 @@ const Signup = (): ReactElement => {
                 </g>
               </svg>
             </button>
+            {/* Log in with Twitter */}
             <button
               onClick={() => loginWithPopup(new TwitterAuthProvider())}
               aria-label="Log in with Twitter"
@@ -234,6 +262,7 @@ const Signup = (): ReactElement => {
                 ></path>
               </svg>
             </button>
+            {/* Log in with GitHub */}
             <button
               onClick={() => loginWithPopup(new GithubAuthProvider())}
               aria-label="Log in with GitHub"

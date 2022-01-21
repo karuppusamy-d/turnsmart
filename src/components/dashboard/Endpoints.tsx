@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/no-onchange */
 import { FormEvent, ReactElement, useRef } from "react";
 import { ProjectData } from "@/utils/firebase";
 
@@ -18,13 +17,17 @@ const Endpoints = ({ project, updateProjectData }: Props): ReactElement => {
   const inputRef = useRef<HTMLInputElement>(null);
   const selectRef = useRef<HTMLSelectElement>(null);
 
+  // Function to add a new endpoint
   const handleAddEndpoint = (e: FormEvent): void => {
     e.preventDefault();
+    // Get Form data
     const key = inputRef.current?.value;
     const value = selectRef.current?.value;
 
+    // Check if key and value are present
     if (!key || !value) return alert("Someting went wrong");
 
+    // Data to be updated
     const updatedData = {
       endpoints: {
         ...project.endpoints,
@@ -36,10 +39,13 @@ const Endpoints = ({ project, updateProjectData }: Props): ReactElement => {
       },
     };
 
+    // Update the data
     updateProjectData(updatedData, "Endpoint added!");
   };
 
+  // Function to delete an endpoint
   const deleteEndpoint = (key: string): void => {
+    // Project data
     const updatedData = {
       endpoints: project.endpoints,
       data: project.data,
@@ -49,13 +55,16 @@ const Endpoints = ({ project, updateProjectData }: Props): ReactElement => {
     delete updatedData.endpoints[key];
     delete updatedData.data[key];
 
+    // Update the data
     updateProjectData(updatedData, "Endpoint deleted!");
   };
 
+  // Function to update an endpoint
   const updateEndpoint = (
     key: string,
     value: "number" | "boolean" | "color"
   ): void => {
+    // Data to be updated
     const updatedData = {
       endpoints: { ...project.endpoints, [key]: value },
       data: {
@@ -64,6 +73,7 @@ const Endpoints = ({ project, updateProjectData }: Props): ReactElement => {
       },
     };
 
+    // Update the data
     updateProjectData(updatedData, "Endpoint updated!");
   };
 
@@ -75,7 +85,9 @@ const Endpoints = ({ project, updateProjectData }: Props): ReactElement => {
           {Object.entries(project?.endpoints || {}).map(([key, value]) => {
             return (
               <tr key={key}>
+                {/* Display the endpoint name */}
                 <td className="px-4 py-2 font-medium">{key}</td>
+                {/* Display the endpoint type */}
                 <td className="py-2 flex items-center">
                   <select
                     title={key}
@@ -92,6 +104,7 @@ const Endpoints = ({ project, updateProjectData }: Props): ReactElement => {
                     <option value="number">number</option>
                     <option value="color">color</option>
                   </select>
+                  {/* Button to remove the endpoint */}
                   <button
                     title="Remove endpoint"
                     className="text-red-400 dark:text-red-500 ml-3"
@@ -110,6 +123,7 @@ const Endpoints = ({ project, updateProjectData }: Props): ReactElement => {
           {/* Create New Endpoint */}
           <tr>
             <td className="px-4 py-2">
+              {/* Input for new endpoint name */}
               <form onSubmit={handleAddEndpoint}>
                 <input
                   title="new endpoint name"
@@ -120,6 +134,7 @@ const Endpoints = ({ project, updateProjectData }: Props): ReactElement => {
                 />
               </form>
             </td>
+            {/* Input for new endpoint type */}
             <td className="py-2 flex items-center">
               <select
                 title="new endpoint type"
@@ -132,6 +147,7 @@ const Endpoints = ({ project, updateProjectData }: Props): ReactElement => {
                 <option value="color">color</option>
               </select>
 
+              {/* Button to add new endpoint */}
               <button
                 title="Add endpoint"
                 className="text-primary-400 dark:text-primary-500 ml-3"

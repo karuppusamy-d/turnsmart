@@ -13,30 +13,39 @@ const Dashboard = (): ReactElement => {
   const { currentUser } = useAuthContext();
   const [loading, setLoading] = useState(true);
   const [showPopup, setshowPopup] = useState(false);
-
   const [projects, setProjects] = useState<ProjectData[]>([]);
 
+  // Function to toggle the new project popup
   const togglePopup = (): void => setshowPopup((curr) => !curr);
 
   useEffect(() => {
     // When not logged in
     if (!currentUser) router.push("/");
 
+    // Get projects from firestore
     if (currentUser?.uid)
-      getProjectsByUserId(currentUser.uid).then((docs) => {
-        if (!docs.empty) {
-          setProjects(
-            docs.docs.map((doc) => {
-              return { ...doc.data(), uid: doc.id };
-            })
-          );
-        }
-        setLoading(false);
-      });
+      getProjectsByUserId(currentUser.uid)
+        .then((docs) => {
+          // If there are projects
+          if (!docs.empty) {
+            setProjects(
+              docs.docs.map((doc) => {
+                return { ...doc.data(), uid: doc.id };
+              })
+            );
+          }
+        })
+        .catch((e) => {
+          // Error handling
+          alert("Something went wrong");
+          console.log(e);
+        })
+        .finally(() => setLoading(false));
   }, [currentUser]);
 
   return (
     <>
+      {/* SEO */}
       <PageSeo
         title={`Dashboard | ${siteMetadata.title}`}
         url={`${siteMetadata.siteUrl}/dashboard`}
@@ -45,7 +54,7 @@ const Dashboard = (): ReactElement => {
 
       <div className="py-20 min-h-[80vh]">
         <div className="grid gap-8 grid-cols-card auto-rows-[1fr]">
-          {/* Projects */}
+          {/* Projects View */}
           {projects.map((project, key) => (
             <Link
               href={`/dashboard/${project.uid}`}
@@ -61,7 +70,7 @@ const Dashboard = (): ReactElement => {
             </Link>
           ))}
 
-          {/* New Project */}
+          {/* New Project Button */}
           {!loading && (
             <button
               className="p-10 rounded-xl shadow-light dark:bg-gray-800 hover:shadow-light-lg dark:hover:ring-1 dark:hover:ring-gray-700 duration-500"
@@ -101,6 +110,7 @@ const Dashboard = (): ReactElement => {
             ))}
         </div>
 
+        {/* New projects popup */}
         <Popup showPopup={showPopup} togglePopup={togglePopup}>
           <NewProject togglePopup={togglePopup} setProjects={setProjects} />
         </Popup>

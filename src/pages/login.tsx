@@ -17,12 +17,13 @@ const Login = (): ReactElement => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState({ type: "", message: "" });
   const { currentUser, login, loginWithPopup } = useAuthContext();
-
   const router = useRouter();
+
   useEffect(() => {
     if (currentUser) {
       // Redirect to dashboard if user is already logged in
       if (!router.query.redirect_uri) router.push("/dashboard");
+      // Redirect to the page specified in the query string `redirect_url`
       else {
         // Show the progress bar
         let progress: ProgressBar | void;
@@ -69,7 +70,9 @@ const Login = (): ReactElement => {
     }
   }, [currentUser]);
 
+  // Function to handle error
   const handleError = (ele: HTMLInputElement, message: string): void => {
+    // Add error class to the element
     ele.classList.add("error");
 
     // To Remove error class on value change
@@ -82,23 +85,32 @@ const Login = (): ReactElement => {
       { once: true }
     );
 
+    // Focus on the element
     ele.focus();
+    // Set error message
     setError({ type: ele.id, message });
   };
 
+  // Function to handle login form submit
   async function handleLogin(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
+
+    // Check if email and password are not empty
     if (!emailRef.current || !passwordRef.current)
       return setError({ type: "password", message: "Someting went wrong" });
 
+    // Reset error
     setError({ type: "", message: "" });
 
     try {
+      // Get email and password
       const email = emailRef.current.value;
       const password = passwordRef.current.value;
 
+      // Login with email and password
       await login(email, password);
     } catch (err) {
+      // Handle error
       switch ((err as FirebaseError).code) {
         case "auth/invalid-email":
           handleError(emailRef.current, "Please enter valid email");
@@ -129,6 +141,7 @@ const Login = (): ReactElement => {
 
   return (
     <>
+      {/* SEO */}
       <PageSeo
         title={`Login | ${siteMetadata.title}`}
         url={`${siteMetadata.siteUrl}/login`}
@@ -137,11 +150,13 @@ const Login = (): ReactElement => {
 
       <div className="py-20 min-h-[80vh]">
         <div className="p-8 sm:p-12 sm:max-w-lg m-auto rounded shadow-light dark:bg-gray-800">
+          {/* Login form */}
           <form className="flex flex-col" onSubmit={handleLogin}>
             <h2 className="text-primary-400 dark:text-gray-100 text-center text-3xl font-bold mb-8">
               Login
             </h2>
 
+            {/* Email Input */}
             <label className="font-semibold text-xs" htmlFor="email">
               Email
             </label>
@@ -153,12 +168,14 @@ const Login = (): ReactElement => {
               required
             />
 
+            {/* Email error message */}
             {error.type == "email" && (
               <div className="mt-3 text-xs font-medium text-red-500 dark:text-red-400">
                 {error.message}
               </div>
             )}
 
+            {/* Password Input */}
             <label className="font-semibold text-xs mt-6" htmlFor="password">
               Password
             </label>
@@ -171,18 +188,21 @@ const Login = (): ReactElement => {
               minLength={6}
             />
 
+            {/* Password error message */}
             {error.type == "password" && (
               <div className="mt-3 text-xs font-medium text-red-500 dark:text-red-400">
                 {error.message}
               </div>
             )}
 
+            {/* Login Button */}
             <button className="btn h-10 mt-8 rounded" type="submit">
               Login
             </button>
           </form>
 
           <div className="flex mt-6 justify-center text-xs">
+            {/* Link to forgot password page */}
             <Link
               href="/forgot_password"
               className="text-primary-400 hover:text-primary-500"
@@ -190,6 +210,7 @@ const Login = (): ReactElement => {
               Forgot Password
             </Link>
             <span className="mx-2 text-gray-300 dark:text-gray-400">/</span>
+            {/* Link to signup page */}
             <Link
               href="/signup"
               className="text-primary-400 hover:text-primary-500"
@@ -205,6 +226,7 @@ const Login = (): ReactElement => {
           </div>
 
           <div className="flex justify-center space-x-3">
+            {/* Log in with Google */}
             <button
               onClick={() => loginWithPopup(new GoogleAuthProvider())}
               aria-label="Log in with Google"
@@ -236,6 +258,7 @@ const Login = (): ReactElement => {
                 </g>
               </svg>
             </button>
+            {/* Log in with Twitter */}
             <button
               onClick={() => loginWithPopup(new TwitterAuthProvider())}
               aria-label="Log in with Twitter"
@@ -253,6 +276,7 @@ const Login = (): ReactElement => {
                 ></path>
               </svg>
             </button>
+            {/* Log in with GitHub */}
             <button
               onClick={() => loginWithPopup(new GithubAuthProvider())}
               aria-label="Log in with GitHub"

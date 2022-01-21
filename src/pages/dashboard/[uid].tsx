@@ -27,9 +27,11 @@ const ProjectDashboard = (): ReactElement => {
     // When not logged in
     if (!currentUser) router.push("/");
 
+    // Get project data from firestore
     if (currentUser?.uid)
       getProjectByUID(uid)
         .then((doc) => {
+          // If there is a project
           if (doc.exists()) {
             const data = doc.data();
             setProject({ ...data, uid: doc.id });
@@ -39,26 +41,33 @@ const ProjectDashboard = (): ReactElement => {
           }
         })
         .catch((e) => {
+          // Error handling
           alert("Something went wrong");
           console.log(e);
         })
         .finally(() => setLoading(false));
   }, [currentUser]);
 
+  // Function to update project data
   const updateProjectData = (
     value: ObjectMap,
     message = "Success!"
   ): Promise<void> | void => {
+    // If project data is not loaded
     if (!project?.uid) {
       alert("Something went wrong");
       return;
     }
 
+    // Update project data
     return updateProject(project.uid, value)
       .then(() => {
+        // Update local project data
         setProject((curr) => {
           return curr ? { ...curr, ...value } : { ...project, ...value };
         });
+
+        // Show success message
         alert(message);
       })
       .catch(() => {
@@ -68,6 +77,7 @@ const ProjectDashboard = (): ReactElement => {
 
   return (
     <>
+      {/* SEO */}
       <PageSeo
         title={`${project?.name || siteMetadata.title} | Dashboard`}
         url={`${siteMetadata.siteUrl}/dashboard`}
@@ -138,6 +148,7 @@ const ProjectDashboard = (): ReactElement => {
                   </div>
                 </div>
 
+                {/* Change secret button */}
                 {secret.value != project?.secret && (
                   <button
                     className="btn btn-gray h-10 rounded-md"
@@ -154,7 +165,7 @@ const ProjectDashboard = (): ReactElement => {
               </div>
             </div>
 
-            {/* Datas */}
+            {/* Project Datas */}
             <div className="pt-6 pb-8">
               <h2 className="font-semibold pb-4">Data:</h2>
               {project && (

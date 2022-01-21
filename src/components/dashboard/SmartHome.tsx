@@ -21,18 +21,22 @@ const SmartHome = ({ project, updateProjectData }: Props): ReactElement => {
   const [newTrait, setNewTrait] = useState("action.devices.traits.OnOff");
   const newTraitData = deviceTraits[newTrait as DeviceTraits]?.states || [];
 
+  // Function to update the data
   const updateData = (value: ObjectMap): void => {
     setData((curr) => ({ ...curr, ...value }));
   };
 
+  // Function to handle the save button
   const handleSave = (): Promise<void> | void => {
     return updateProjectData({ smarthome: data }, "Saved successfully!");
   };
 
+  // Function to handle the reset button
   const handleReset = (): void => {
     setData(project.smarthome);
   };
 
+  // Function to handle the add trait button
   const handleAddTrait: FormEventHandler<HTMLFormElement> = (e): void => {
     // Prevent default form submit
     e.preventDefault();
@@ -46,9 +50,9 @@ const SmartHome = ({ project, updateProjectData }: Props): ReactElement => {
     const newData = {
       traits: { ...data.traits, [traitName]: traitData },
     };
-    // console.log(newData);
+
+    // Update the data
     setData((curr) => ({ ...curr, ...newData }));
-    // updateProjectData({ smarthome: newData }, "Added successfully!");
   };
 
   return (
@@ -251,9 +255,11 @@ const SmartHome = ({ project, updateProjectData }: Props): ReactElement => {
             <td colSpan={2} className="pt-6 pl-4">
               <div className="p-3 border-t-[1px] border-gray-200 dark:border-gray-600" />
               <div className="flex justify-end">
+                {/* Button to reset the settings */}
                 <button onClick={handleReset} className="btn btn-red w-28">
                   Reset
                 </button>
+                {/* Button to save the settings */}
                 <button onClick={handleSave} className="btn ml-4 w-28">
                   Save
                 </button>

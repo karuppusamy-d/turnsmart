@@ -2,6 +2,17 @@ import { ReactElement } from "react";
 import { NextSeo } from "next-seo";
 import siteMetadata from "@/data/siteMetadata.json";
 
+type PageSeoType = ({
+  title,
+  description,
+  url,
+}: {
+  title: string;
+  description: string;
+  url: string;
+}) => ReactElement;
+
+// Default SEO data
 const SEO = {
   title: siteMetadata.title,
   description: siteMetadata.description,
@@ -33,16 +44,13 @@ const SEO = {
   ],
 };
 
-type PageSeoType = ({
-  title,
-  description,
-  url,
-}: {
-  title: string;
-  description: string;
-  url: string;
-}) => ReactElement;
-
+/**
+ * Function to generate SEO tags for a page
+ * @param title - page title
+ * @param description - page description
+ * @param url - page url
+ * @returns NextSeo component
+ */
 const PageSeo: PageSeoType = ({ title, description, url }) => {
   return (
     <NextSeo
