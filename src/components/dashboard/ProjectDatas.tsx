@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import { ProjectData } from "@/utils/firebase";
 import { ObjectMap } from "@/lib/smarthome";
 
@@ -13,7 +13,7 @@ interface Props {
 // Component to display the project data
 const ProjectDatas = ({ project, updateProjectData }: Props): ReactElement => {
   // Timeout to avoid too many updates in color picker
-  let colorTimeout: NodeJS.Timeout | null;
+  const [colorTimeout, setColorTimeout] = useState<NodeJS.Timeout | null>(null);
 
   // Function to update the project data
   const updateData = (key: string, value: number | boolean): void => {
@@ -54,13 +54,18 @@ const ProjectDatas = ({ project, updateProjectData }: Props): ReactElement => {
                       onChange={(e) => {
                         const colorHex = e.target.value.slice(1);
                         // clear timeout if exists
-                        if (colorTimeout) clearTimeout(colorTimeout);
+                        if (colorTimeout) {
+                          clearTimeout(colorTimeout);
+                          setColorTimeout(null);
+                        }
 
                         // Set new timeout to update color after 1000ms
-                        colorTimeout = setTimeout(() => {
-                          updateData(key, parseInt(colorHex, 16));
-                          colorTimeout = null;
-                        }, 1000);
+                        setColorTimeout(
+                          setTimeout(() => {
+                            updateData(key, parseInt(colorHex, 16));
+                            setColorTimeout(null);
+                          }, 1000)
+                        );
                       }}
                     />
                   ) : (
