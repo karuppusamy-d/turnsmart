@@ -1,5 +1,11 @@
 /* eslint-disable jsx-a11y/no-onchange */
-import { FormEventHandler, Fragment, ReactElement, useState } from "react";
+import {
+  FormEventHandler,
+  Fragment,
+  ReactElement,
+  useEffect,
+  useState,
+} from "react";
 import { ProjectData } from "@/utils/firebase";
 import { deviceTypes } from "@/lib/smarthome/deviceTypes";
 import { ObjectMap } from "@/lib/smarthome";
@@ -16,10 +22,18 @@ interface Props {
 
 const SmartHome = ({ project, updateProjectData }: Props): ReactElement => {
   const [data, setData] = useState(project.smarthome);
+  const [newTrait, setNewTrait] = useState("");
+  const newTraitStates = deviceTraits[newTrait as DeviceTraits]?.states || [];
 
-  // TODO: Fix this loading default value
-  const [newTrait, setNewTrait] = useState("action.devices.traits.OnOff");
-  const newTraitData = deviceTraits[newTrait as DeviceTraits]?.states || [];
+  useEffect(() => {
+    // Find the available trait and set it as default
+    const traits = Object.keys(data.traits);
+    const available = Object.keys(deviceTraits).find(
+      (curr) => !traits.includes(curr)
+    );
+
+    setNewTrait(available || "");
+  }, [data.traits]);
 
   // Function to update the data
   const updateData = (value: ObjectMap): void => {
@@ -188,7 +202,7 @@ const SmartHome = ({ project, updateProjectData }: Props): ReactElement => {
                 <div className="font-bold pb-4 ml-4">New Trait</div>
                 <div className="p-3 ml-4 border-t-[1px] border-gray-200 dark:border-gray-600"></div>
 
-                {/* Trait Type */}
+                {/* New Trait Type */}
                 <div className="grid grid-cols-2 grid-flow-col pb-4">
                   <div className="px-4 py-2 font-medium">Trait name</div>
                   <select
@@ -198,16 +212,17 @@ const SmartHome = ({ project, updateProjectData }: Props): ReactElement => {
                     onChange={(e) => setNewTrait(e.target.value)}
                   >
                     {Object.entries(deviceTraits).map(
-                      ([typeName, typeData], index) => {
-                        if (Object.keys(data.traits).includes(typeName))
-                          return null;
+                      ([traitName, traitData], index) => {
+                        // Skip if trait is already added
+                        if (data.traits[traitName as DeviceTraits]) return null;
+
                         return (
                           <option
                             key={index}
-                            value={typeName}
-                            title={typeData.description}
+                            value={traitName}
+                            title={traitData.description}
                           >
-                            {typeData.name}
+                            {traitData.name}
                           </option>
                         );
                       }
@@ -215,18 +230,19 @@ const SmartHome = ({ project, updateProjectData }: Props): ReactElement => {
                   </select>
                 </div>
 
-                {/* Trait Endpoints */}
-                {newTraitData.map(([name, type], index) => (
+                {/* New Trait Endpoints */}
+                {newTraitStates.map(([name, type], index) => (
                   <div key={index} className="grid grid-cols-2 grid-flow-col">
                     <div className="p-4 font-light break-words">{name}</div>
                     <div>
                       <select name={name} className="input mt-0 w-full">
                         {Object.entries(project.endpoints || {}).map(
-                          ([name, endpointType], index) => {
+                          ([endpointName, endpointType], index) => {
+                            // Skip if endpoint type is not compatible
                             if (type != endpointType) return null;
                             return (
-                              <option key={index} value={name}>
-                                {name}
+                              <option key={index} value={endpointName}>
+                                {endpointName}
                               </option>
                             );
                           }
@@ -235,6 +251,7 @@ const SmartHome = ({ project, updateProjectData }: Props): ReactElement => {
                     </div>
                   </div>
                 ))}
+
                 {/* Submit Button */}
                 <div className="flex justify-end mt-2">
                   <button
