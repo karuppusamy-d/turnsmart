@@ -12,6 +12,9 @@ interface Props {
 
 // Component to display the project data
 const ProjectDatas = ({ project, updateProjectData }: Props): ReactElement => {
+  // Timeout to avoid too many updates in color picker
+  let colorTimeout: NodeJS.Timeout | null;
+
   // Function to update the project data
   const updateData = (key: string, value: number | boolean): void => {
     updateProjectData(
@@ -40,7 +43,7 @@ const ProjectDatas = ({ project, updateProjectData }: Props): ReactElement => {
                       onChange={(e) => updateData(key, +e.target.value)}
                     />
                   ) : project?.endpoints[key] === "color" ? (
-                    // Input for color
+                    // Input color picker
                     <input
                       title={key}
                       className="input py-1.5 mt-0 w-full h-[42px]"
@@ -50,9 +53,14 @@ const ProjectDatas = ({ project, updateProjectData }: Props): ReactElement => {
                       }
                       onChange={(e) => {
                         const colorHex = e.target.value.slice(1);
-                        console.log(parseInt(colorHex, 16));
-                        // TODO: update color only after user selects a color
-                        // updateData(key, parseInt(colorHex, 16));
+                        // clear timeout if exists
+                        if (colorTimeout) clearTimeout(colorTimeout);
+
+                        // Set new timeout to update color after 1000ms
+                        colorTimeout = setTimeout(() => {
+                          updateData(key, parseInt(colorHex, 16));
+                          colorTimeout = null;
+                        }, 1000);
                       }}
                     />
                   ) : (
