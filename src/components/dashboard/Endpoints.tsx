@@ -1,10 +1,10 @@
 import { FormEvent, ReactElement, useRef } from "react";
 import { ProjectData } from "@/utils/firebase";
+import { useAlertContext } from "../contexts/useAlertContext";
 
 import AddIcon from "@/components/icons/add.svg";
 import DeleteIcon from "@/components/icons/delete.svg";
 import { ObjectMap } from "@/lib/smarthome";
-import { useAlertContext } from "../contexts/useAlert";
 
 interface Props {
   project: ProjectData;

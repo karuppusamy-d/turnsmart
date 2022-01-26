@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
 import { useAuthContext } from "@/components/contexts/useAuthContext";
-import { useAlertContext } from "@/components/contexts/useAlert";
+import { useAlertContext } from "@/components/contexts/useAlertContext";
 import { getProjectByUID, ProjectData, updateProject } from "@/utils/firebase";
 import ProjectDatas from "@/components/dashboard/ProjectDatas";
 import Endpoints from "@/components/dashboard/Endpoints";

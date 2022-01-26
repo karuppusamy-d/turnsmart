@@ -38,9 +38,9 @@ const AlertProvider: AlertProviderType = ({ children }) => {
 
   /**
    * Show an alert popup
-   * @param message Message to be shown
-   * @param type Type of alert (default, success, error)
-   * @param timeout Timeout in milliseconds (2000ms by default)
+   * @param message - Message to be shown
+   * @param type - Type of alert (default, success, error)
+   * @param timeout - Timeout in milliseconds (2000ms by default)
    * @returns void
    */
   const showAlert: ShowAlert = (message, type = "default", timeout = 2000) => {

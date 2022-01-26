@@ -8,7 +8,7 @@ import ProgressBar from "@badrap/bar-of-progress";
 import { SEO } from "@/components/SEO";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import { AuthProvider } from "@/components/contexts/useAuthContext";
-import { AlertProvider } from "@/components/contexts/useAlert";
+import { AlertProvider } from "@/components/contexts/useAlertContext";
 
 import "@/styles/globals.css";
 

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
 import { useAuthContext } from "@/components/contexts/useAuthContext";
-import { useAlertContext } from "@/components/contexts/useAlert";
+import { useAlertContext } from "@/components/contexts/useAlertContext";
 import { getProjectsByUserId, ProjectData } from "@/utils/firebase";
 import Popup from "@/components/Popup";
 import NewProject from "@/components/Popup/NewProject";

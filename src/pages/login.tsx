@@ -4,7 +4,7 @@ import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
 import Link from "@/components/Link";
 import { useAuthContext } from "@/components/contexts/useAuthContext";
-import { useAlertContext } from "@/components/contexts/useAlert";
+import { useAlertContext } from "@/components/contexts/useAlertContext";
 import {
   GoogleAuthProvider,
   TwitterAuthProvider,
