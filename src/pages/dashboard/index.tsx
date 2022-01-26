@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
 import { useAuthContext } from "@/components/contexts/useAuthContext";
+import { useAlertContext } from "@/components/contexts/useAlert";
 import { getProjectsByUserId, ProjectData } from "@/utils/firebase";
 import Popup from "@/components/Popup";
 import NewProject from "@/components/Popup/NewProject";
@@ -14,6 +15,7 @@ const Dashboard = (): ReactElement => {
   const [loading, setLoading] = useState(true);
   const [showPopup, setshowPopup] = useState(false);
   const [projects, setProjects] = useState<ProjectData[]>([]);
+  const { showAlert } = useAlertContext();
 
   // Function to toggle the new project popup
   const togglePopup = (): void => setshowPopup((curr) => !curr);
@@ -37,8 +39,8 @@ const Dashboard = (): ReactElement => {
         })
         .catch((e) => {
           // Error handling
-          alert("Something went wrong");
-          console.log(e);
+          showAlert("Something went wrong", "error");
+          console.error(e);
         })
         .finally(() => setLoading(false));
   }, [currentUser]);

@@ -49,7 +49,7 @@ const handler: handlerType = async (req, res) => {
         return res.status(404).json({ message: "Not Found" });
       })
       .catch((error) => {
-        console.log("Something went wrong", error);
+        console.error("Something went wrong", error);
         return res.status(500).json({ message: "Something went wrong" });
       });
   }
@@ -121,7 +121,7 @@ const handler: handlerType = async (req, res) => {
         return res.status(404).json({ message: "Not Found" });
       })
       .catch((error) => {
-        console.log("Something went wrong", error);
+        console.error("Something went wrong", error);
         return res.status(500).json({ message: "Something went wrong" });
       });
   }

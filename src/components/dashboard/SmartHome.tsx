@@ -42,7 +42,7 @@ const SmartHome = ({ project, updateProjectData }: Props): ReactElement => {
 
   // Function to handle the save button
   const handleSave = (): Promise<void> | void => {
-    return updateProjectData({ smarthome: data }, "Saved successfully!");
+    return updateProjectData({ smarthome: data }, "Updated Successfully!");
   };
 
   // Function to handle the reset button

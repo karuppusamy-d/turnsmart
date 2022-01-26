@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
 import { useAuthContext } from "@/components/contexts/useAuthContext";
+import { useAlertContext } from "@/components/contexts/useAlert";
 import { getProjectByUID, ProjectData, updateProject } from "@/utils/firebase";
 import ProjectDatas from "@/components/dashboard/ProjectDatas";
 import Endpoints from "@/components/dashboard/Endpoints";
@@ -17,6 +18,7 @@ import { ObjectMap } from "@/lib/smarthome";
 const ProjectDashboard = (): ReactElement => {
   const router = useRouter();
   const { currentUser } = useAuthContext();
+  const { showAlert } = useAlertContext();
 
   const { uid } = router.query as { uid: string };
   const [project, setProject] = useState<ProjectData | null>(null);
@@ -42,8 +44,8 @@ const ProjectDashboard = (): ReactElement => {
         })
         .catch((e) => {
           // Error handling
-          alert("Something went wrong");
-          console.log(e);
+          showAlert("Something went wrong", "error");
+          console.error(e);
         })
         .finally(() => setLoading(false));
   }, [currentUser]);
@@ -55,7 +57,7 @@ const ProjectDashboard = (): ReactElement => {
   ): Promise<void> | void => {
     // If project data is not loaded
     if (!project?.uid) {
-      alert("Something went wrong");
+      showAlert("Something went wrong", "error");
       return;
     }
 
@@ -68,10 +70,10 @@ const ProjectDashboard = (): ReactElement => {
         });
 
         // Show success message
-        alert(message);
+        showAlert(message, "success");
       })
       .catch(() => {
-        alert("Something went wrong!");
+        showAlert("Something went wrong", "error");
       });
   };
 

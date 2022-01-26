@@ -4,12 +4,14 @@ import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
 import Link from "@/components/Link";
 import { useAuthContext } from "@/components/contexts/useAuthContext";
+import { useAlertContext } from "@/components/contexts/useAlert";
 import { FirebaseError } from "@firebase/util";
 
 const ForgotPassword = (): ReactElement => {
   const emailRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState({ type: "", message: "" });
   const { currentUser, resetPassword } = useAuthContext();
+  const { showAlert } = useAlertContext();
   const router = useRouter();
 
   useEffect(() => {
@@ -36,6 +38,7 @@ const ForgotPassword = (): ReactElement => {
     ele.focus();
     // Set error message
     setStatus({ type: "error", message });
+    showAlert(message, "error");
   };
 
   // Function to handle form submit

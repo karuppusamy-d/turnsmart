@@ -4,6 +4,7 @@ import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
 import Link from "@/components/Link";
 import { useAuthContext } from "@/components/contexts/useAuthContext";
+import { useAlertContext } from "@/components/contexts/useAlert";
 import {
   GoogleAuthProvider,
   TwitterAuthProvider,
@@ -17,6 +18,7 @@ const Signup = (): ReactElement => {
   const passwordConfirmRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState({ type: "", message: "" });
   const { currentUser, signup, loginWithPopup } = useAuthContext();
+  const { showAlert } = useAlertContext();
   const router = useRouter();
 
   useEffect(() => {
@@ -43,6 +45,7 @@ const Signup = (): ReactElement => {
     ele.focus();
     // Set error message
     setError({ type: ele.id, message });
+    showAlert(message, "error");
   };
 
   // Function to handle signup form submit
@@ -82,7 +85,7 @@ const Signup = (): ReactElement => {
       // Handle error
       switch ((err as FirebaseError).code) {
         case "auth/email-already-in-use":
-          handleError(emailRef.current, "Email already in use");
+          handleError(emailRef.current, "Account already exists");
           break;
         case "auth/invalid-email":
           handleError(emailRef.current, "Please enter valid email");

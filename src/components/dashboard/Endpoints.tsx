@@ -4,6 +4,7 @@ import { ProjectData } from "@/utils/firebase";
 import AddIcon from "@/components/icons/add.svg";
 import DeleteIcon from "@/components/icons/delete.svg";
 import { ObjectMap } from "@/lib/smarthome";
+import { useAlertContext } from "../contexts/useAlert";
 
 interface Props {
   project: ProjectData;
@@ -16,6 +17,7 @@ interface Props {
 const Endpoints = ({ project, updateProjectData }: Props): ReactElement => {
   const inputRef = useRef<HTMLInputElement>(null);
   const selectRef = useRef<HTMLSelectElement>(null);
+  const { showAlert } = useAlertContext();
 
   // Function to add a new endpoint
   const handleAddEndpoint = (e: FormEvent): void => {
@@ -23,9 +25,8 @@ const Endpoints = ({ project, updateProjectData }: Props): ReactElement => {
     // Get Form data
     const key = inputRef.current?.value;
     const value = selectRef.current?.value;
-
     // Check if key and value are present
-    if (!key || !value) return alert("Someting went wrong");
+    if (!key || !value) return showAlert("Someting went wrong", "error");
 
     // Data to be updated
     const updatedData = {
@@ -40,7 +41,7 @@ const Endpoints = ({ project, updateProjectData }: Props): ReactElement => {
     };
 
     // Update the data
-    updateProjectData(updatedData, "Endpoint added!");
+    updateProjectData(updatedData, "Endpoint added successfully!");
   };
 
   // Function to delete an endpoint
@@ -56,7 +57,7 @@ const Endpoints = ({ project, updateProjectData }: Props): ReactElement => {
     delete updatedData.data[key];
 
     // Update the data
-    updateProjectData(updatedData, "Endpoint deleted!");
+    updateProjectData(updatedData, "Endpoint deleted successfully!");
   };
 
   // Function to update an endpoint
@@ -74,7 +75,7 @@ const Endpoints = ({ project, updateProjectData }: Props): ReactElement => {
     };
 
     // Update the data
-    updateProjectData(updatedData, "Endpoint updated!");
+    updateProjectData(updatedData, "Endpoint updated successfully!");
   };
 
   return (

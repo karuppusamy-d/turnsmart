@@ -19,7 +19,7 @@ const ProjectDatas = ({ project, updateProjectData }: Props): ReactElement => {
   const updateData = (key: string, value: number | boolean): void => {
     updateProjectData(
       { data: { ...project.data, [key]: value } },
-      "Data updated!"
+      "Updated successfully!"
     );
   };
 

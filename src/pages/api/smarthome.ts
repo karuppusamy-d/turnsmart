@@ -183,7 +183,7 @@ app.onExecute(async ({ requestId, inputs }, uid) => {
           },
         } as SmartHomeExecuteResponseCommands;
       } catch (e) {
-        console.log(e);
+        console.error(e);
 
         return {
           ids: [id],

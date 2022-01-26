@@ -8,6 +8,7 @@ import ProgressBar from "@badrap/bar-of-progress";
 import { SEO } from "@/components/SEO";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import { AuthProvider } from "@/components/contexts/useAuthContext";
+import { AlertProvider } from "@/components/contexts/useAlert";
 
 import "@/styles/globals.css";
 
@@ -39,10 +40,13 @@ const App = ({ Component, pageProps }: AppProps): ReactElement => {
 
       {/* Provider for authentication */}
       <AuthProvider>
-        {/* Navbar and Footer */}
-        <LayoutWrapper>
-          <Component {...pageProps} />
-        </LayoutWrapper>
+        {/* Provider for alert popup */}
+        <AlertProvider>
+          {/* Navbar and Footer */}
+          <LayoutWrapper>
+            <Component {...pageProps} />
+          </LayoutWrapper>
+        </AlertProvider>
       </AuthProvider>
     </ThemeProvider>
   );

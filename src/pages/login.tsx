@@ -4,6 +4,7 @@ import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
 import Link from "@/components/Link";
 import { useAuthContext } from "@/components/contexts/useAuthContext";
+import { useAlertContext } from "@/components/contexts/useAlert";
 import {
   GoogleAuthProvider,
   TwitterAuthProvider,
@@ -17,6 +18,7 @@ const Login = (): ReactElement => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState({ type: "", message: "" });
   const { currentUser, login, loginWithPopup } = useAuthContext();
+  const { showAlert } = useAlertContext();
   const router = useRouter();
 
   useEffect(() => {
@@ -38,7 +40,10 @@ const Login = (): ReactElement => {
                 delay: 100,
               });
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+              showAlert("Something went wrong", "error");
+              console.error(error);
+            });
           progress && progress.start();
         })();
 
@@ -64,7 +69,7 @@ const Login = (): ReactElement => {
           })
           .catch(() => {
             progress && progress.start();
-            alert("Something went wrong.");
+            showAlert("Something went wrong", "error");
           });
       }
     }
@@ -89,6 +94,7 @@ const Login = (): ReactElement => {
     ele.focus();
     // Set error message
     setError({ type: ele.id, message });
+    showAlert(message, "error");
   };
 
   // Function to handle login form submit

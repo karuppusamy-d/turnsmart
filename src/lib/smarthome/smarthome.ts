@@ -39,7 +39,7 @@ export const smarthome = (jwt_secret: string): SmartHomeApp => {
 
         return res.json(result);
       } catch (err: any) {
-        console.log(err.name);
+        console.error(err.name);
         if (err.name == "TokenExpiredError") {
           res.setHeader("WWW-Authenticate", `error="invalid_token"`);
           return res.status(401).send("The Access Token expired");
