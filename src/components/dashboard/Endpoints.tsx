@@ -26,7 +26,7 @@ const Endpoints = ({ project, updateProjectData }: Props): ReactElement => {
     const key = inputRef.current?.value;
     const value = selectRef.current?.value;
     // Check if key and value are present
-    if (!key || !value) return showAlert("Someting went wrong", "error");
+    if (!key || !value) return showAlert("Something went wrong", "error");
 
     // Data to be updated
     const updatedData = {

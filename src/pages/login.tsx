@@ -103,7 +103,7 @@ const Login = (): ReactElement => {
 
     // Check if email and password are not empty
     if (!emailRef.current || !passwordRef.current)
-      return setError({ type: "password", message: "Someting went wrong" });
+      return setError({ type: "password", message: "Something went wrong" });
 
     // Reset error
     setError({ type: "", message: "" });
@@ -140,7 +140,7 @@ const Login = (): ReactElement => {
           });
           break;
         default:
-          setError({ type: "password", message: "Someting went wrong" });
+          setError({ type: "password", message: "Something went wrong" });
       }
     }
   }

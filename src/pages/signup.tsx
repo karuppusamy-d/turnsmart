@@ -60,7 +60,7 @@ const Signup = (): ReactElement => {
     )
       return setError({
         type: "passwordConfirm",
-        message: "Someting went wrong",
+        message: "Something went wrong",
       });
 
     // Reset error
@@ -100,7 +100,10 @@ const Signup = (): ReactElement => {
           );
           break;
         default:
-          setError({ type: "passwordConfirm", message: "Someting went wrong" });
+          setError({
+            type: "passwordConfirm",
+            message: "Something went wrong",
+          });
       }
     }
   }

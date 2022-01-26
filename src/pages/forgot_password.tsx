@@ -47,7 +47,7 @@ const ForgotPassword = (): ReactElement => {
 
     // Check if email is valid
     if (!emailRef.current)
-      return setStatus({ type: "error", message: "Someting went wrong" });
+      return setStatus({ type: "error", message: "Something went wrong" });
 
     // Reset message
     setStatus({ type: "", message: "" });
@@ -86,7 +86,7 @@ const ForgotPassword = (): ReactElement => {
           });
           break;
         default:
-          setStatus({ type: "error", message: "Someting went wrong" });
+          setStatus({ type: "error", message: "Something went wrong" });
       }
     }
   }

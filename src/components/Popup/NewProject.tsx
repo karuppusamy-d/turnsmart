@@ -26,7 +26,7 @@ const NewProject = ({ togglePopup, setProjects }: Props): ReactElement => {
   async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
     if (!nameRef.current || !descriptionRef.current)
-      return setError("Someting went wrong");
+      return setError("Something went wrong");
 
     setError("");
 
@@ -58,7 +58,7 @@ const NewProject = ({ togglePopup, setProjects }: Props): ReactElement => {
           nameRef.current?.form?.reset();
         })
         .catch(() => {
-          setError("Someting went wrong");
+          setError("Something went wrong");
         });
     }
   }
