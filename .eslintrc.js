@@ -58,6 +58,9 @@ module.exports = {
         // Anoying rule that doesn't allow us to have a onClick event handler without a keyboard event handler
         "jsx-a11y/click-events-have-key-events": "off",
 
+        // Anoying rule that doesn't allow us to have a onClick event handler in a non-interactive element
+        "jsx-a11y/no-noninteractive-element-interactions": "off",
+
         // Why would you want unused vars?
         "@typescript-eslint/no-unused-vars": ["error"],
 
