@@ -15,7 +15,9 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   updateEmail as updateEmailAuth,
+  updateProfile as updateProfileAuth,
   updatePassword as updatePasswordAuth,
+  sendEmailVerification,
   User,
   UserCredential,
   AuthProvider as Provider,
@@ -35,7 +37,12 @@ type ContextValue = {
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   updateEmail: (email: string) => Promise<void> | null;
+  updateProfile: (data: {
+    displayName?: string | null | undefined;
+    photoURL?: string | null | undefined;
+  }) => Promise<void> | null;
   updatePassword: (password: string) => Promise<void> | null;
+  verifyEmail: () => Promise<void> | null;
 };
 
 // Create the context
@@ -102,10 +109,21 @@ const AuthProvider: AuthProviderType = ({ children }) => {
   /**
    * Updates the user's email address.
    * @param email - new email of the user
-   * @returns
    */
   const updateEmail = (email: string): Promise<void> | null => {
-    return auth.currentUser && updateEmailAuth(auth.currentUser, email);
+    return currentUser && updateEmailAuth(currentUser, email);
+  };
+
+  /**
+   * Updates the username and/or photo URL of the user.
+   * @param displayName - new display name of the user
+   * @param photoURL - new photo url of the user
+   */
+  const updateProfile = (data: {
+    displayName?: string | null | undefined;
+    photoURL?: string | null | undefined;
+  }): Promise<void> | null => {
+    return currentUser && updateProfileAuth(currentUser, data);
   };
 
   /**
@@ -113,7 +131,14 @@ const AuthProvider: AuthProviderType = ({ children }) => {
    * @param password - new password of the user
    */
   const updatePassword = (password: string): Promise<void> | null => {
-    return auth.currentUser && updatePasswordAuth(auth.currentUser, password);
+    return currentUser && updatePasswordAuth(currentUser, password);
+  };
+
+  /**
+   * Sends a verification email to the current user's email address.
+   */
+  const verifyEmail = (): Promise<void> | null => {
+    return currentUser && sendEmailVerification(currentUser);
   };
 
   // Update the current user on auth state change (login/logout)
@@ -135,7 +160,9 @@ const AuthProvider: AuthProviderType = ({ children }) => {
     logout,
     resetPassword,
     updateEmail,
+    updateProfile,
     updatePassword,
+    verifyEmail,
   };
 
   // Return the provider
