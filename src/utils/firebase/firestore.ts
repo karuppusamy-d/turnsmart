@@ -16,6 +16,8 @@ import {
   deleteDoc,
   updateDoc,
 } from "@firebase/firestore/lite";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+
 import { DeviceTraits, DeviceTraitStates } from "@/lib/smarthome/deviceTraits";
 import { DeviceTypes } from "@/lib/smarthome/deviceTypes";
 
@@ -42,6 +44,7 @@ export type ProjectData = {
 };
 
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 const projectCollection = collection(
   db,
@@ -68,11 +71,19 @@ const getProjectsByUserId = (
 ): Promise<QuerySnapshot<ProjectData>> =>
   getDocs(query(projectCollection, where("userid", "==", userid)));
 
+const uploadProfileImage = async (uid: string, file: File): Promise<string> => {
+  const storageRef = ref(storage, `${uid}/profilePicture/profile`);
+  const snapshot = await uploadBytes(storageRef, file);
+  return getDownloadURL(snapshot.ref);
+};
+
 export {
   db,
+  storage,
   getProjectByUID,
   getProjectsByUserId,
   addProject,
   updateProject,
   deleteProject,
+  uploadProfileImage,
 };
