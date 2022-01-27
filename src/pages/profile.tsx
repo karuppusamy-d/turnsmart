@@ -1,17 +1,155 @@
-import { ReactElement, useEffect } from "react";
+import { FormEvent, ReactElement, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { useAuthContext } from "@/components/contexts/useAuthContext";
+import { useAlertContext } from "@/components/contexts/useAlertContext";
 import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
+import { FirebaseError } from "firebase/app";
+import { uploadProfileImage } from "@/utils/firebase";
 
 const Profile = (): ReactElement => {
-  const { currentUser } = useAuthContext();
+  const {
+    currentUser,
+    updateProfile,
+    updateEmail,
+    verifyEmail,
+    resetPassword,
+  } = useAuthContext();
+  const { showAlert } = useAlertContext();
   const router = useRouter();
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     // When not logged in
     if (!currentUser) router.push("/login");
   }, [currentUser]);
+
+  const handleImageChange = async (): Promise<void> => {
+    const file =
+      imageInputRef.current?.files && imageInputRef.current?.files[0];
+
+    // If no file is selected or user not logged in
+    if (!file || !currentUser?.uid) return;
+
+    if (Math.round(file.size / 1024) > 1100) {
+      showAlert(
+        "Image size is too big. Please select a image less than 1MB",
+        "error"
+      );
+      return;
+    }
+
+    // Upload image to firebase
+    const url = await uploadProfileImage(currentUser?.uid, file).catch(() => {
+      showAlert(
+        "Something went wrong while uploading your profile image",
+        "error"
+      );
+    });
+
+    try {
+      if (url) {
+        // Update profile image url
+        await updateProfile({ photoURL: url });
+        showAlert("Profile image updated successfully", "success");
+      }
+    } catch (err) {
+      handleFirebaseError(err);
+    }
+  };
+
+  const handleEmailVerification = async (): Promise<void> => {
+    try {
+      await verifyEmail();
+      showAlert("Verification link has been sent to your email", "success");
+    } catch (err) {
+      handleFirebaseError(err);
+    }
+  };
+
+  const handleNameChange = async (
+    e: FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    e.preventDefault();
+    try {
+      // Get the name from the input
+      const name = new FormData(e.currentTarget).get("name")?.toString();
+      if (!name) {
+        showAlert("Something went wrong", "error");
+        return;
+      }
+
+      // Update the name
+      await updateProfile({ displayName: name });
+      showAlert("Name updated successfully", "success");
+    } catch (err) {
+      handleFirebaseError(err);
+    }
+  };
+
+  const handleEmailChange = async (
+    e: FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    e.preventDefault();
+    try {
+      // Get the email from the input
+      const email = new FormData(e.currentTarget).get("email")?.toString();
+      if (!email) {
+        showAlert("Something went wrong", "error");
+        return;
+      }
+
+      // Update the email
+      await updateEmail(email);
+      showAlert("Email updated successfully", "success");
+    } catch (err) {
+      handleFirebaseError(err);
+    }
+  };
+
+  const handlePasswordReset = async (): Promise<void> => {
+    try {
+      if (!currentUser?.email) {
+        showAlert("Something went wrong", "error");
+        return;
+      }
+
+      // Send password reset link to the email
+      await resetPassword(currentUser?.email);
+      showAlert("Password reset link has been sent to your email", "success");
+    } catch (err) {
+      handleFirebaseError(err);
+    }
+  };
+
+  const handleFirebaseError = (err: unknown): void => {
+    switch ((err as FirebaseError)?.code) {
+      case "auth/invalid-email":
+        showAlert("Please enter valid email", "error");
+        break;
+      case "auth/email-already-in-use":
+        showAlert("Account already exists", "error");
+        break;
+      case "auth/user-not-found":
+        showAlert("Couldn’t find your account", "error");
+        break;
+      case "auth/wrong-password":
+        showAlert("Please check your password", "error");
+        break;
+      case "auth/too-many-requests":
+        showAlert("Too many attempts, Please try again later", "error");
+        break;
+      case "auth/user-disabled":
+        showAlert("Your account has been disabled", "error");
+        break;
+      case "auth/requires-recent-login":
+        showAlert("Please logout and login again to continue", "error");
+        break;
+      default:
+        showAlert("Something went wrong", "error");
+    }
+    console.error(err);
+  };
 
   return (
     <>
@@ -35,14 +173,21 @@ const Profile = (): ReactElement => {
             {/* Avatar */}
             <div>
               <img
-                alt="profile"
+                alt="avatar"
                 src={currentUser?.photoURL || "/images/profile.svg"}
-                className={`mb-4 object-cover rounded-full w-24 h-24 ${
+                className={`mb-4 object-cover rounded-full w-24 h-24 cursor-pointer ${
                   !currentUser?.photoURL && "dark:invert"
                 }`}
                 onClick={() => {
-                  console.log("Clicked");
+                  imageInputRef.current?.click();
                 }}
+              />
+              <input
+                ref={imageInputRef}
+                type="file"
+                alt="choose profile avatar"
+                className="hidden"
+                onChange={handleImageChange}
               />
             </div>
 
@@ -52,16 +197,23 @@ const Profile = (): ReactElement => {
                 Your Name:
               </label>
 
-              <div className="flex pt-2 gap-4 items-center">
+              <form
+                className="flex pt-2 gap-4 items-center"
+                onSubmit={handleNameChange}
+              >
                 <input
                   className="input h-10 w-full max-w-sm inline m-0"
+                  name="name"
+                  title="Name"
                   id="name"
                   type="text"
-                  value={currentUser?.displayName || "Your name"}
-                  title="Name"
+                  required
+                  defaultValue={currentUser?.displayName || ""}
                 />
-                <button className="btn h-10 w-24 rounded-md">Save</button>
-              </div>
+                <button className="btn h-10 w-24 rounded-md" type="submit">
+                  Save
+                </button>
+              </form>
             </div>
 
             {/* Email */}
@@ -70,21 +222,34 @@ const Profile = (): ReactElement => {
                 Your Email:
               </label>
 
-              <div className="flex pt-2 gap-4 items-center">
+              <form
+                className="flex pt-2 gap-4 items-center"
+                onSubmit={handleEmailChange}
+              >
                 <input
                   className="input h-10 w-full max-w-sm inline m-0"
+                  name="email"
+                  title="Email"
                   id="email"
                   type="email"
-                  value={currentUser?.email || "Your email address"}
-                  title="Name"
+                  required
+                  defaultValue={currentUser?.email || ""}
                 />
                 {!currentUser?.emailVerified && (
-                  <button className="btn btn-red h-10 w-24 rounded-md">
+                  <button
+                    className="btn btn-red h-10 w-24 rounded-md"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      handleEmailVerification();
+                    }}
+                  >
                     Verify
                   </button>
                 )}
-                <button className="btn h-10 w-24 rounded-md">Save</button>
-              </div>
+                <button className="btn h-10 w-24 rounded-md" type="submit">
+                  Save
+                </button>
+              </form>
             </div>
 
             {/* Reset Password */}
@@ -95,7 +260,9 @@ const Profile = (): ReactElement => {
               </p>
 
               <div className="flex gap-4">
-                <button className="btn w-28">Reset</button>
+                <button className="btn w-28" onClick={handlePasswordReset}>
+                  Reset
+                </button>
               </div>
             </div>
 
@@ -107,7 +274,18 @@ const Profile = (): ReactElement => {
               </p>
 
               <div className="flex gap-4">
-                <button className="btn btn-red w-28">Delete</button>
+                <button
+                  className="btn btn-red w-28"
+                  onClick={() => {
+                    showAlert(
+                      "Please contact us to delete your account",
+                      "default",
+                      5000
+                    );
+                  }}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           </div>
