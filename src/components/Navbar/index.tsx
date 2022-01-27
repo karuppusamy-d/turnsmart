@@ -62,7 +62,7 @@ const Navbar = (): ReactElement => {
                 <img
                   alt="profile"
                   src={currentUser.photoURL || "/images/profile.svg"}
-                  className={`object-cover rounded-full ${
+                  className={`object-cover h-full w-full rounded-full ${
                     !currentUser.photoURL && "dark:invert"
                   }`}
                 />
