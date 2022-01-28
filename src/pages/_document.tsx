@@ -26,12 +26,12 @@ class MyDocument extends Document {
           <link
             rel="mask-icon"
             href="/favicons/safari-pinned-tab.svg"
-            color="#2d89ef"
+            color="#0fafff"
           />
           <link rel="shortcut icon" href="/favicons/favicon.ico" />
           <meta name="apple-mobile-web-app-title" content="turnsmart.io" />
           <meta name="application-name" content="turnsmart.io" />
-          <meta name="msapplication-TileColor" content="#2d89ef" />
+          <meta name="msapplication-TileColor" content="#0fafff" />
           <meta
             name="msapplication-config"
             content="/favicons/browserconfig.xml"
