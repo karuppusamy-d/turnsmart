@@ -1,8 +1,10 @@
 {
   "name": "turnsmart.io",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "author": "Karuppusamy",
+  "description": "It is an open-source project created to help people build their own smart home devices without managing cloud infrastructure.",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git@github.com:karuppusamy-d/turnsmart.git"

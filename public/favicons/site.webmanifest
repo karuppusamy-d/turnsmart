@@ -2,7 +2,7 @@
   "name": "turnsmart.io",
   "short_name": "turnsmart.io",
   "start_url": "/",
-  "description": "Create IoT Projects easily with turnsmart.io",
+  "description": "It is an open-source project created to help people build their own smart home devices without managing cloud infrastructure.",
   "display": "standalone",
   "lang": "en",
   "icons": [

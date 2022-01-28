@@ -1,7 +1,7 @@
 {
   "title": "turnsmart.io",
   "author": "Karuppusamy",
-  "description": "Simplifies the process of creating and integrating IoT projects with Google assistant by providing an secure and easy to use API.",
+  "description": "It is an open-source project created to help people build their own smart home devices without managing cloud infrastructure.",
   "language": "en-us",
   "siteUrl": "https://io.karuppusamy.me",
   "siteRepo": "https://github.com/karuppusamy-d/turnsmart",
