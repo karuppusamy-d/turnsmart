@@ -103,7 +103,7 @@ const Login = (): ReactElement => {
 
     // Check if email and password are not empty
     if (!emailRef.current || !passwordRef.current)
-      return setError({ type: "password", message: "Something went wrong" });
+      return showAlert("Something went wrong", "error");
 
     // Reset error
     setError({ type: "", message: "" });
@@ -117,33 +117,46 @@ const Login = (): ReactElement => {
       await login(email, password);
     } catch (err) {
       // Handle error
-      switch ((err as FirebaseError).code) {
-        case "auth/invalid-email":
-          handleError(emailRef.current, "Please enter valid email");
-          break;
-        case "auth/user-not-found":
-          handleError(emailRef.current, "Couldn’t find your account");
-          break;
-        case "auth/wrong-password":
-          handleError(passwordRef.current, "Please check your password");
-          break;
-        case "auth/too-many-requests":
-          handleError(
-            passwordRef.current,
-            "Too many attempts, Please try again later"
-          );
-          break;
-        case "auth/user-disabled":
-          setError({
-            type: "password",
-            message: "Your account has been disabled",
-          });
-          break;
-        default:
-          setError({ type: "password", message: "Something went wrong" });
-      }
+      handleFirebaseError(err);
     }
   }
+
+  const handleFirebaseError = (err: unknown): void => {
+    if (!emailRef.current || !passwordRef.current)
+      return showAlert("Something went wrong", "error");
+
+    switch ((err as FirebaseError).code) {
+      case "auth/popup-closed-by-user":
+        break;
+      case "auth/account-exists-with-different-credential":
+        showAlert("Please use google account to login", "default");
+        break;
+      case "auth/invalid-email":
+        handleError(emailRef.current, "Please enter valid email");
+        break;
+      case "auth/user-not-found":
+        handleError(emailRef.current, "Couldn’t find your account");
+        break;
+      case "auth/wrong-password":
+        handleError(passwordRef.current, "Please check your password");
+        break;
+      case "auth/too-many-requests":
+        handleError(
+          passwordRef.current,
+          "Too many attempts, Please try again later"
+        );
+        break;
+      case "auth/user-disabled":
+        setError({
+          type: "password",
+          message: "Your account has been disabled",
+        });
+        break;
+      default:
+        setError({ type: "password", message: "Something went wrong" });
+    }
+    console.error(err);
+  };
 
   return (
     <>
@@ -234,7 +247,11 @@ const Login = (): ReactElement => {
           <div className="flex justify-center space-x-3">
             {/* Log in with Google */}
             <button
-              onClick={() => loginWithPopup(new GoogleAuthProvider())}
+              onClick={() =>
+                loginWithPopup(new GoogleAuthProvider()).catch(
+                  handleFirebaseError
+                )
+              }
               aria-label="Log in with Google"
               className="p-3 rounded-sm"
             >
@@ -266,7 +283,11 @@ const Login = (): ReactElement => {
             </button>
             {/* Log in with Twitter */}
             <button
-              onClick={() => loginWithPopup(new TwitterAuthProvider())}
+              onClick={() =>
+                loginWithPopup(new TwitterAuthProvider()).catch(
+                  handleFirebaseError
+                )
+              }
               aria-label="Log in with Twitter"
               className="p-3 rounded-sm"
             >
@@ -284,7 +305,11 @@ const Login = (): ReactElement => {
             </button>
             {/* Log in with GitHub */}
             <button
-              onClick={() => loginWithPopup(new GithubAuthProvider())}
+              onClick={() =>
+                loginWithPopup(new GithubAuthProvider()).catch(
+                  handleFirebaseError
+                )
+              }
               aria-label="Log in with GitHub"
               className="p-3 rounded-sm"
             >

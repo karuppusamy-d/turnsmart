@@ -58,10 +58,7 @@ const Signup = (): ReactElement => {
       !passwordRef.current ||
       !passwordConfirmRef.current
     )
-      return setError({
-        type: "passwordConfirm",
-        message: "Something went wrong",
-      });
+      return showAlert("Something went wrong", "error");
 
     // Reset error
     setError({ type: "", message: "" });
@@ -83,31 +80,47 @@ const Signup = (): ReactElement => {
       await signup(email, password);
     } catch (err) {
       // Handle error
-      switch ((err as FirebaseError).code) {
-        case "auth/email-already-in-use":
-          handleError(emailRef.current, "Account already exists");
-          break;
-        case "auth/invalid-email":
-          handleError(emailRef.current, "Please enter valid email");
-          break;
-        case "auth/weak-password":
-          handleError(passwordRef.current, "Please provide a strong password");
-          break;
-        case "auth/too-many-requests":
-          handleError(
-            passwordConfirmRef.current,
-            "Too many attempts, Please try again later"
-          );
-          break;
-        default:
-          setError({
-            type: "passwordConfirm",
-            message: "Something went wrong",
-          });
-      }
+      handleFirebaseError(err);
     }
   }
 
+  const handleFirebaseError = (err: unknown): void => {
+    if (
+      !emailRef.current ||
+      !passwordRef.current ||
+      !passwordConfirmRef.current
+    )
+      return showAlert("Something went wrong", "error");
+
+    switch ((err as FirebaseError).code) {
+      case "auth/popup-closed-by-user":
+        break;
+      case "auth/account-exists-with-different-credential":
+        showAlert("Please use google account to login", "default");
+        break;
+      case "auth/email-already-in-use":
+        handleError(emailRef.current, "Account already exists");
+        break;
+      case "auth/invalid-email":
+        handleError(emailRef.current, "Please enter valid email");
+        break;
+      case "auth/weak-password":
+        handleError(passwordRef.current, "Please provide a strong password");
+        break;
+      case "auth/too-many-requests":
+        handleError(
+          passwordConfirmRef.current,
+          "Too many attempts, Please try again later"
+        );
+        break;
+      default:
+        setError({
+          type: "passwordConfirm",
+          message: "Something went wrong",
+        });
+    }
+    console.error(err);
+  };
   return (
     <>
       {/* SEO */}
@@ -220,7 +233,11 @@ const Signup = (): ReactElement => {
           <div className="flex justify-center space-x-3">
             {/* Log in with Google */}
             <button
-              onClick={() => loginWithPopup(new GoogleAuthProvider())}
+              onClick={() =>
+                loginWithPopup(new GoogleAuthProvider()).catch(
+                  handleFirebaseError
+                )
+              }
               aria-label="Log in with Google"
               className="p-3 rounded-sm"
             >
@@ -252,7 +269,11 @@ const Signup = (): ReactElement => {
             </button>
             {/* Log in with Twitter */}
             <button
-              onClick={() => loginWithPopup(new TwitterAuthProvider())}
+              onClick={() =>
+                loginWithPopup(new TwitterAuthProvider()).catch(
+                  handleFirebaseError
+                )
+              }
               aria-label="Log in with Twitter"
               className="p-3 rounded-sm"
             >
@@ -270,7 +291,11 @@ const Signup = (): ReactElement => {
             </button>
             {/* Log in with GitHub */}
             <button
-              onClick={() => loginWithPopup(new GithubAuthProvider())}
+              onClick={() =>
+                loginWithPopup(new GithubAuthProvider()).catch(
+                  handleFirebaseError
+                )
+              }
               aria-label="Log in with GitHub"
               className="p-3 rounded-sm"
             >
