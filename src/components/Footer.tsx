@@ -16,6 +16,11 @@ const Footer = (): ReactElement => {
           <SocialIcon kind="github" href={siteMetadata.github} />
           <SocialIcon kind="gmail" href={`mailto:${siteMetadata.email}`} />
         </div>
+        <div className="flex mt-1 mb-3 space-x-2">
+          <Link href="/privacy-policy">Privacy Policy</Link>
+          <div>{` • `}</div>
+          <Link href="/terms">Terms & Conditions</Link>
+        </div>
         <div className="flex mb-6 space-x-2">
           <div>{`© ${new Date().getFullYear()}`}</div>
           <div>{` • `}</div>
