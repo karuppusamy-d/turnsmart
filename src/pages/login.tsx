@@ -68,7 +68,7 @@ const Login = (): ReactElement => {
             router.push(redirect_url);
           })
           .catch(() => {
-            progress && progress.start();
+            progress && progress.finish();
             showAlert("Something went wrong", "error");
           });
       }

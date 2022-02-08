@@ -6,6 +6,7 @@ import { PageSeo } from "@/components/SEO";
 import siteMetadata from "@/data/siteMetadata.json";
 import { FirebaseError } from "firebase/app";
 import { uploadProfileImage } from "@/utils/firebase";
+import ProgressBar from "@badrap/bar-of-progress";
 
 const Profile = (): ReactElement => {
   const {
@@ -105,6 +106,49 @@ const Profile = (): ReactElement => {
     } catch (err) {
       handleFirebaseError(err);
     }
+  };
+
+  const handleSync = async (): Promise<void> => {
+    if (!currentUser) {
+      showAlert("Something went wrong", "error");
+      return;
+    }
+
+    // Show the progress bar
+    let progress: ProgressBar | void;
+    (async function () {
+      // Dynamically import the ProgressionBar and show it
+      progress = await import("@badrap/bar-of-progress")
+        .then((ProgressBar) => {
+          return new ProgressBar.default({
+            size: 2,
+            color: "#38bdf8",
+            className: "progress-bar",
+            delay: 100,
+          });
+        })
+        .catch((error) => {
+          showAlert("Something went wrong", "error");
+          console.error(error);
+        });
+      progress && progress.start();
+    })();
+
+    currentUser.getIdToken().then(async (token) => {
+      const res = await fetch("/api/sync", {
+        method: "POST",
+        headers: {
+          authorization: token,
+        },
+      });
+
+      if (res.status === 200) {
+        showAlert("Successfully synced", "success");
+      } else {
+        showAlert("Something went wrong", "error");
+      }
+      progress && progress.finish();
+    });
   };
 
   const handlePasswordReset = async (): Promise<void> => {
@@ -250,6 +294,20 @@ const Profile = (): ReactElement => {
                   Save
                 </button>
               </form>
+            </div>
+
+            {/* Sync Projects */}
+            <div>
+              <h1 className="text-xl font-semibold">Sync</h1>
+              <p className="mt-2 mb-4 text-base text-gray-500 dark:text-gray-400">
+                Sync your projects with Google Home.
+              </p>
+
+              <div className="flex gap-4">
+                <button className="btn w-28" onClick={handleSync}>
+                  Sync
+                </button>
+              </div>
             </div>
 
             {/* Reset Password */}
