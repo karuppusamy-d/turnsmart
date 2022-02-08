@@ -238,6 +238,13 @@ const Login = (): ReactElement => {
             </Link>
           </div>
 
+          {/* Google authorization statement */}
+          {router.query.redirect_uri && (
+            <div className="text-gray-500 dark:text-gray-300 text-center text-sm mt-6 -mb-2">
+              By signing in, you are authorizing Google to control your devices.
+            </div>
+          )}
+
           <div className="flex my-4 items-center pt-4 space-x-1">
             <div className="flex-1 h-px sm:w-16 bg-gray-400"></div>
             <p className="px-3 text-sm text-gray-400">Login with</p>
