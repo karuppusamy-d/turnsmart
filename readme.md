@@ -1,11 +1,14 @@
 # [turnsmart.io](https://io.karuppusamy.me)
 
-It is a [open-source](https://github.com/karuppusamy-d/turnsmart) smart home development platform that allows you to build and deploy smart home devices in a matter of minutes. It supports a wide range of devices, including: ESP8266, ESP32, Arduino, Raspberry Pi, and more.
+It is an [open-source](https://github.com/karuppusamy-d/turnsmart) smart home development platform that allows you to build and deploy your smart home devices on your own. It supports a wide range of devices, including ESP8266, ESP32, Arduino, Raspberry Pi, and more.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/karuppusamy-d/turnsmart)
 
 [Example projects](https://github.com/karuppusamy-d/turnsmart-examples.git)
 
 ## Features
 
+- Self Hosted
 - Easy to setup
 - Google Home integration
 - One-click Google Assistant integration
@@ -15,18 +18,40 @@ It is a [open-source](https://github.com/karuppusamy-d/turnsmart) smart home dev
 
 ## Quick Start Guide
 
-1. Create a account with [turnsmart.io](https://io.karuppusamy.me).
-2. Create a new project and add required [endpoints](#endpoints-section).
-3. Enable smarthome in project settings and choose the [device type](#device-type).
-4. Add required [traits](#device-traits) and update target endpoints for each trait.
-5. Connect your smarthome device to the website using the [API](#api-reference).
-6. Connect your device to Google Home by going to `Google Home > Set up device > Works with Google > turnsmart.io` and following the instructions.
-7. Now you can control your device from Google Home and Google Assistant.
-8. Enjoy making 🧑‍💻
+1. Clone the repo and [deploy](#deploy-guide).
+1. Create a account and login with new account.
+1. Create a new project and add required [endpoints](#endpoints-section).
+1. Enable smarthome in project settings and choose the [device type](#device-type).
+1. Add required [traits](#device-traits) and update target endpoints for each trait.
+1. Connect your smarthome device to the website using the [API](#api-reference).
+1. Connect your device to Google Home by going to `Google Home > Set up device > Works with Google > turnsmart` and following the instructions.
+1. Now you can control your device from Google Home and Google Assistant.
+1. Enjoy making 🧑‍💻
+
+## Deploy Guide
+
+1. Clone the repo and deploy it on [vercel](https://vercel.com/new/git/external?repository-url=https://github.com/karuppusamy-d/turnsmart) or any other cloud provider.
+2. Create a new [Firebase project](https://console.firebase.google.com/).
+3. Enable Firebase Authentication and add your domain in authorised domains.
+4. Enable Firebase Database and setup firebase rules as in `firebase.rules` file.
+5. Enable Firebase Storage and setup respective rules.
+6. Create a new Firebase webapp by going to project settings.
+7. Create a new Firebase Admin key by going to `Project settings > Service accounts > Generate a new private key`.
+8. Update the environment variables.
+9. Create a new Actions project by going to [actions console](https://console.actions.google.com/) and selecting your existing firebase project.
+10. Set category as `Smart Home` and name your project.
+11. Setup Account linking by going to `Develop > Account linking` and using the values below.
+
+| Field             | Value                                      |
+| :---------------- | :----------------------------------------- |
+| Client ID         | environment variable: GOOGLE_CLIENT_ID     |
+| Client secret     | environment variable: GOOGLE_CLIENT_SECRET |
+| Authorization URL | https://your-domain/login                  |
+| Token URL         | https://your-domain/api/auth/token         |
 
 ## API Reference
 
-The API is available on [io.karuppusamy.me/api](https://io.karuppusamy.me/api). It is a REST API that allows you to control your smart home devices. You can use the turnsmart API to control your smart home devices. The turnsmart API is secure and can be accessed from any device.
+The API is available on `your-domain/api`. It is a REST API that allows you to control your smart home devices. You can use the turnsmart API to control your smart home devices. The turnsmart API is secure and can be accessed from any device.
 
 ### Get data:
 
