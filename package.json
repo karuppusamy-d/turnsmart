@@ -19,7 +19,7 @@
   "dependencies": {
     "@badrap/bar-of-progress": "^0.1.2",
     "@googleapis/homegraph": "^2.0.0",
-    "firebase": "^9.6.5",
+    "firebase": "^9.6.6",
     "firebase-admin": "^10.0.2",
     "jsonwebtoken": "^8.5.1",
     "next": "^12.1.0",
