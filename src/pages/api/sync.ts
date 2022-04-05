@@ -37,7 +37,13 @@ const handler: handlerType = async (req, res) => {
         .then(() => {
           res.status(200).json({ result: "success" });
         })
-        .catch(() => {
+        .catch((err) => {
+          console.error("Something went wrong", err);
+          if (err.code == 404) {
+            res.status(404).json({ result: "account not linked" });
+            return;
+          }
+
           res.status(400).json({ result: "failed" });
         });
     })

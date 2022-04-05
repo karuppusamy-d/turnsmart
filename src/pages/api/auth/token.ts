@@ -77,7 +77,10 @@ const handler: handlerType = async (req, res) => {
           });
         } else return res.status(400).json({ error: "invalid_grant" });
       })
-      .catch(() => res.status(500).json({ error: "server_error" }));
+      .catch((error) => {
+        console.error("Something went wrong", error);
+        res.status(500).json({ error: "server_error" });
+      });
   } else {
     // Create a token from refresh token
     try {
