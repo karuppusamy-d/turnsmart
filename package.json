@@ -21,7 +21,7 @@
     "@googleapis/homegraph": "^3.0.1",
     "firebase": "^9.6.10",
     "firebase-admin": "^10.0.2",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "next": "^12.1.4",
     "next-pwa": "^5.4.7",
     "next-seo": "^5.3.0",
